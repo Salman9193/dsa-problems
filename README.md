@@ -7,20 +7,17 @@ A structured collection of DSA problems with:
 
 ## Structure
 
-```
-dsa-problems/
-└── bit-manipulation/
-    └── hamming-weight/
-        ├── Solution.java
-        ├── NOTES.md
-        └── USE_CASES.md
-```
+Each problem lives in `topic/problem-name/` and contains:
+- `Solution.java` — clean implementation with complexity analysis and trace
+- `NOTES.md` — full intuition, worked examples, edge cases
+- `USE_CASES.md` — real-world applications with links to papers, docs, and source code
 
 ## Problems
 
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
 | 1 | [Number of 1 Bits (Hamming Weight)](./bit-manipulation/hamming-weight) | Bit Manipulation | Easy |
+| 2 | [Longest Consecutive Sequence](./arrays/longest-consecutive-sequence) | Arrays | Medium |
 
 ---
 > More problems will be added progressively across topics like dynamic programming, graphs, trees, and sliding window.
