@@ -19,6 +19,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 1 | [Number of 1 Bits (Hamming Weight)](./bit-manipulation/hamming-weight) | Bit Manipulation | Easy |
 | 2 | [Longest Consecutive Sequence](./arrays/longest-consecutive-sequence) | Arrays | Medium |
 | 3 | [Longest Palindromic Substring](./strings/longest-palindromic-substring) | Strings | Medium |
+| 4 | [Clone Graph](./graphs/clone-graph) | Graphs | Medium |
 
 ---
-> More problems will be added progressively across topics like dynamic programming, graphs, trees, and sliding window.
+> More problems will be added progressively across topics like dynamic programming, trees, and sliding window.
