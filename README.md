@@ -20,6 +20,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 2 | [Longest Consecutive Sequence](./arrays/longest-consecutive-sequence) | Arrays | Medium |
 | 3 | [Longest Palindromic Substring](./strings/longest-palindromic-substring) | Strings | Medium |
 | 4 | [Clone Graph](./graphs/clone-graph) | Graphs | Medium |
+| 5 | [Search in Rotated Sorted Array](./binary-search/search-in-rotated-sorted-array) | Binary Search | Medium |
 
 ---
 > More problems will be added progressively across topics like dynamic programming, trees, and sliding window.
