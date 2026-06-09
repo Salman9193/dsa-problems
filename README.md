@@ -24,13 +24,14 @@ Each problem lives in `topic/problem-name/` and contains:
 | 6 | [Coin Change](./dynamic-programming/coin-change) | Dynamic Programming | Medium |
 | 7 | [Climbing Stairs](./dynamic-programming/climbing-stairs) | Dynamic Programming | Easy |
 | 8 | [Linked List Cycle](./linked-list/linked-list-cycle) | Linked List | Easy |
+| 9 | [Word Break](./dynamic-programming/word-break) | Dynamic Programming | Medium |
 
 ## Guides
 
 | Guide | Description |
 |-------|-------------|
 | [Greedy vs DP](./guides/GREEDY_VS_DP.md) | When greedy suffices vs when you need DP — interchange argument, matroid theory, decision flowchart |
-| [Graph Cycle Detection](./guides/GRAPH_CYCLE_DETECTION.md) | Floyd's vs DFS vs Kahn's — undirected, directed, functional graphs, common mistakes, real-world applications |
+| [Graph Cycle Detection](./guides/GRAPH_CYCLE_DETECTION.md) | Floyd's vs DFS vs Kahn's — undirected, directed, functional graphs, common mistakes |
 
 ---
 > More problems and guides will be added progressively.
