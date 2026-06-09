@@ -26,6 +26,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 8 | [Linked List Cycle](./linked-list/linked-list-cycle) | Linked List | Easy |
 | 9 | [Word Break](./dynamic-programming/word-break) | Dynamic Programming | Medium |
 | 10 | [Group Anagrams](./arrays/group-anagrams) | Arrays / HashMap | Medium |
+| 11 | [Top K Frequent Elements](./arrays/top-k-frequent-elements) | Arrays / HashMap | Medium |
 
 ## Guides
 
