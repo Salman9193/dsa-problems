@@ -22,12 +22,15 @@ Each problem lives in `topic/problem-name/` and contains:
 | 4 | [Clone Graph](./graphs/clone-graph) | Graphs | Medium |
 | 5 | [Search in Rotated Sorted Array](./binary-search/search-in-rotated-sorted-array) | Binary Search | Medium |
 | 6 | [Coin Change](./dynamic-programming/coin-change) | Dynamic Programming | Medium |
+| 7 | [Climbing Stairs](./dynamic-programming/climbing-stairs) | Dynamic Programming | Easy |
+| 8 | [Linked List Cycle](./linked-list/linked-list-cycle) | Linked List | Easy |
 
 ## Guides
 
 | Guide | Description |
 |-------|-------------|
-| [Greedy vs DP](./guides/GREEDY_VS_DP.md) | When greedy suffices vs when you need DP — interchange argument, matroid theory, decision flowchart, known problem classes |
+| [Greedy vs DP](./guides/GREEDY_VS_DP.md) | When greedy suffices vs when you need DP — interchange argument, matroid theory, decision flowchart |
+| [Graph Cycle Detection](./guides/GRAPH_CYCLE_DETECTION.md) | Floyd's vs DFS vs Kahn's — undirected, directed, functional graphs, common mistakes, real-world applications |
 
 ---
 > More problems and guides will be added progressively.
