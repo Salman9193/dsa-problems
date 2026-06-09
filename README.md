@@ -21,6 +21,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 3 | [Longest Palindromic Substring](./strings/longest-palindromic-substring) | Strings | Medium |
 | 4 | [Clone Graph](./graphs/clone-graph) | Graphs | Medium |
 | 5 | [Search in Rotated Sorted Array](./binary-search/search-in-rotated-sorted-array) | Binary Search | Medium |
+| 6 | [Coin Change](./dynamic-programming/coin-change) | Dynamic Programming | Medium |
 
 ---
-> More problems will be added progressively across topics like dynamic programming, trees, and sliding window.
+> More problems will be added progressively across topics like trees, sliding window, and two pointers.
