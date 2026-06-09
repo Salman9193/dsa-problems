@@ -23,5 +23,11 @@ Each problem lives in `topic/problem-name/` and contains:
 | 5 | [Search in Rotated Sorted Array](./binary-search/search-in-rotated-sorted-array) | Binary Search | Medium |
 | 6 | [Coin Change](./dynamic-programming/coin-change) | Dynamic Programming | Medium |
 
+## Guides
+
+| Guide | Description |
+|-------|-------------|
+| [Greedy vs DP](./guides/GREEDY_VS_DP.md) | When greedy suffices vs when you need DP — interchange argument, matroid theory, decision flowchart, known problem classes |
+
 ---
-> More problems will be added progressively across topics like trees, sliding window, and two pointers.
+> More problems and guides will be added progressively.
