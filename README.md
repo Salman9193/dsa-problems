@@ -25,6 +25,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 7 | [Climbing Stairs](./dynamic-programming/climbing-stairs) | Dynamic Programming | Easy |
 | 8 | [Linked List Cycle](./linked-list/linked-list-cycle) | Linked List | Easy |
 | 9 | [Word Break](./dynamic-programming/word-break) | Dynamic Programming | Medium |
+| 10 | [Group Anagrams](./arrays/group-anagrams) | Arrays / HashMap | Medium |
 
 ## Guides
 
