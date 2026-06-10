@@ -29,6 +29,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 11 | [Top K Frequent Elements](./arrays/top-k-frequent-elements) | Arrays / HashMap | Medium |
 | 12 | [Encode and Decode Strings](./strings/encode-and-decode-strings) | Strings / Design | Medium |
 | 13 | [Product of Array Except Self](./arrays/product-of-array-except-self) | Arrays | Medium |
+| 14 | [Valid Palindrome](./strings/valid-palindrome) | Strings / Two Pointers | Easy |
 
 ## Guides
 
