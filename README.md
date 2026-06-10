@@ -28,6 +28,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 10 | [Group Anagrams](./arrays/group-anagrams) | Arrays / HashMap | Medium |
 | 11 | [Top K Frequent Elements](./arrays/top-k-frequent-elements) | Arrays / HashMap | Medium |
 | 12 | [Encode and Decode Strings](./strings/encode-and-decode-strings) | Strings / Design | Medium |
+| 13 | [Product of Array Except Self](./arrays/product-of-array-except-self) | Arrays | Medium |
 
 ## Guides
 
