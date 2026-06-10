@@ -31,6 +31,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 13 | [Product of Array Except Self](./arrays/product-of-array-except-self) | Arrays | Medium |
 | 14 | [Valid Palindrome](./strings/valid-palindrome) | Strings / Two Pointers | Easy |
 | 15 | [3Sum](./arrays/3sum) | Arrays / Two Pointers | Medium |
+| 16 | [Container With Most Water](./arrays/container-with-most-water) | Arrays / Two Pointers | Medium |
 
 ## Guides
 
