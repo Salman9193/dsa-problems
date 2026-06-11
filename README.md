@@ -36,6 +36,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 18 | [Longest Substring Without Repeating Characters](./strings/longest-substring-without-repeating) | Strings / Sliding Window | Medium |
 | 19 | [Longest Repeating Character Replacement](./strings/longest-repeating-character-replacement) | Strings / Sliding Window | Medium |
 | 20 | [Minimum Window Substring](./strings/minimum-window-substring) | Strings / Sliding Window | Hard |
+| 21 | [Valid Parentheses](./stacks/valid-parentheses) | Stacks | Easy |
 
 ## Guides
 
