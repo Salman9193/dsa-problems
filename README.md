@@ -34,6 +34,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 16 | [Container With Most Water](./arrays/container-with-most-water) | Arrays / Two Pointers | Medium |
 | 17 | [Best Time to Buy and Sell Stock](./arrays/best-time-to-buy-and-sell-stock) | Arrays / Greedy | Easy |
 | 18 | [Longest Substring Without Repeating Characters](./strings/longest-substring-without-repeating) | Strings / Sliding Window | Medium |
+| 19 | [Longest Repeating Character Replacement](./strings/longest-repeating-character-replacement) | Strings / Sliding Window | Medium |
 
 ## Guides
 
