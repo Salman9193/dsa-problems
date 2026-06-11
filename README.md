@@ -35,6 +35,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 17 | [Best Time to Buy and Sell Stock](./arrays/best-time-to-buy-and-sell-stock) | Arrays / Greedy | Easy |
 | 18 | [Longest Substring Without Repeating Characters](./strings/longest-substring-without-repeating) | Strings / Sliding Window | Medium |
 | 19 | [Longest Repeating Character Replacement](./strings/longest-repeating-character-replacement) | Strings / Sliding Window | Medium |
+| 20 | [Minimum Window Substring](./strings/minimum-window-substring) | Strings / Sliding Window | Hard |
 
 ## Guides
 
