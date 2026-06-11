@@ -32,6 +32,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 14 | [Valid Palindrome](./strings/valid-palindrome) | Strings / Two Pointers | Easy |
 | 15 | [3Sum](./arrays/3sum) | Arrays / Two Pointers | Medium |
 | 16 | [Container With Most Water](./arrays/container-with-most-water) | Arrays / Two Pointers | Medium |
+| 17 | [Best Time to Buy and Sell Stock](./arrays/best-time-to-buy-and-sell-stock) | Arrays / Greedy | Easy |
 
 ## Guides
 
