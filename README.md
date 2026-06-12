@@ -37,6 +37,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 19 | [Longest Repeating Character Replacement](./strings/longest-repeating-character-replacement) | Strings / Sliding Window | Medium |
 | 20 | [Minimum Window Substring](./strings/minimum-window-substring) | Strings / Sliding Window | Hard |
 | 21 | [Valid Parentheses](./stacks/valid-parentheses) | Stacks | Easy |
+| 22 | [Two Sum II](./arrays/two-sum-ii) | Arrays / Two Pointers | Medium |
 
 ## Guides
 
