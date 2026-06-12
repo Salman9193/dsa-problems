@@ -38,6 +38,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 20 | [Minimum Window Substring](./strings/minimum-window-substring) | Strings / Sliding Window | Hard |
 | 21 | [Valid Parentheses](./stacks/valid-parentheses) | Stacks | Easy |
 | 22 | [Two Sum II](./arrays/two-sum-ii) | Arrays / Two Pointers | Medium |
+| 23 | [Trapping Rain Water](./arrays/trapping-rain-water) | Arrays / Two Pointers | Hard |
 
 ## Guides
 
