@@ -41,6 +41,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 23 | [Trapping Rain Water](./arrays/trapping-rain-water) | Arrays / Two Pointers | Hard |
 | 24 | [Online Election](./binary-search/online-election) | Binary Search / Design | Medium |
 | 25 | [Car Pooling](./arrays/car-pooling) | Arrays / Sweep Line | Medium |
+| 26 | [First Unique Character in a String](./strings/first-unique-character) | Strings / Hash Table | Easy |
 
 ## Guides
 
