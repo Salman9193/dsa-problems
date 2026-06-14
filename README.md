@@ -45,6 +45,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 27 | [Reverse Linked List](./linked-list/reverse-linked-list) | Linked List | Easy |
 | 28 | [Find Pivot Index](./arrays/find-pivot-index) | Arrays / Prefix Sum | Easy |
 | 29 | [Linked List Random Node](./linked-list/linked-list-random-node) | Linked List / Randomisation | Medium |
+| 30 | [Minimum Time Visiting All Points](./arrays/minimum-time-visiting-all-points) | Arrays / Math | Easy |
 
 ## Guides
 
