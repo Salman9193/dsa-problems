@@ -44,6 +44,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 26 | [First Unique Character in a String](./strings/first-unique-character) | Strings / Hash Table | Easy |
 | 27 | [Reverse Linked List](./linked-list/reverse-linked-list) | Linked List | Easy |
 | 28 | [Find Pivot Index](./arrays/find-pivot-index) | Arrays / Prefix Sum | Easy |
+| 29 | [Linked List Random Node](./linked-list/linked-list-random-node) | Linked List / Randomisation | Medium |
 
 ## Guides
 
