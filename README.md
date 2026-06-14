@@ -43,6 +43,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 25 | [Car Pooling](./arrays/car-pooling) | Arrays / Sweep Line | Medium |
 | 26 | [First Unique Character in a String](./strings/first-unique-character) | Strings / Hash Table | Easy |
 | 27 | [Reverse Linked List](./linked-list/reverse-linked-list) | Linked List | Easy |
+| 28 | [Find Pivot Index](./arrays/find-pivot-index) | Arrays / Prefix Sum | Easy |
 
 ## Guides
 
