@@ -102,13 +102,85 @@ power draw — this is the basis of **Simple Power Analysis (SPA)** attacks.
 
 ---
 
+## 7. Advanced Hardware Bit Manipulation — PDEP/PEXT Instructions
+
+Popcount is just one of a family of advanced bit manipulation operations now
+supported directly in hardware. Two closely related instructions — **PDEP**
+(parallel bit deposit / bit scatter) and **PEXT** (parallel bit extract /
+bit gather) — extend the popcount idea to arbitrary bit permutations and
+field operations.
+
+### What PDEP/PEXT do
+
+```
+PEXT (parallel extract / bit gather):
+  Given a source register and a mask register,
+  extract the bits of source at positions where mask=1
+  and pack them into contiguous low-order bits.
+
+PDEP (parallel deposit / bit scatter):
+  The inverse — take contiguous low-order bits
+  and scatter them into positions where mask=1.
+```
+
+### Applications (from hardware/compiler research)
+
+| Domain | How PDEP/PEXT is used |
+|--------|-----------------------|
+| **Bitboards (chess, card games)** | Bit permutation, mirror/reverse bit arrays, dealing card hands from a single register |
+| **Morton codes (Z-order curves)** | Bit interleaving/de-interleaving for spatial indexing — PDEP/PEXT replaces multi-step multiply tricks |
+| **Succinct data structures** | Rank/select operations — popcount + PDEP/PEXT power Roaring Bitmaps and HOT (Height Optimized Trie) |
+| **CSV/high-performance parsers** | Extracting parsed bits/markers into final structures — same technique as SIMD parsers |
+| **RISC-V / x86 instruction encoding** | Assembling/disassembling immediates scattered across instruction words (RISC-V scatter design, x86 REX2 prefix) |
+| **Genome parsing** | Extracting nucleotide fields from packed bit representations |
+| **Cryptography** | Arbitrary bit permutations in block cipher S-boxes and P-boxes |
+| **Constraint solvers / SAT / BDD** | Binary Decision Diagrams and 4-colouring problems benefit significantly from PDEP/PEXT |
+
+### Key references
+
+- **Paper:** *Performing Advanced Bit Manipulations Efficiently in General-Purpose Processors*
+  The foundational hardware paper proposing PDEP/PEXT — covering perm (bit permutation),
+  pex (parallel extract / bit gather), and pdep (parallel deposit / bit scatter).
+
+- **Hacker's Delight** (Warren, 2nd ed.) — Chapter on bit permutations and the
+  multiply trick for bit interleaving (superseded by PDEP/PEXT on modern CPUs).
+
+- **Succinct data structures paper:**
+  *A General-Purpose Counting Filter: Making Every Bit Count*
+  https://dl.acm.org/doi/10.1145/3035918.3035963
+
+- **Bit manipulation for succinct structures and CSV parsing:**
+  *Bit-manipulation operations for high-performance succinct data-structures and CSV parsing*
+
+- **Morton code / spatial indexing:**
+  https://stackoverflow.com/questions/4909263/how-to-de-interleave-bits-unmortonizing
+
+- **Zig language proposals tracking PDEP/PEXT support:**
+  https://github.com/ziglang/zig/issues/14995
+  https://github.com/ziglang/zig/issues/15837
+
+- **Hacker News discussion — PDEP/PEXT implications:**
+  https://news.ycombinator.com/item?id=19137260
+
+### The connection to popcount
+
+POPCNT (popcount) was the first "advanced" bit instruction added to x86 (SSE4.2, 2008).
+PDEP/PEXT followed in Intel Haswell (2013) as part of the BMI2 extension.
+All three — POPCNT, PDEP, PEXT — are part of the same hardware story: tasks that
+previously required dozens of shift/mask/OR operations now execute in a single cycle.
+
+---
+
 ## Summary
 
-| Domain | What gets hashed | Why popcount |
-|--------|-----------------|--------------|
-| ML / ANN search | Image / text embeddings | Fast similarity via Hamming distance |
-| Audio fingerprinting | Spectrogram landmarks | Sub-millisecond song lookup |
-| Web crawling | Page content | Deduplicate billion-page index |
-| Chess engines | Board state | Count pieces in O(1) |
+| Domain | What gets counted/manipulated | Why popcount/PDEP/PEXT |
+|--------|-------------------------------|------------------------|
+| ML / ANN search | Image/text binary codes | Fast Hamming distance via popcount |
+| Audio fingerprinting | Spectrogram landmark hashes | Sub-ms song lookup |
+| Web crawling | Page content fingerprints | Deduplicate billion-page index |
+| Chess engines | Board state bitboards | Count pieces in O(1) |
 | Error correction | Codewords | Measure bit-flip distance |
-| Cryptography | Key bits | Side-channel power model |
+| Cryptography | Key bits / S-box permutations | Side-channel model + PDEP/PEXT permutations |
+| Succinct structures | Rank/select indices | POPCNT + PDEP/PEXT for Roaring Bitmaps |
+| Parsers (CSV, genome) | Packed bit fields | PEXT extracts fields in one instruction |
+| Spatial indexing | Morton / Z-order codes | PDEP/PEXT replaces multiply interleave trick |
