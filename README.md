@@ -47,6 +47,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 29 | [Linked List Random Node](./linked-list/linked-list-random-node) | Linked List / Randomisation | Medium |
 | 30 | [Minimum Time Visiting All Points](./arrays/minimum-time-visiting-all-points) | Arrays / Math | Easy |
 | 31 | [Sqrt(x)](./binary-search/sqrt-x) | Binary Search / Math | Easy |
+| 32 | [Populating Next Right Pointers II](./trees/populating-next-right-pointers-ii) | Trees / BFS | Medium |
 
 ## Guides
 
