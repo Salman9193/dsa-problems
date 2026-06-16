@@ -46,6 +46,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 28 | [Find Pivot Index](./arrays/find-pivot-index) | Arrays / Prefix Sum | Easy |
 | 29 | [Linked List Random Node](./linked-list/linked-list-random-node) | Linked List / Randomisation | Medium |
 | 30 | [Minimum Time Visiting All Points](./arrays/minimum-time-visiting-all-points) | Arrays / Math | Easy |
+| 31 | [Sqrt(x)](./binary-search/sqrt-x) | Binary Search / Math | Easy |
 
 ## Guides
 
