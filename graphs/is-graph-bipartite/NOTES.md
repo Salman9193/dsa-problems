@@ -1,0 +1,142 @@
+# Is Graph Bipartite? — Notes & Intuition
+
+**LeetCode #785** | Graphs / BFS / DFS | Medium
+
+---
+
+## Problem
+
+Determine if an undirected graph is bipartite — can its nodes be split
+into two groups such that every edge connects a node from group A to
+a node from group B?
+
+```
+[[1,3],[0,2],[1,3],[0,2]]      →  true   (A={0,2}, B={1,3})
+[[1,2,3],[0,2],[0,1,3],[0,2]]  →  false  (triangle 0-1-2)
+```
+
+---
+
+## Key Equivalences
+
+All of these conditions are equivalent:
+
+```
+Bipartite
+  ↔ 2-colourable (no two adjacent nodes share the same colour)
+  ↔ no odd-length cycles
+  ↔ graph spectrum symmetric about 0 (Hückel molecular orbital theorem)
+```
+
+---
+
+## The 2-Colouring Algorithm
+
+Assign colour 1 to the start node. Assign the opposite colour to each
+neighbour. If we ever try to assign a colour that conflicts with an
+existing one → not bipartite.
+
+```
+colour = 0: unvisited
+colour = 1: red
+colour = -1: blue
+```
+
+Negating flips between 1 and -1 cleanly: `colour[neighbour] = -colour[node]`
+
+---
+
+## BFS Approach
+
+```java
+queue.offer(start);
+colour[start] = 1;
+
+while (!queue.isEmpty()) {
+    int node = queue.poll();
+    for (int neighbour : graph[node]) {
+        if (colour[neighbour] == 0) {
+            colour[neighbour] = -colour[node];
+            queue.offer(neighbour);
+        } else if (colour[neighbour] == colour[node]) {
+            return false;  // conflict!
+        }
+    }
+}
+```
+
+---
+
+## Why the Outer `for` Loop?
+
+The graph may be **disconnected**. Without the outer loop, isolated
+components are never checked — they could contain odd cycles and we'd
+incorrectly return `true`.
+
+```java
+for (int start = 0; start < n; start++) {
+    if (colour[start] != 0) continue;
+    // BFS from this unvisited component
+}
+```
+
+---
+
+## Full Trace — `[[1,3],[0,2],[1,3],[0,2]]`
+
+```
+colours after BFS:
+  node 0: red   (1)
+  node 1: blue  (-1)
+  node 2: red   (1)
+  node 3: blue  (-1)
+
+Edges: 0-1 (red-blue ✓), 0-3 (red-blue ✓),
+       1-2 (blue-red ✓), 2-3 (red-blue ✓)
+→ bipartite: A={0,2}, B={1,3} ✓
+```
+
+**Counter-example — triangle `[[1,2],[0,2],[0,1]]`:**
+```
+colour[0]=1, colour[1]=-1
+Process edge 1→2: colour[2]=0 → colour[2]=1
+Process edge 2→0: colour[0]=1 == colour[2]=1 → CONFLICT → false ✓
+```
+
+---
+
+## Why Odd Cycles Break Bipartiteness
+
+In an odd-length cycle, alternating colouring forces the start and end
+node (which are adjacent) to have the **same colour**:
+
+```
+Cycle: 0 → 1 → 2 → 0   (length 3, odd)
+colour: 1 → -1 → 1 → conflict at 0 (need -1, but it's 1)
+```
+
+Even-length cycles always work:
+```
+Cycle: 0 → 1 → 2 → 3 → 0   (length 4, even)
+colour: 1 → -1 → 1 → -1 → needs 1 at 0 ✓
+```
+
+---
+
+## Complexity
+
+| | |
+|--|--|
+| Time | O(V + E) — visit each node and edge once |
+| Space | O(V) — colour array + queue |
+
+---
+
+## Related Problems
+
+| Problem | Connection |
+|---------|-----------|
+| #785 Is Graph Bipartite? (this) | 2-colouring check |
+| #886 Possible Bipartition | Same algorithm on a derived graph |
+| #207 Course Schedule | Cycle detection in directed graph |
+| Bipartite matching | Hungarian algorithm, Hopcroft-Karp |
