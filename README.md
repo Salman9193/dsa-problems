@@ -61,6 +61,8 @@ Each problem lives in `topic/problem-name/` and contains:
 |-------|-------------|
 | [Greedy vs DP](./guides/GREEDY_VS_DP.md) | When greedy suffices vs when you need DP — interchange argument, matroid theory, decision flowchart |
 | [Graph Cycle Detection](./guides/GRAPH_CYCLE_DETECTION.md) | Floyd's vs DFS vs Kahn's — undirected, directed, functional graphs, common mistakes |
+| [Complexity Theory](./guides/COMPLEXITY_THEORY.md) | P vs NP, NP-complete, reductions — why some problems are fundamentally hard |
+| [k-Colouring](./guides/K_COLOURING.md) | Generalising bipartite check to k colours — complexity jump at k=3, algorithms, applications |
 
 ---
 > More problems and guides will be added progressively.
