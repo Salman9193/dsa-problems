@@ -143,6 +143,62 @@ After visiting node N:
 
 ---
 
+---
+
+## 3. Stream Processing — Lazy Sorted Merge (Kafka, Spark)
+
+In distributed systems, sorted data arrives from multiple partitions or
+shards. Merging these sorted streams lazily — pulling one element at a time
+rather than materialising the full sorted output — uses the BST iterator
+pattern generalised to a priority queue (min-heap) of iterators.
+
+### The connection
+
+```
+BST Iterator (single sorted source):
+  next() → pop stack top, push left spine of right subtree
+  → O(1) amortised, O(h) space
+
+Sorted Stream Merge (k sorted sources):
+  next() → pop min from heap, advance that source's iterator
+  → O(log k) per element, O(k) space
+```
+
+The BST iterator IS the single-source version of the k-way merge iterator.
+Both are "pull" iterators — they produce one element on demand without
+buffering the full sorted sequence.
+
+### Where lazy sorted merge is used
+
+- **Apache Kafka** — merging sorted offset logs from multiple partitions
+  during compaction. Kafka's log compaction pulls one record at a time
+  from each partition iterator, merging them in key order.
+- **Apache Spark** — `sortMergeJoin` uses lazy k-way merge of sorted
+  partitions. Each partition has an iterator; the driver maintains a
+  min-heap of partition iterators, calling `next()` on the minimum one.
+- **Apache Cassandra** — merging SSTables during compaction. Multiple
+  SSTable iterators are merged lazily via a priority queue — same pattern.
+- **LevelDB / RocksDB** — `MergingIterator` merges sorted SST file
+  iterators lazily. `Next()` advances the current minimum iterator then
+  re-heapifies — O(log k) per element, O(k) memory.
+
+### References
+
+- **RocksDB MergingIterator source:**
+  https://github.com/facebook/rocksdb/blob/main/table/merging_iterator.cc
+  Implements lazy k-way merge of sorted SST iterators using a min-heap.
+  Each `Next()` call: advance the top iterator, re-heapify — O(log k).
+
+- **Apache Spark sortMergeJoin:**
+  https://github.com/apache/spark/blob/master/sql/core/src/main/scala/org/apache/spark/sql/execution/joins/SortMergeJoinExec.scala
+  Uses `RowIterator` pulled lazily from each sorted partition —
+  the same "pull one at a time" pattern as the BST iterator.
+
+- **LeetCode #23 Merge k Sorted Lists** — the direct generalisation:
+  replace the stack with a min-heap of list iterators.
+  k=1 reduces to the BST iterator (this problem).
+
+---
 ## Further Reading
 
 - CS186 B-tree traversal: https://cs186berkeley.net/notes/note4/
