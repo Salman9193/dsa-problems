@@ -52,6 +52,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 34 | [Find in Mountain Array](./binary-search/find-in-mountain-array) | Binary Search | Hard |
 | 35 | [Delete Nodes and Return Forest](./trees/delete-nodes-and-return-forest) | Trees / DFS | Medium |
 | 36 | [Divide Two Integers](./arrays/divide-two-integers) | Arrays / Bit Manipulation | Medium |
+| 37 | [Binary Search Tree Iterator](./trees/binary-search-tree-iterator) | Trees / Stack / Design | Medium |
 
 ## Guides
 
