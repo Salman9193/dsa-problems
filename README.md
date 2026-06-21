@@ -32,7 +32,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 14 | [Valid Palindrome](./strings/valid-palindrome) | Strings / Two Pointers | Easy |
 | 15 | [3Sum](./arrays/3sum) | Arrays / Two Pointers | Medium |
 | 16 | [Container With Most Water](./arrays/container-with-most-water) | Arrays / Two Pointers | Medium |
-| 17 | [Best Time to Buy and Sell Stock](./arrays/best-time-to-buy-and-sell-stock) | Arrays / Greedy | Easy |
+| 17 | [Best Time to Buy and Sell Stock I](./arrays/best-time-to-buy-and-sell-stock) | Arrays / Greedy | Easy |
 | 18 | [Longest Substring Without Repeating Characters](./strings/longest-substring-without-repeating) | Strings / Sliding Window | Medium |
 | 19 | [Longest Repeating Character Replacement](./strings/longest-repeating-character-replacement) | Strings / Sliding Window | Medium |
 | 20 | [Minimum Window Substring](./strings/minimum-window-substring) | Strings / Sliding Window | Hard |
@@ -56,6 +56,9 @@ Each problem lives in `topic/problem-name/` and contains:
 | 38 | [Is Graph Bipartite?](./graphs/is-graph-bipartite) | Graphs / BFS / DFS | Medium |
 | 39 | [All Possible Full Binary Trees](./trees/all-possible-full-binary-trees) | Trees / Recursion / Memoisation | Medium |
 | 40 | [Cherry Pickup II](./dynamic-programming/cherry-pickup-ii) | Dynamic Programming | Hard |
+| 41 | [Best Time to Buy and Sell Stock II](./arrays/best-time-to-buy-and-sell-stock-ii) | Arrays / Greedy | Medium |
+| 42 | [Best Time to Buy and Sell Stock III](./arrays/best-time-to-buy-and-sell-stock-iii) | Dynamic Programming | Hard |
+| 43 | [Best Time to Buy and Sell Stock IV](./arrays/best-time-to-buy-and-sell-stock-iv) | Dynamic Programming | Hard |
 
 ## Guides
 
