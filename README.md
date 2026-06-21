@@ -55,6 +55,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 37 | [Binary Search Tree Iterator](./trees/binary-search-tree-iterator) | Trees / Stack / Design | Medium |
 | 38 | [Is Graph Bipartite?](./graphs/is-graph-bipartite) | Graphs / BFS / DFS | Medium |
 | 39 | [All Possible Full Binary Trees](./trees/all-possible-full-binary-trees) | Trees / Recursion / Memoisation | Medium |
+| 40 | [Cherry Pickup II](./dynamic-programming/cherry-pickup-ii) | Dynamic Programming | Hard |
 
 ## Guides
 
