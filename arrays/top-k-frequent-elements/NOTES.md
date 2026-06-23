@@ -130,3 +130,18 @@ Scan from f=6 down:
 Partial sort using Quickselect finds the k-th largest frequency in O(n)
 average, O(n²) worst case. More complex to implement; bucket sort is
 simpler and strictly O(n) — prefer bucket sort unless space is constrained.
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Top k frequent words (#692) | Strings with alphabetical tie-breaking | Min-heap with custom comparator |
+| Streaming top-k | Elements arrive continuously | Heavy Hitters / Count-Min Sketch (approximate) |
+| Top-k in sliding window | Only last n elements count | Deque + HashMap with expiry tracking |
+| Exact k-th most frequent | Single element, not top-k list | QuickSelect on frequency array |
+| Space-constrained | Can't store all frequencies | Misra-Gries algorithm: approximate heavy hitters in O(1) space |
+| Distributed | Elements across shards | Partial counts per shard → merge → select top-k |
+
+**QuickSelect vs sort:** For exact top-k, bucket sort is O(n) but QuickSelect on the frequency array is O(n) average. Both beat heap's O(n log k) when k is large.
+
+**Heavy Hitters (streaming):** The Misra-Gries algorithm finds all elements appearing more than n/k times using O(k) space — used in network traffic analysis to find elephant flows without storing all packet counts.
