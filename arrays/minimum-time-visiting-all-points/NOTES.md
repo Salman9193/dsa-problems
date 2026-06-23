@@ -125,3 +125,19 @@ Total = 5 ✓
 | Same point twice | 0 | max(0,0)=0 |
 | Horizontal only `[[0,0],[5,0]]` | 5 | dy=0, max(5,0)=5 |
 | Diagonal `[[0,0],[3,3]]` | 3 | dx=dy=3, max=3 |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Optimal visit order | Choose which point to visit next | TSP (Travelling Salesman) — NP-hard; use DP for small n |
+| 4-directional movement | No diagonals | Manhattan distance instead of Chebyshev |
+| Obstacles on grid | Some cells blocked | BFS for actual shortest path; not just distance formula |
+| 3D space | Three coordinates | Chebyshev generalises: max(|dx|, |dy|, |dz|) |
+| Weighted movement | Different costs per direction | Dijkstra's algorithm |
+| Multiple agents | k robots visiting all points | Assign subsets; minimise max Chebyshev distance |
+| Return to start | Must come back after last point | Add distance from last point back to first |
+
+**Chebyshev to Manhattan transformation:** Chebyshev distance max(|dx|, |dy|) equals Manhattan distance after a 45° coordinate rotation: substitute u=x+y, v=x-y. Under this transformation, L∞ becomes L1. This bijection is useful for range queries on Chebyshev distance — convert to Manhattan and use standard range trees.
+
+**When Chebyshev fails:** If the grid has obstacles, the formula `max(|dx|, |dy|)` is no longer valid — the actual shortest path may be longer. In those cases, run BFS with 8-directional movement. The formula is a lower bound; BFS gives the exact answer.
