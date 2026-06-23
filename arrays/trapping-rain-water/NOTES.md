@@ -125,3 +125,18 @@ and a right contribution:
 | `[3,0,3]` | `3` | Single valley depth 3 |
 | `[1]` | `0` | Single bar |
 | `[2,0,2]` | `2` | Symmetric valley |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Trapping Rain Water II (#407) | 2D elevation map | Min-heap BFS from boundaries inward (Dijkstra-like) |
+| Max water in containers (#11) | Only two walls, maximise single container | Two pointers, no prefix/suffix needed |
+| With obstacles removed | Flatten some bars to 0 | DP still works; zero bars contribute 0 height |
+| Minimum bars to trap k units | Inverse problem | Binary search on min bar height |
+| Streaming heights | Heights revealed one at a time | Two-pass algorithm can't be used; requires full array |
+| Circular elevation | Array wraps around | Duplicate array; sliding window of size n |
+
+**2D extension (Trapping Rain Water II):** The water at each interior cell is bounded by the minimum height of the tallest path from that cell to any boundary. Use a min-heap: always process the smallest boundary cell first, propagate water levels inward. Time: O(mn log(mn)).
+
+**The left-right decomposition:** This problem shares its structure with Product Except Self (#238) and Max Product Subarray — all decompose a per-element computation into a left contribution and a right contribution, computed in two passes. This is a recurring pattern worth recognising immediately.
