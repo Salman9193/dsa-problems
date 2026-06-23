@@ -116,3 +116,25 @@ Mastering the iterative three-pointer pattern enables all of these.
 | `[1]` | `[1]` | Single node, already reversed |
 | `[1,2]` | `[2,1]` | Two nodes |
 | `[1,2,3,4,5]` | `[5,4,3,2,1]` | Full reversal |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Reverse sublist (#92) | Only reverse positions [left, right] | Find left-1 node; reverse [left..right]; reattach |
+| Reverse in k-groups (#25) | Reverse every k consecutive nodes | Detect next k nodes, reverse, advance |
+| Palindrome linked list (#234) | Check if palindrome | Reverse second half; compare with first half; restore |
+| Reorder list (#143) | Interleave first and second half | Find midpoint; reverse second half; merge |
+| Rotate list (#61) | Rotate by k positions | Find new tail (length-k from end); rewire |
+| Reverse even-length groups (#2074) | Reverse groups of even sizes | Iterate through groups; reverse if even length |
+
+**The subroutine view:** Reversing a linked list is rarely asked in isolation at Staff level. It always appears as a subroutine for harder problems. The pattern to recognise:
+```
+Find midpoint (fast/slow pointers)
+Reverse second half
+Process (compare, merge, interleave)
+Optionally restore
+```
+This template solves #234, #143, #876, #2095 with only minor variations.
+
+**In-place restoration:** After palindrome check, always restore the list: reverse the second half back. In production code, mutating input data structures is a defect.
