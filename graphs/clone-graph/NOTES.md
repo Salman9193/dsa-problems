@@ -154,3 +154,17 @@ return c1 ✓
 | Single node, no neighbors | Clone with empty neighbor list |
 | Single node, self-loop | Clone pointing to itself |
 | Two nodes connected bidirectionally | Two clones, each in the other's neighbor list |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Deep copy with cycles | Already handled here | HashMap as visited+mapping |
+| Clone directed graph | Directed edges only | Same approach — adjacency list is directed |
+| Clone weighted graph | Edges have weights | Store weight alongside neighbour in cloned node |
+| Clone tree (no cycles) | Simpler case of this | Recursive clone without visited map needed |
+| Serialise + deserialise graph (#297) | Convert to string and back | BFS + adjacency encoding |
+| Detect isomorphism | Are two graphs structurally identical? | Certificate-based hashing or VF2 algorithm |
+| Clone with n nodes and m edges | Large scale | BFS is O(V+E); for sparse graphs V>>E so O(V) dominates |
+
+**Trade-off:** BFS clone uses O(V) queue space; DFS clone uses O(V) call stack. For very deep graphs (V = 10⁶, star topology), DFS risks stack overflow — BFS is safer in production.
