@@ -157,3 +157,19 @@ return 3 ✓
 | `1` | `1` | `1` | Same values |
 | `-1` | `1` | `-1` | Negative dividend |
 | `7` | `-2` | `-3` | Truncate toward zero (not -4) |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Division with remainder | Return both quotient and remainder | `remainder = dividend - quotient * divisor` |
+| Floating-point division | Return float result | Continue shifting after quotient found; build decimal |
+| Big integer division | Arbitrary precision | Apply this algorithm digit-by-digit on multi-word integers |
+| Division by power of 2 | Divisor = 2^k | Right shift: `dividend >> k` — O(1) |
+| Modulo without `%` | Find remainder | `dividend - divide(dividend, divisor) * divisor` |
+| Ceiling division | Round up instead of truncate | `(dividend + divisor - 1) / divisor` using this algorithm |
+| Exact division check | Is dividend divisible by divisor? | Check if `dividend - quotient*divisor == 0` |
+
+**Granlund-Montgomery inverse:** The compiler-optimised version computes `x / C` as `(x * M) >> shift` where M is a precomputed magic number. This is the inverse of the shift-and-subtract approach — precomputing the inverse at compile time so division becomes multiply+shift at runtime. See USE_CASES.md for the full connection.
+
+**Why the only overflow is MIN_VALUE / -1:** In 32-bit two's complement, MIN_VALUE = -2³¹ has no positive counterpart (MAX_VALUE = 2³¹ - 1). All other divisions either produce results in range or are undefined (division by zero, excluded by problem statement).
