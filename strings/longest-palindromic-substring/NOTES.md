@@ -131,3 +131,17 @@ For any new center i within R, we can mirror it: its palindrome radius is
 | `"ac"` | `"a"` | No palindrome longer than 1 |
 | `"aacabdkacaa"` | `"aca"` | Multiple candidates, pick longest |
 | `"aaaa"` | `"aaaa"` | Entire string is palindrome |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Count all palindromic substrings (#647) | Count instead of longest | Same expand-from-center; accumulate count |
+| Longest palindromic subsequence (#516) | Subsequence, not substring | DP: `dp[i][j] = dp[i+1][j-1] + 2` if match |
+| Shortest palindrome (#214) | Prepend min chars to make palindrome | KMP on `s + '#' + reverse(s)` |
+| Palindrome partitioning (#131) | All ways to split into palindromes | DP + backtracking |
+| Palindrome pairs (#336) | Find all pairs forming palindromes | Trie or HashMap |
+| Manacher's algorithm | O(n) instead of O(n²) | Exploit previously computed palindromes |
+| Allow k deletions | Longest palindrome with ≤ k deletes | DP with state `(i, j, k_remaining)` |
+
+**Theoretical note:** Manacher's algorithm achieves O(n) by proving that palindrome centres can be reused — the amortised argument is that each character is "visited" at most twice across all expansions.
