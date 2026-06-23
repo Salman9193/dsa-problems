@@ -133,3 +133,18 @@ the unsorted half.
 if (nums[left] <= nums[mid]) left = mid + 1;
 else right = mid;
 ```
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| With duplicates (#81) | Array may contain duplicates | Handle `nums[left] == nums[mid]` by shrinking left |
+| Find minimum in rotated (#153) | Find pivot, not target | Binary search on which half is sorted |
+| Count occurrences of target | Multiple identical targets | Binary search for leftmost + rightmost occurrence |
+| Rotation count unknown | Already the base case | This solution handles it |
+| Multiple rotations | Array rotated multiple times | No longer solvable with binary search alone |
+| k-rotation point | Find where rotation happened | Modified binary search converging on the break |
+
+**Critical edge case for duplicates (#81):** When `nums[left] == nums[mid] == nums[right]`, we can't determine which half is sorted. We must shrink both pointers by 1: `left++; right--`. This degrades worst case to O(n) for arrays of all-identical elements.
+
+**Amortised note:** Standard binary search is O(log n) because we eliminate half the search space per step. With the duplicate case, we eliminate at minimum 2 elements per step — still O(n) worst case but O(log n) average.
