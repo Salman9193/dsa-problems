@@ -129,3 +129,18 @@ See `GRAPH_CYCLE_DETECTION.md` for the full comparison.
 | Single node, no self-loop | `false` | fast immediately hits null |
 | Single node, self-loop | `true` | fast.next = head = slow |
 | Two nodes, cycle | `true` | fast laps slow in 1 step |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Find cycle start (#142) | Return entry node, not just bool | After collision, reset slow to head; advance both at speed 1; they meet at entry |
+| Find cycle length | Length of the loop | After finding collision, count steps for fast to return |
+| Find duplicate number (#287) | Array as linked list with cycle | Floyd's on implicit list: `next(i) = nums[i]` |
+| Happy number (#202) | Digit sum cycle detection | Floyd's on the sequence of digit sums |
+| Detect cycle without modifying list | Can't use visited set | Floyd's inherently O(1) space, non-destructive |
+| k-th node from end | No cycle, different problem | Two pointers: advance one by k, then advance both |
+
+**Why Floyd's finds the cycle start:** Let distance from head to cycle entry = F, cycle length = C, collision point = h steps into cycle. Floyd's guarantees `h = F (mod C)`. Resetting slow to head and advancing both at speed 1 makes them meet exactly at the entry after F more steps.
+
+**Extension — distributed cycle detection (Brent's algorithm):** Better constant factor than Floyd's: teleport the hare to the tortoise's position every power-of-2 steps. Finds cycle in the same O(n) time but with fewer pointer comparisons in practice.
