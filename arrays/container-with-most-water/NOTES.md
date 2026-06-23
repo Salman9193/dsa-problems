@@ -132,3 +132,18 @@ Result: `49` ✓
 | Container With Most Water (#11) | Two pointers from ends | Walls can vary, maximise area |
 | Trapping Rain Water (#42) | Two pointers + prefix max | Every gap holds water, not just endpoints |
 | Largest Rectangle in Histogram (#84) | Stack | Every bar is a potential wall |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Trapping Rain Water (#42) | Sum water at ALL positions, not just two walls | Prefix max + suffix max at every index |
+| 3D water container | 2D elevation map | Priority queue (min-heap) + BFS from boundary inward |
+| k containers | Choose k pairs of walls | Sort by area, pick top k — greedy works (exchange argument) |
+| With moveable walls | Walls can be repositioned | Same two-pointer — order doesn't change optimality |
+| Circular array | Array wraps around | Check both orientations; break ties by larger index gap |
+| Online version | Heights arrive in a stream | Requires storing all heights; two pointers need full array |
+
+**3D extension (Trapping Rain Water II, #407):** Process cells from outside inward using a min-heap. The water level at any interior cell is bounded by the minimum height of its surrounding border — same principle as 1D but generalised to 2D with Dijkstra-like priority processing.
+
+**Why circular doesn't change the approach:** In a circular array of n elements, the maximum container is still the pair that maximises `(right-left) × min(h[left], h[right])`. Circular indexing only changes distance computation, not the two-pointer correctness argument.
