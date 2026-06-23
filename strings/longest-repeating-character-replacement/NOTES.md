@@ -140,3 +140,18 @@ This problem is the strict generalisation of #3.
 | `"ABCD"` | 0 | 1 | No repeats, k=0 |
 | `"ABCD"` | 3 | 4 | Replace 3 chars → all same |
 | `"A"` | 2 | 1 | Single char |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Allow replacing with any existing char | Already the case here | This solution covers it |
+| Cost per replacement varies | Different costs per character | Greedy may not work; need DP |
+| Longest substring with at most k distinct (#340) | Count distinct, not replacements | Change validity condition |
+| Minimum replacements to make string uniform | Not longest, but minimum ops | Total length - max frequency of any char |
+| Apply to binary string (#1004 Max Consecutive Ones III) | Only 0s and 1s, flip 0→1 | Same window: shrink when zeros_in_window > k |
+| 2D version | Grid of characters | Complex extension; no clean O(n) solution |
+
+**The k=0 special case:** Setting k=0 gives exactly LeetCode #3 (Longest Substring Without Repeating Characters). The validity condition `length - maxFreq > 0` means "any character repeats."
+
+**Why maxFreq never decreases:** This is the key non-obvious invariant. Since we only update maxFreq upward (we want to grow the window), and the window never shrinks below its best size, maxFreq is monotonically non-decreasing. The window size `right - left + 1` is also non-decreasing. This is the amortised argument for why the outer loop runs O(n) total.
