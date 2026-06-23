@@ -143,3 +143,18 @@ map.get(key).add(s);
 
 `computeIfAbsent` is atomic and more concise — prefer it when building
 a map of lists.
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Group anagrams in a stream | Elements arrive one at a time | HashMap persists across insertions; O(L) per insert |
+| Return groups sorted by size | Largest group first | Sort result by group length |
+| Unicode strings | Non-ASCII characters | Use `HashMap<Character,Integer>` instead of `int[26]` |
+| Case-insensitive | 'A' and 'a' same | Lowercase before hashing |
+| Streaming with evictions | Elements can be removed | Maintain group count; remove group when empty |
+| k-letter anagram groups | Only strings of length k | Pre-filter by length, then hash |
+
+**Alternative key:** Instead of sorted string, use a prime-product hash: assign each letter a prime, multiply. But this risks integer overflow for long strings and hash collisions. Sorted string is safer and more standard.
+
+**Scaling:** For n = 10⁷ strings of average length L = 20, sorting each takes O(L log L) = 20×4 = 80 ops → 800M total. Frequency-tuple key reduces to O(26) = constant per string → 260M total. At this scale, the constant factor matters.
