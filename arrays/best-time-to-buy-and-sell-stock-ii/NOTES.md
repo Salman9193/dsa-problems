@@ -87,3 +87,18 @@ Result: `7` ✓
 | #188 | k=any | k-state DP |
 | #309 | k=∞, cooldown | 3-state DP |
 | #714 | k=∞, fee | 2-state DP |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| With transaction fee (#714) | Fee per transaction | 2-state DP: `held = max(held, cash-price)`, `cash = max(cash, held+price-fee)` |
+| With cooldown (#309) | 1-day cooldown after selling | 3-state DP: held, sold, rest |
+| At most k transactions (#188) | Limit number of trades | k-state DP; greedy no longer applies |
+| Short selling allowed | Can sell then buy | Negate prices; greedy still works |
+| With borrow cost | Interest on borrowed shares | Modify profit formula |
+| Multiple stocks | Buy any stock each day | Independent greedy per stock |
+
+**Why greedy works only for k=∞:** With unlimited transactions, each positive daily diff is an independent opportunity — taking one never blocks another. With k-limited transactions, an early gain might consume a "transaction slot" that would have been better used later. This breaks the exchange argument and forces DP.
+
+**The decomposition proof in one line:** Any multi-day profitable trade decomposes into a sum of consecutive 1-day profitable trades with no loss of profit. This is why summing all positive diffs captures all possible profit — the greedy claim.
