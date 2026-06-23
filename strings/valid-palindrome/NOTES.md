@@ -122,3 +122,18 @@ The two-pointer technique generalises naturally:
 | Palindrome II (#680) | Allow one deletion — branch on mismatch |
 | Longest Palindromic Substring (#5) | Expand from center outward |
 | Reverse String (#344) | Swap from both ends inward |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Allow one deletion (#680) | Return true if palindrome after ≤ 1 delete | Two pointers; on mismatch try both skip-left and skip-right |
+| Count min deletions | Minimum chars to remove | `n - LPS` where LPS = longest palindromic subsequence |
+| Case-sensitive | Don't ignore case | Remove `toLowerCase()` call |
+| Unicode strings | Emoji, non-ASCII | Use `Character.isLetterOrDigit()` — handles Unicode automatically |
+| Valid palindrome after one replacement | Change one char | Two pointers + try both characters on mismatch |
+| Shortest palindrome by insertion | Min insertions to make palindrome | `n - LPS` insertions needed |
+
+**The #680 extension is critical:** On mismatch at `(left, right)`, try validating `(left+1, right)` and `(left, right-1)`. If either is a palindrome, return true. The helper function must not recurse — only one deletion allowed.
+
+**Depth of extensions:** Valid Palindrome (#125) → Allow 1 deletion (#680) → Min deletions (LPS DP) → Palindrome partitioning (#131). Each extension requires a stronger algorithmic tool: two pointers → greedy → DP → backtracking.
