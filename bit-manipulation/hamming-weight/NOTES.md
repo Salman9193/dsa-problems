@@ -70,3 +70,17 @@ on modern hardware. Use it in production — no loop needed.
 ```java
 int count = Integer.bitCount(n);
 ```
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Count trailing zeros | Find the position of lowest set bit | `n & (-n)` isolates lowest bit; log2 gives position |
+| Parity check | Is number of 1-bits even or odd? | XOR all bits: `n ^= n >> k` for k=16,8,4,2,1 |
+| Reverse bits (#190) | Flip bit order of 32-bit integer | Bit-by-bit construction or lookup table |
+| PDEP/PEXT | Scatter/gather arbitrary bit positions | Hardware instruction (BMI2 extension) — see USE_CASES.md |
+| Popcount for 64-bit | Extend to 64-bit integers | Same algorithm; Java `Long.bitCount()` |
+| Hamming distance (#461) | Count differing bits between two numbers | `bitCount(x ^ y)` — XOR then popcount |
+| k-th set bit | Find position of k-th 1-bit | Loop with `n & (n-1)` to clear bits one by one |
+
+**Scaling:** For a stream of n numbers each with b bits, computing all popcounts takes O(nb) time. With SIMD/POPCNT instructions, throughput is ~4 integers per CPU cycle — critical for billion-scale similarity search (FAISS).
