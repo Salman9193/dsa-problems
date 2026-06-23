@@ -126,3 +126,20 @@ validity condition spans multiple character types simultaneously.
 | `"a"` | `"aa"` | `""` | Not enough 'a' |
 | `"aa"` | `"aa"` | `"aa"` | Both a's needed |
 | `"abc"` | `"ac"` | `"abc"` | Must include all chars between |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Return all minimum windows | Multiple valid windows | Collect all with length == minLen |
+| Permutation in String (#567) | Does any permutation of t exist in s? | Same satisfied counter; fixed window = len(t) |
+| Find All Anagrams (#438) | All starting indices of anagrams | Same as above; collect all |
+| Minimum window with exactly k distinct | Exactly k, not all of t | Two-pass: min_window(at_most_k) - min_window(at_most_k-1) |
+| Subsequence instead of substring | Characters don't need to be contiguous | Two-pointer scan; O(n) greedy |
+| Weighted characters | Some required chars have multiplicity | Already handled: `need[c] > 1` works |
+| Bidirectional | Search in both directions | Run twice; take shorter result |
+
+**Minimum window with exactly k distinct (Leetcode #992 variant):**
+Using the "at_most_k minus at_most_(k-1)" technique: `exactly_k(s) = atMost(s,k) - atMost(s,k-1)`. This transforms an "exactly" constraint into two "at most" constraints, each solvable with a sliding window.
+
+**Correctness of the satisfied counter:** The `==` condition (not `>=`) for updating satisfied is critical — it fires exactly once per character type as its count transitions from unsatisfied to satisfied. This makes satisfied a precise O(1) validity indicator.
