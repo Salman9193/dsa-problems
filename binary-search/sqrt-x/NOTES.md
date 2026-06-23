@@ -129,3 +129,22 @@ All use: upper-bias mid + `left = mid` when condition holds.
 | 1 | 1 | base case |
 | 4 | 2 | perfect square |
 | 2147395600 | 46340 | near INT_MAX — overflow check critical |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Precise floating-point sqrt | Return float with ε precision | Newton's method; stop when |r² - x| < ε |
+| Cube root | x^(1/3) | Newton: r_{n+1} = (2r + x/r²) / 3 |
+| k-th root | x^(1/k) | Newton: r_{n+1} = ((k-1)r + x/r^(k-1)) / k |
+| Integer square root with overflow | Very large x | Use long arithmetic; already done here |
+| Is perfect square? (#367) | Boolean check | `isqrt(x)^2 == x` |
+| Power function (#50 Pow(x,n)) | x^n with n large | Fast exponentiation: O(log n) |
+| Binary search on answer pattern | Generalise sqrt idea | Same "rightmost satisfying condition" search |
+
+**Binary search on answer:** The sqrt binary search is the canonical example of searching on the answer space rather than an array. The generalisation:
+```
+Condition: f(mid) ≤ target
+Find: rightmost mid satisfying condition
+```
+Applied to: Koko Eating Bananas (f = days to eat all), Ship Packages (f = days to ship), Split Array (f = max subarray sum). All use upper-bias mid and the same `left = mid` / `right = mid - 1` structure.
