@@ -61,6 +61,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 43 | [Best Time to Buy and Sell Stock IV](./arrays/best-time-to-buy-and-sell-stock-iv) | Dynamic Programming | Hard |
 | 44 | [Find All Anagrams in a String](./strings/find-all-anagrams) | Strings / Sliding Window | Medium |
 | 45 | [LCA of Deepest Leaves](./trees/lca-deepest-leaves) | Trees / DFS | Medium |
+| 46 | [Partition Equal Subset Sum](./dynamic-programming/partition-equal-subset-sum) | Dynamic Programming / 0-1 Knapsack | Medium |
 
 ## Guides
 
