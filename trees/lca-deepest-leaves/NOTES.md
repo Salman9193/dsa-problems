@@ -129,3 +129,23 @@ Result: node 2 ✓
 | #865 Smallest Subtree With All Deepest Nodes | Same problem, different name |
 | **#1123 LCA of Deepest Leaves** | LCA of all deepest leaves |
 | #104 Maximum Depth of Binary Tree | Core subroutine used here |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| LCA of two specific nodes (#236) | Given two specific nodes | Classic LCA: DFS tracking both nodes |
+| LCA in binary lifting | Preprocess for O(log n) queries | Binary lifting table: ancestor[node][k] = 2^k-th ancestor |
+| LCA in n-ary tree | k children per node | Same postorder DFS; iterate children |
+| Deepest node (single) | Return the single deepest leaf | Modified DFS returning max depth node |
+| LCA with node weights | Deepest by weighted path | Use weighted depth instead of hop count |
+| Dynamic LCA | Tree changes with insertions | Link-cut trees for O(log n) amortised |
+| LCA of k deepest leaves | Not just the deepest, but k-th deepest | Two-pass: find k-th depth, then LCA of all at that depth |
+
+**Binary lifting for repeated LCA queries:** Preprocess `ancestor[v][k]` = 2^k-th ancestor of v in O(n log n). Answer any LCA query in O(log n). Useful when the same tree is queried thousands of times.
+
+**"Return two values" as a general pattern:** This problem uses DFS returning (node, height). This "two-value return" pattern appears throughout tree problems:
+- Diameter of tree: return (diameter, height)
+- Maximum path sum: return (max_path, max_single_path)  
+- House Robber III: return (rob_root, skip_root)
+Recognising this pattern immediately unlocks a large class of tree DPs.
