@@ -146,3 +146,19 @@ memory (regular languages) — it requires a stack.
 | `")"` | `false` | Closer with empty stack |
 | `"([])"` | `true` | Properly nested |
 | `"([)]"` | `false` | Wrong nesting order |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Minimum removals to make valid (#1249) | Count invalid brackets to remove | Two counters: open and close mismatches |
+| Minimum additions to make valid (#921) | Count chars to insert | Same two-counter approach |
+| Score of parentheses (#856) | Nested depth contributes 2^depth | Stack of scores |
+| Longest valid parentheses (#32) | Longest contiguous valid substring | Stack storing indices |
+| Valid parentheses with wildcards (#678) | `*` can be `(`, `)`, or `` | Greedy with min/max open count range |
+| k different bracket types | `()`, `[]`, `{}`, `<>`, ... | Same stack algorithm; add more pairs to the map |
+| Check XML/HTML tags | Variable-length tag names | Stack of strings; match on closing tag |
+
+**Wildcard extension (#678):** Track the range `[minOpen, maxOpen]` of possible open bracket counts. On `(`: both increase. On `)`: both decrease. On `*`: minOpen decreases, maxOpen increases. Valid if at any point `maxOpen >= 0` and final `minOpen == 0`.
+
+**Formal language theory:** Valid parentheses recognises the Dyck language — the canonical context-free language not recognisable by finite automata. k different bracket types with nesting creates a more complex context-free language, still recognisable in O(n) by the same stack algorithm. See USE_CASES.md.
