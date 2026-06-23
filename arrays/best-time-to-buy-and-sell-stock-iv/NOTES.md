@@ -103,3 +103,25 @@ each state reflects "the best possible given all prices up to today."
 | k >= n/2 | greedy result | Effectively unlimited |
 | All decreasing | 0 | No profitable trade |
 | k=1 | same as #121 | Single transaction |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Exactly k transactions | Must use all k | Remove the early exit; may need to "waste" transactions |
+| With cooldown per trade | j-day rest between trades | Add cooldown dimension to state |
+| With batch size | Must buy/sell in lots of m | Adjust profit calculation |
+| Dynamic k | k changes per query | Precompute for all k; answer queries in O(1) |
+| Continuous time | Prices are a continuous function | Calculus-based optimisation; discrete DP is an approximation |
+
+**The k ≥ n/2 fallback is critical:** Without this check, O(nk) with k=10⁹ means 10¹⁴ operations — TLE. The fallback reduces to O(n) greedy. This is a classic "recognise the degenerate case" moment that separates Senior from Staff problem-solvers.
+
+**Unified stock series view:**
+```
+k=0:   Always 0 (no trades)
+k=1:   Prefix min scan — O(n)
+k=∞:   Greedy sum positive diffs — O(n)
+k=2:   4-variable DP — O(n)
+k=any: Array DP — O(nk) with O(n) fallback when k≥n/2
+```
+Every variant follows from the same buy/sell state machine — the only difference is the number of state variables.
