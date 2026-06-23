@@ -111,3 +111,18 @@ All these problems decompose per-position values into left and right contributio
 | `[0,0,0]` | `0` | All zeros — every index is a pivot; return first |
 | `[-1,-1,-1,-1,-1,0]` | `2` | Negative numbers work naturally |
 | `[1,2,3]` | `-1` | No pivot exists |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Left sum < right sum | Not equal, but minimum difference | Scan and track which index minimises |abs(leftSum - rightSum)| |
+| K pivot indices | All pivots, not just first | Collect all i where leftSum == rightSum |
+| 2D pivot | Row where above and below sums are equal | Apply 1D prefix sum to each column |
+| Pivot with weights | Weighted sum must balance | Same algorithm with weighted accumulation |
+| Range sum query (#303) | Sum of any subarray in O(1) | Precompute prefix sum array; query is O(1) |
+| Mutable range sum (#307) | Array has updates | Segment tree or Binary Indexed Tree (Fenwick) |
+
+**Range sum query connection:** The prefix sum array `pre[i] = sum(nums[0..i-1])` makes range sum query O(1): `sum(l, r) = pre[r+1] - pre[l]`. The pivot index check is just `pre[i] == totalSum - pre[i] - nums[i]` — a special case where both sides must be equal.
+
+**HPC partitioning:** As noted in USE_CASES.md, the pivot index is the equaliser in parallel task distribution. The same `2*leftSum + nums[i] == total` condition, applied to task weight arrays, finds the split point for balanced processor load.
