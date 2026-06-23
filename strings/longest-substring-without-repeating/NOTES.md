@@ -130,3 +130,25 @@ The same pattern generalises to related problems:
 | `"a"` | `1` | Single character |
 | `"au"` | `2` | Two distinct chars |
 | `"dvdf"` | `3` | "vdf" — jump skips over 'd' correctly |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| At most k distinct characters (#340) | Allow up to k different characters | Same sliding window; shrink when distinct count > k |
+| At most 2 distinct (#159) | Special case k=2 | Same, k=2 |
+| Longest substring with all unique + k replacements (#424) | Allow k replacements | Window invalid when length - maxFreq > k |
+| All substrings of length k with no repeats | Fixed window, check uniqueness | Sliding window of fixed size; use HashSet |
+| Minimum window with all unique (#3 reversed) | Shortest version | Not standard; binary search on length + check |
+| Streaming characters | Characters arrive one at a time | Same lastSeen map; O(1) per character |
+| Unicode / emoji | Non-ASCII characters | Use `HashMap<Integer,Integer>` keyed by codepoint |
+
+**The sliding window family progression:**
+```
+#3  No repeats:            shrink when ANY char repeats
+#159 At most 2 distinct:   shrink when DISTINCT COUNT > 2
+#340 At most k distinct:   shrink when DISTINCT COUNT > k
+#424 k replacements:       shrink when LENGTH - MAX_FREQ > k
+#76  Min window substring: shrink while ALL REQUIRED CHARS SATISFIED
+```
+Each step adds one more dimension of constraint to the shrink condition.
