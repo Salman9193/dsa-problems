@@ -140,3 +140,22 @@ colour: 1 → -1 → 1 → -1 → needs 1 at 0 ✓
 | #886 Possible Bipartition | Same algorithm on a derived graph |
 | #207 Course Schedule | Cycle detection in directed graph |
 | Bipartite matching | Hungarian algorithm, Hopcroft-Karp |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Possible bipartition (#886) | Can people be split into two groups given dislikes? | Build conflict graph; check bipartiteness |
+| k-colouring | Generalise to k colours | Backtracking for k≥3; NP-complete — see K_COLOURING.md |
+| Bipartite matching | Find maximum matching | Hungarian algorithm or Hopcroft-Karp |
+| Find odd cycle | Return the cycle if not bipartite | Track parent in BFS; reconstruct cycle on conflict |
+| Directed bipartite | Edges are directed | Check if underlying undirected graph is bipartite |
+| Weighted bipartite matching | Edges have weights | Hungarian algorithm with weights |
+| Online bipartiteness | Edges added one at a time | Link-cut trees for dynamic connectivity |
+
+**Bipartite matching applications:**
+- Assigning tasks to workers (each worker can do a subset of tasks) → maximum bipartite matching
+- Stable matching (Gale-Shapley) — a special case where preferences are ranked
+- Network flow reduction: max bipartite matching = max flow in a unit-capacity flow network
+
+**Why bipartite check is O(V+E) but k-colouring is NP-complete:** With 2 colours, every assignment is forced — there's only one valid colour for each node. With k≥3, multiple choices exist at each step. This breaks the greedy correctness — see COMPLEXITY_THEORY.md and K_COLOURING.md.
