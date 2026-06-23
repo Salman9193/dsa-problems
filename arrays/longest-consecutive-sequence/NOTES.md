@@ -97,3 +97,16 @@ Combined with the outer loop (also n iterations), total work = O(2n) = **O(n)**.
 | `[1]` | `1` | Single element |
 | `[1,1,1,1]` | `1` | All duplicates — HashSet deduplicates |
 | `[-3,-2,-1,0]` | `4` | Negative numbers work identically |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Return the sequence itself | Not just length | Track start of best sequence |
+| Allow gaps of at most k | Consecutive within tolerance | Sort + scan, extend if gap ≤ k |
+| 2D grid consecutive | Consecutive in any direction | BFS/DFS from each unvisited cell |
+| Sorted input | Already sorted | Linear scan, no HashSet needed |
+| Streaming input | Elements arrive one at a time | HashSet + boundary tracking; update both ends on insert |
+| Count all sequences | Not just longest | Same HashSet approach, collect all |
+
+**Scaling:** For n = 10⁸ elements, the HashSet approach uses ~4GB memory. Alternative: sort + scan uses O(n log n) time but O(1) extra space. For distributed settings (elements across shards), partial sequences need merging at boundaries — requires coordination.
