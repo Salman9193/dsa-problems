@@ -124,3 +124,29 @@ made explicit with an external stack.
 | Left-skewed BST `[5,4,3,2,1]` | Stack depth = h = n; still O(h) space |
 | Right-skewed BST `[1,2,3,4,5]` | pushLeft pushes only root on init; each next() pushes one node |
 | Empty tree | hasNext() immediately false; next() never called |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Bidirectional iterator | Also support prev() | Doubly threaded BST or stack for both directions |
+| Random access by rank | i-th element in O(log n) | Augmented BST: store subtree sizes at each node |
+| Merge k BST iterators (#23 generalisation) | k sorted streams | Min-heap of iterators; O(log k) per next() |
+| Iterator with delete | Support removing current element | Need access to parent; use parent pointers or stack |
+| Lazy-evaluated range | Only values in [lo, hi] | Skip nodes outside range in the stack |
+| Concurrent iterator | Thread-safe traversal | Lock per node or copy-on-write |
+| Reverse iterator | Descending order | Reverse inorder: push RIGHT spine instead of left spine |
+
+**Reverse inorder:** To iterate in descending order, push the RIGHT spine instead of left spine:
+```java
+void pushRight(TreeNode node) {
+    while (node != null) { stack.push(node); node = node.right; }
+}
+int prev() {
+    TreeNode node = stack.pop();
+    pushRight(node.left);  // now push the right spine of the left subtree
+    return node.val;
+}
+```
+
+**k-way merge:** Replacing the single stack with a min-heap of `(value, iterator)` pairs gives the k-sorted-lists merge (LeetCode #23). The BST iterator IS the k=1 case. At each step, pop the minimum iterator, return its value, advance it, and re-push. O(log k) per element.
