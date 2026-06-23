@@ -131,3 +131,19 @@ deletions, HashSet saves 100,000 comparisons.
 | Delete all nodes | empty list | nothing survives |
 | Delete nothing | [original root] | no changes |
 | Delete chain: parent then child | both removed cleanly | postorder handles it |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Delete by depth | Remove all nodes at depth k | BFS level-order; sever at level k |
+| Delete by value range | Remove all values in [lo, hi] | Same postorder; deleteSet becomes a range check |
+| Delete leaves only (#1325) | Remove leaves with target value | Postorder; re-check after children deleted |
+| Delete and merge subtrees | Children merge instead of becoming roots | Custom merge logic in postorder DFS |
+| Delete in n-ary tree | k children per node | Same algorithm; iterate children list |
+| Count resulting trees | How many trees in forest? | Count nodes added to forest list |
+| Minimum cuts to create k trees | Inverse: how many deletions for k trees? | Each deletion creates at most 2 new roots |
+
+**Postorder is mandatory here:** Preorder (top-down) would require knowing if a node will be deleted before processing its children. We'd need a second pass to clean up dangling pointers. Postorder's "children first" guarantee means the parent's pointer is set correctly by the child's return value — no cleanup needed.
+
+**React Fiber parallel:** As detailed in USE_CASES.md, React's reconciler uses the same postorder delete-and-promote pattern when component types change. The `isRoot` flag corresponds to React's "fiber needs remounting" condition.
