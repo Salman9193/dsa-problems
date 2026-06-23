@@ -144,3 +144,28 @@ events.sort((a, b) -> a[0] != b[0] ? a[0]-b[0] : a[1]-b[1]);
 | TreeMap | O(n log n) | O(n) |
 
 R = max stop number = 1001 (constant here).
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Meeting Rooms II (#253) | Minimum rooms needed | Same sweep line; find max simultaneous events |
+| Multiple vehicles | k cars with capacity c each | Sweep line; check if total ≤ k×c at every stop |
+| Minimum vehicles needed | Find optimal k | Binary search on k; check feasibility with sweep |
+| Non-integer timestamps | Floating point from/to | TreeMap approach handles this naturally |
+| Bidirectional trips | Passengers board and alight in both directions | Two separate sweep lines; combine |
+| Priority boarding | Some passengers must board before others | Sort trips by priority; validate in order |
+
+**Sweep line family:** Car Pooling is one instance of the fundamental sweep line pattern. All these problems reduce to the same skeleton:
+```
+events = []
+for each interval [start, end]:
+    events.push((start, +delta))
+    events.push((end,   -delta))
+sort(events) by time
+running = 0
+for (time, delta) in events:
+    running += delta
+    check constraint(running)
+```
+The only differences are what `delta` represents and what constraint to check.
