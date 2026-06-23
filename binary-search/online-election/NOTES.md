@@ -136,3 +136,21 @@ Binary search queries:
 |--|------|-------|
 | Constructor | O(n) | O(n) |
 | Query q(t) | O(log n) | O(1) |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Online queries (each answer affects next) | State changes with queries | Precomputed leader array still works |
+| Real-time vote stream | Votes arrive continuously | Maintain a max-heap or leader variable; binary search still valid for past queries |
+| Multiple candidates with ranked choice | Instant runoff | Recompute with elimination rounds |
+| Find when leadership changed | All timestamps where leader changed | Scan leader[] for consecutive differences |
+| Range queries: who leads between t1 and t2 | Not just at t | 2D range query; requires segment tree |
+| Fractional votes | Votes have weights | Same algorithm; compare weighted counts |
+
+**The precompute+binary-search pattern:** This problem is an instance of the general technique: precompute answers for all "interesting" time points, then answer arbitrary queries via binary search. The same pattern powers:
+- Prometheus instant queries (precomputed TSDB samples)
+- PostgreSQL MVCC (precomputed row versions)
+- Sorted leaderboards (precomputed rankings)
+
+See USE_CASES.md for the full connection.
