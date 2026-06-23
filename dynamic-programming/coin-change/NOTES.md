@@ -128,3 +128,18 @@ Same complexity, slightly more overhead from recursion and HashMap.
 |--|--|
 | Time | O(amount × \|coins\|) |
 | Space | O(amount) |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Count ways (#518 Coin Change II) | Count distinct combinations | Change `min` to `+=`; left-to-right (unbounded) |
+| Print the coins used | Return the coins, not count | Track parent array alongside dp |
+| Coin Change with limited supply | Each coin available k times | Bounded knapsack; binary grouping trick |
+| Minimum coins with transaction fee | Fee per coin used | Add fee to coin value in transition |
+| Fractional coins | Can use fractions of a coin | Greedy suffices — sort by value/weight, take greedily |
+| Multi-currency | Different coin sets in different regions | Separate DP per region; merge at borders |
+
+**Why unbounded (left→right) here:** Coins can be reused any number of times — reading `dp[s-coin]` after updating it is intentional. This is the only difference from the 0/1 version.
+
+**Scaling:** For amount = 10⁸ and a small coin set, the O(amount × n) DP is intractable. In practice, use BFS (shortest path on implicit graph) which terminates early, or heuristic beam search.
