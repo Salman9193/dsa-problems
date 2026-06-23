@@ -132,3 +132,19 @@ extended one step left by multiplying in `nums[i]`.
 |----------|------|-------|
 | Two arrays | O(n) | O(n) |
 | Space-optimised | O(n) | O(1) extra |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Allow division | If no zeros | Total product / element — handle zeros separately |
+| With zeros | Multiple zeros in array | Track zero count; elements at non-zero positions get 0 if any zeros exist |
+| Modular product | Result mod p | Apply mod at each multiplication step |
+| Floating point | Float array | Same algorithm; beware precision accumulation |
+| Generalise to arbitrary operation | Product → XOR, GCD, etc. | Same prefix/suffix structure, different operator |
+| 2D version | Grid, product of all except row and column | Prefix row products × prefix column products |
+| Streaming | Elements arrive one at a time | Maintain prefix product; suffix requires two-pass — buffer or approximate |
+
+**Division approach when legal:** If no zeros, `total_product / nums[i]` in O(n) — but overflows for large arrays and requires floating point for non-divisible cases. The prefix×suffix approach is universally correct.
+
+**The operator generalisation is deep:** Prefix XOR is used in range XOR queries (#1310). Prefix GCD for range GCD. Same O(n) two-pass structure throughout.
