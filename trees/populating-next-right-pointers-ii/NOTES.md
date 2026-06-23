@@ -165,3 +165,18 @@ Result: `1→null | 2→3→null | 4→5→7→null` ✓
 | Single node | `next = null` |
 | Left-skewed tree | Each node links to null (single per level) |
 | Perfect binary tree | Same as #116 |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Perfect binary tree (#116) | Every node has 0 or 2 children | Simpler O(1) space: use already-set next pointers directly |
+| N-ary tree | Each node has up to k children | Same dummy node trick; iterate children list |
+| Return level order as list (#102) | Collect values instead of linking | BFS with queue; size snapshot per level |
+| Right side view (#199) | Last node per level | BFS; record last node seen each level |
+| Level averages (#637) | Mean value per level | BFS; accumulate sum and count per level |
+| Connect nodes at same distance from root | Weighted tree | BFS with distance tracking |
+
+**Why O(1) space is achievable only after level L is linked:** The key invariant is that we use the CURRENT level's next pointers (already set) to traverse it while building the NEXT level's next pointers. This chicken-and-egg works because each level is fully linked before we start using those links.
+
+**B+ tree connection:** As detailed in USE_CASES.md, this algorithm's output (a linked list across one tree level) IS the B+ tree leaf-level structure used by PostgreSQL and MySQL for O(1)-per-step range scans. The `next` pointer is `btpo_next` in PostgreSQL's nbtree implementation.
