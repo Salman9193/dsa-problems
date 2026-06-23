@@ -130,3 +130,18 @@ ndp[0][2]: cherries=1+5=6, best=... → builds toward 24
 | #741 Cherry Pickup (I) | One robot, two passes; similar 3D DP trick |
 | #64 Minimum Path Sum | Single robot, grid DP |
 | Multi-agent MAPF (research) | n robots, cooperative path planning |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Cherry Pickup I (#741) | One robot, two passes (down then up) | Simulate both passes simultaneously with same 3D DP trick |
+| k robots | More than 2 robots | k-dimensional DP: O(r × c^k); intractable for large k |
+| Robots must not share path | No cell visited twice | Add constraint: if col1==col2, one robot must skip |
+| Collect minimum (not maximum) | Minimise cherries (costs) | Change max to min in transition |
+| Different movement rules | Jump instead of step | Modify the 9-combination transition |
+| 3D grid | Three dimensions | Extend DP to O(r × c² × d) |
+
+**Why k>2 robots is intractable:** The joint state is (row, col1, col2, ..., colk) — a k+1 dimensional DP with c^k states per row. For k=10, c=100, this is 100¹⁰ states per row — exponential in k. Real warehouse systems use CBS (Conflict-Based Search) or MARL approximations. See USE_CASES.md.
+
+**The key insight about synchrony:** Both robots move to the SAME next row simultaneously. This is what reduces the state from (row1, col1, row2, col2) — 4D — to (row, col1, col2) — 3D. If robots moved asynchronously, 4D DP would be required.
