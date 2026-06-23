@@ -101,3 +101,27 @@ Result: `6` ✓
 | #122 | ∞ | O(1) | Greedy |
 | **#123** | **2** | **O(1)** | **4-state DP** |
 | #188 | k | O(k) | k-state DP |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| At most k transactions (#188) | Generalise to k | k-state DP arrays; O(nk) |
+| With cooldown | 1-day rest after each sell | Add `rest` state between sell2 and buy2 |
+| With transaction fee | Fee per transaction | Subtract fee from each sell |
+| With percentage fee | Fee = f% of sell price | Multiply sell price by (1-f) |
+| Exactly 2 transactions | Must make exactly 2 | Initialise buy1 to first price's negative |
+| Know the prices in advance | Already the case | Offline — DP is optimal |
+
+**4-state machine diagram:**
+```
+Start → [buy1] → [sell1] → [buy2] → [sell2]
+
+Transitions:
+  buy1  ← -price          (spend to buy)
+  sell1 ← buy1 + price    (gain from first sale)
+  buy2  ← sell1 - price   (spend again, funded by first profit)
+  sell2 ← buy2 + price    (gain from second sale = total profit)
+```
+
+**Extending to k:** Replace the 4 variables with two arrays of length k. The i-th `buy` and `sell` represent the best portfolio values after the i-th transaction's buy and sell events. See #188 for the full generalisation.
