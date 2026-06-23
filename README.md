@@ -4,12 +4,13 @@ A structured collection of DSA problems with:
 - Clean solutions and optimisations
 - Intuition behind each technique
 - Real-world use cases backed by papers and engineering blogs
+- Extensions section in every NOTES.md for Staff Engineer preparation
 
 ## Structure
 
 Each problem lives in `topic/problem-name/` and contains:
 - `Solution.java` — clean implementation with complexity analysis and trace
-- `NOTES.md` — full intuition, worked examples, edge cases
+- `NOTES.md` — full intuition, worked examples, edge cases, **extensions**
 - `USE_CASES.md` — real-world applications with links to papers, docs, and source code
 
 ## Problems
@@ -62,16 +63,25 @@ Each problem lives in `topic/problem-name/` and contains:
 | 44 | [Find All Anagrams in a String](./strings/find-all-anagrams) | Strings / Sliding Window | Medium |
 | 45 | [LCA of Deepest Leaves](./trees/lca-deepest-leaves) | Trees / DFS | Medium |
 | 46 | [Partition Equal Subset Sum](./dynamic-programming/partition-equal-subset-sum) | Dynamic Programming / 0-1 Knapsack | Medium |
+| 47 | [LRU Cache](./design/lru-cache) | Design / Linked List + HashMap | Medium |
 
 ## Guides
 
 | Guide | Description |
 |-------|-------------|
-| [Greedy vs DP](./guides/GREEDY_VS_DP.md) | When greedy suffices vs when you need DP — interchange argument, matroid theory, decision flowchart |
-| [Graph Cycle Detection](./guides/GRAPH_CYCLE_DETECTION.md) | Floyd's vs DFS vs Kahn's — undirected, directed, functional graphs, common mistakes |
-| [Complexity Theory](./guides/COMPLEXITY_THEORY.md) | P vs NP, NP-complete, reductions — why some problems are fundamentally hard |
-| [k-Colouring](./guides/K_COLOURING.md) | Generalising bipartite check to k colours — complexity jump at k=3, algorithms, applications |
-| [Knapsack Variants](./guides/KNAPSACK_VARIANTS.md) | All 6 knapsack scenarios — decision, count, optimise, unbounded, 2D, bounded — with the direction rule |
+| [Greedy vs DP](./guides/GREEDY_VS_DP.md) | When greedy suffices vs when you need DP |
+| [Graph Cycle Detection](./guides/GRAPH_CYCLE_DETECTION.md) | Floyd's, DFS, Kahn's |
+| [Complexity Theory](./guides/COMPLEXITY_THEORY.md) | P vs NP, NP-complete, reductions |
+| [k-Colouring](./guides/K_COLOURING.md) | Bipartite → k colours, complexity jump at k=3 |
+| [Knapsack Variants](./guides/KNAPSACK_VARIANTS.md) | All 6 knapsack scenarios, direction rule |
+| [Union-Find](./guides/UNION_FIND.md) | DSU with path compression + rank; Kruskal's MST |
+| [Trie](./guides/TRIE.md) | Prefix tree; insert/search/wildcard/Word Search II |
+| [Graph Algorithms](./guides/GRAPH_ALGORITHMS.md) | Topological sort (Kahn's + DFS) + Dijkstra + Bellman-Ford |
+| [Intervals](./guides/INTERVALS.md) | Merge, insert, meeting rooms, non-overlapping |
+| [Monotonic Stack](./guides/MONOTONIC_STACK.md) | Daily temperatures, histogram, next greater element |
+| [Binary Search on Answer](./guides/BINARY_SEARCH_ON_ANSWER.md) | Koko, ship packages, split array |
+| [Backtracking](./guides/BACKTRACKING.md) | Subsets, permutations, N-Queens, word search |
+| [String DP](./guides/STRING_DP.md) | LCS, edit distance, LPS, distinct subsequences |
 
 ---
 > More problems and guides will be added progressively.
