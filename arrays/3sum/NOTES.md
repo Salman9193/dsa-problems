@@ -136,3 +136,32 @@ Result: `[[-1,-1,2], [-1,0,1]]` ✓
 |--|--|
 | Time | O(n²) — O(n log n) sort + O(n) × O(n) two-pointer passes |
 | Space | O(1) extra — in-place sort, output list excluded |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| 3Sum Closest (#16) | Find triplet whose sum is closest to target | Same sort + two pointers; track min distance |
+| 3Sum Smaller (#259) | Count triplets summing to < target | Fix i; for (left,right): count += right-left when sum < target |
+| 4Sum (#18) | Four numbers summing to target | Fix two elements O(n²); two pointers on remainder O(n) → O(n³) total |
+| kSum (general) | k numbers summing to target | Recursive: reduce to (k-1)Sum; base case is 2Sum with two pointers |
+| 3Sum with duplicates allowed | Same value can appear multiple times | Use indices instead of values to avoid dedup logic |
+| 3Sum in a stream | Elements arrive online | Requires full materialisation first; no streaming solution |
+
+**kSum generalisation:**
+```java
+void kSum(int[] nums, int start, int k, int target, List<Integer> current, List<List<Integer>> result) {
+    if (k == 2) { // base: two pointers
+    } else {
+        for (int i = start; i < nums.length - k + 1; i++) {
+            if (i > start && nums[i] == nums[i-1]) continue;
+            current.add(nums[i]);
+            kSum(nums, i+1, k-1, target-nums[i], current, result);
+            current.remove(current.size()-1);
+        }
+    }
+}
+```
+Time: O(n^(k-1)) — each level of recursion adds one linear scan.
+
+**3SUM-hardness:** No truly subquadratic algorithm is known for k ≥ 2. See USE_CASES.md.
