@@ -131,3 +131,21 @@ candidate. Using `<` would leave stale equal values on the deque.
 | k=n | [max(nums)] | Single window covering all |
 | All same | same value repeated | Deque always has one element |
 | Decreasing array | every window's first element | Front always expires, new front = leftmost in window |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Sliding window minimum | Find minimum instead of maximum | Monotonic INCREASING deque |
+| Sliding window average | Mean over window | Running sum / k; O(n) without deque |
+| Sliding window median | Median over window (#480) | Two heaps (max-heap for left half, min-heap for right) |
+| Variable window size | Window changes dynamically | Reprocess with new k; or maintain a sorted multiset |
+| 2D sliding window maximum | Max in k×k subgrid | Two-pass: row-wise then column-wise sliding window max |
+| Sum of subarray minimums (#907) | Sum of min of every subarray | Monotonic stack; contribution technique |
+| Number of subarrays with max > k | Count subarrays | Monotonic deque + two-pointer |
+
+**2D sliding window max:** Apply the 1D algorithm twice — first across each row (producing a row-wise max matrix), then down each column. Time: O(mn) — the same deque approach applied twice.
+
+**Morphological dilation connection:** This 2D extension is exactly OpenCV's `cv::dilate()` — the separable row+column approach. Each pass runs in O(n) using the monotonic deque, making the full 2D dilation O(mn) instead of O(mn×k²). See USE_CASES.md.
+
+**Monotonic structure generalisation:** The deque maintains a monotonically decreasing sequence. This same structure — "if the new element is better than the tail, discard the tail" — appears in: sliding window max, next greater element, daily temperatures, largest rectangle in histogram, and trapping rain water (stack approach).
