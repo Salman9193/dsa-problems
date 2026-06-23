@@ -146,3 +146,19 @@ equivalent to full binary trees. A few:
 | Binary parse trees (NLP) | C(n) |
 | Monotonic lattice paths (n×n grid) | C(n) |
 | Stack-sortable permutations of length n | C(n) |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Count only (not enumerate) | Return Catalan number | Direct formula: C((n-1)/2) = C(2k,k)/(k+1) |
+| Full binary trees with n leaves | n leaves, not n nodes | n leaves → 2n-1 nodes → same Catalan number |
+| Full ternary trees | Each node has 0 or 3 children | Modified Catalan; `dp[n] = sum dp[l]*dp[m]*dp[r]` |
+| Labelled trees | Nodes have values 1..n | Multiply by n! / (number of structural equivalences) |
+| Minimum height | Minimise tree height | Always split as evenly as possible → balanced tree |
+| Maximum height | Maximise tree height | Always split 1 and n-2 → stick-like tree |
+| Isomorphism classes | Up to rotational symmetry | Divide by 2 for symmetric splits; Burnside's lemma |
+
+**Generalised Catalan:** For k-ary full trees (each node has 0 or k children), the count of trees with n internal nodes is the Fuss-Catalan number: `(1/(kn+1)) * C((k+1)n, n)`. The k=2 case gives the standard Catalan numbers.
+
+**Why memoisation is necessary but not sufficient:** Without memo, each subproblem is recomputed exponentially many times. With memo, each unique n is computed once. But the TOTAL WORK is still O(Catalan(n)) because we must enumerate all trees — memo only removes duplicate sub-computations, not the exponential output size.
