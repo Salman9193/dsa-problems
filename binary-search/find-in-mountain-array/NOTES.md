@@ -135,3 +135,23 @@ appears in all unimodal problems.
 | `[1,2,1]` | 1 | 0 | Left half found first |
 | `[3,5,3]` | 3 | 0 | Same value on both sides — left wins |
 | `[1,5,2]` | 4 | -1 | Not in array |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Find peak element (#162) | Any local peak, not global | Simpler: one binary search, no target needed |
+| Multiple peaks | Find all peaks | Linear scan O(n); no binary search shortcut |
+| Find in bitonic array (general) | Same as mountain | This solution exactly |
+| k calls limit varies | Budget is different | Adjust: 3 searches must fit within k calls |
+| Floating-point mountain | Continuous function | Golden section search or ternary search |
+| 2D mountain | Peak in 2D matrix | Find peak column then peak row; O(n log n) |
+
+**2D peak finding:** Walk to the largest neighbour from any cell — guaranteed to find a peak in O(n) steps on an n×n grid. But for "find a specific value in a mountain matrix," binary search applies per row.
+
+**The three binary search templates used here:**
+1. Find peak: `arr[mid] < arr[mid+1]` → `left = mid + 1`
+2. Find target in ascending: `arr[mid] < target` → `left = mid + 1`
+3. Find target in descending: `arr[mid] > target` → `left = mid + 1`
+
+These three templates cover 90% of binary search variants. Recognising which one applies is the core skill for binary search problems.
