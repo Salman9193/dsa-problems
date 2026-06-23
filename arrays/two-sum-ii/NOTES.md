@@ -133,3 +133,19 @@ Each step eliminates a row or column.
 | #15 3Sum | Unsorted | Sort + two pointers | O(1) |
 | #18 4Sum | Unsorted | Sort + two pointers × 2 | O(1) |
 | #653 Two Sum IV BST | BST | Inorder + two pointers | O(n) |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Unsorted input (#1 Two Sum) | No sorted guarantee | HashMap: O(n) time, O(n) space |
+| 3Sum (#15) | Three numbers summing to 0 | Fix one, two-pointer on rest |
+| 4Sum (#18) | Four numbers | Fix two O(n²), two-pointer O(n) → O(n³) |
+| Two Sum in a BST (#653) | BST, not array | Inorder to get sorted array, then two pointers |
+| Two Sum with absolute difference ≤ k | Relaxed equality | Two pointers with tolerance window |
+| Count pairs summing to target | All pairs, not just one | Two pointers; count when sum == target |
+| Two Sum in circular array | Array wraps | Try both halves as "beginning" |
+
+**Sort-merge join equivalence:** As noted in USE_CASES.md, two-sum-II on sorted arrays IS the sort-merge join algorithm. The pruning argument (eliminating a full row or column of the n×n pair matrix per step) is the same correctness argument as why merge join is O(n+m) not O(nm).
+
+**Follow-up in interviews:** "What if we needed all pairs, not just one?" → Two pointers still work but count instead of return. "What if values can repeat?" → Handle duplicates the same way as in 3Sum: skip repeated values after finding a valid pair.
