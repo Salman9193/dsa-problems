@@ -127,3 +127,23 @@ This problem is the k=1 special case.
 | Single node `[1]` | Always returns 1 (rand.nextInt(1)=0 always) |
 | Two nodes | Returns each with prob 1/2 |
 | Very long list | O(n), O(1) space — no memory issues |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Sample k nodes (#k-reservoir) | Return k random nodes | Keep first k in reservoir; replace with probability k/i |
+| Weighted sampling | Nodes have weights | Weighted reservoir sampling (Efraimidis-Spirakis) |
+| Random pick with weight (#528) | Array with weights | Prefix sum + binary search on random value |
+| Sample without replacement | Don't return same node twice | Reservoir sampling already handles this |
+| Sample from sorted list | Uniformly from sorted stream | Reservoir sampling — order doesn't matter |
+| Distributed reservoir | Nodes across shards | Local reservoir per shard; merge using global weighted sampling |
+
+**Weighted reservoir sampling (Efraimidis-Spirakis):**
+```
+Each item i gets priority key = random() ^ (1/weight[i])
+Keep item with highest priority key seen so far
+```
+This generalises Algorithm R to arbitrary weights while maintaining the single-pass, O(1) space property.
+
+**The correctness proof** generalises directly: P(item k is final result) = weight[k] / sum_of_all_weights — verified by the telescoping product argument from the uniform case, extended to weighted fractions.
