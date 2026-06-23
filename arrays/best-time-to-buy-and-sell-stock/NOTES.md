@@ -117,3 +117,19 @@ Return `5` ✓
 |--|--|
 | Time | O(n) — single pass |
 | Space | O(1) — two variables |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| At most 2 transactions (#123) | Two buy/sell pairs | 4-state DP: buy1,sell1,buy2,sell2 |
+| Unlimited transactions (#122) | Any number of trades | Greedy: sum all positive daily diffs |
+| At most k transactions (#188) | k buy/sell pairs | k-state DP arrays |
+| With cooldown (#309) | 1-day cooldown after selling | 3-state DP: held, sold, rest |
+| With fee (#714) | Fee per transaction | 2-state DP: held, cash |
+| Short selling allowed | Can sell before buying | Negate all prices; same prefix min |
+| Continuous compounding | Percentage gains | Maximise log(price[sell]/price[buy]) — same prefix min on log prices |
+
+**The unified state machine:** All stock variants use the same buy/sell state machine with different numbers of states and transition costs. The k-state generalisation (see #188 NOTES.md) covers all of them as special cases.
+
+**Why no DP needed for k=1:** With one transaction, there are no competing choices between transactions — the first buy date and first sell date are independent. This eliminates the "interference" between states that makes k>1 require DP.
