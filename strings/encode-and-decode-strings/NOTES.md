@@ -164,3 +164,18 @@ Cons: not human-readable, harder to debug.
 | Decode | O(n) | O(n) |
 
 n = total characters across all strings.
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Binary data (not just UTF-8) | Strings may contain null bytes | Use 4-byte fixed-width header instead of ASCII length prefix |
+| Variable-length encoding | Minimise overhead for short strings | Varint encoding (protobuf style) — 1 byte for len < 128 |
+| Streaming decode | Decode without knowing total count | Length prefix makes this natural — decode until EOF |
+| Compressed encoding | Reduce total size | LZ77/LZ78 on the concatenated string before encoding |
+| Multi-language strings | Unicode, emoji | Encode byte length, not character length; use UTF-8 bytes |
+| Authenticated encoding | Detect tampering | Append HMAC after each string |
+
+**Protocol Buffers comparison:** Proto uses varint (variable-length integer) for field lengths — 1 byte if length < 128, 2 bytes if < 16384, etc. This matches our `len#data` encoding for short strings but is more compact for strings under 127 bytes.
+
+**Production decision:** For text: ASCII length prefix (this solution). For binary/network protocols: 4-byte big-endian header (HTTP/2, Kafka, gRPC). For arbitrary precision: varint (protobuf, Redis RESP3).
