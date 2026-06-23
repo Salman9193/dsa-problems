@@ -140,3 +140,20 @@ is NP-complete in general.
 
 The right-to-left trick applies to all 0/1 variants.
 Left-to-right is correct for unbounded variants (#518).
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Minimum subset sum difference (#2035) | Minimise |S1 - S2|, not require equality | DP up to total/2; find largest reachable sum ≤ total/2 |
+| Partition into k equal subsets (#698) | k subsets each summing to total/k | Backtracking with bitmask DP; NP-hard for k≥3 |
+| Last Stone Weight II (#1049) | Minimum possible weight after smashing | Same as minimum subset sum difference |
+| Target Sum (#494) | Count ways to assign +/- | Same DP with counting instead of boolean |
+| Partition with max size | Each subset has ≤ k elements | Add element count dimension to DP |
+| Multiset partitioning | Elements can repeat | Already handled by 0/1 DP; frequency counts |
+
+**Minimum difference extension:** Run the standard 0/1 knapsack DP up to `total/2`. The largest reachable sum `s ≤ total/2` gives minimum difference = `total - 2s`. This is the same DP array; just find the rightmost `true` entry at the end instead of checking a specific target.
+
+**k=3 partition is NP-complete:** For k≥3, the problem is NP-complete (reduces from 3-Partition). The DP approach is O(n × total) which is pseudo-polynomial — works only when total is small. For large values, use backtracking with pruning. See COMPLEXITY_THEORY.md.
+
+**Bitset optimisation:** For large n but small total, represent `dp[]` as a bitset. Then `dp |= dp << num` in O(total/64) per element — a 64× speedup using 64-bit word operations. Used in competitive programming for n × total up to ~10⁸.
