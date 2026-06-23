@@ -116,3 +116,24 @@ Output: `[0, 6]` ✓
 | `"aa"` | `"bb"` | `[]` | Different chars |
 | `"ab"` | `"ab"` | `[0]` | Exact match |
 | `s.length() < p.length()` | — | `[]` | Window can't fit |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Permutation in String (#567) | Return bool, not indices | Same algorithm; return `satisfied == distinct` |
+| Find anagrams in stream | s arrives character by character | Maintained sliding window; O(1) per new char |
+| Wildcard anagram | p contains `*` matching any char | Modify need[] to track wildcard budget |
+| Overlapping anagrams | Count overlapping occurrences | Already handled — every valid window is reported |
+| Multiple patterns | Find anagrams of any pattern in set | Aho-Corasick automaton for multi-pattern matching |
+| Sorted anagram detection | Characters need not be contiguous | Subsequence anagram — different problem, DP-based |
+
+**Aho-Corasick for multi-pattern:** When searching for anagrams of k patterns simultaneously, building a trie of all patterns and running Aho-Corasick gives O(n + total_pattern_length + matches) — far better than running the sliding window k times.
+
+**Alphabet generalisation:**
+- DNA sequences: alphabet size 4 (A/T/G/C) → `int[4]`
+- ASCII text: alphabet size 128 → `int[128]`
+- Network payloads: alphabet size 256 → `int[256]`
+- Unicode: arbitrary → `HashMap<Integer, Integer>`
+
+The satisfied counter approach works identically for any alphabet; only the array size changes.
