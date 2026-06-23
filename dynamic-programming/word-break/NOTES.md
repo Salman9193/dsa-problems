@@ -143,3 +143,19 @@ to O(n^2) by avoiding substring allocations entirely.
 | `s="a"`, dict=`["a"]` | `true` | Single char word |
 | `s="aaaaaab"`, dict=`["a","aa","aaa"]` | `false` | Exhaustive backtracking needed |
 | Same word reused | `true` | `"applepenapple"` uses "apple" twice |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| Return all sentences (#140) | Return all valid breaks | DP for feasibility + backtracking for sentences |
+| Word Break with word count limit | At most k words used | Add k dimension to DP state |
+| Word Break with Trie | Large dictionary | Replace `wordSet.contains()` with Trie traversal — faster for long words |
+| Minimum words needed | Fewest words to break s | Change `||` to `min` in transition |
+| Reuse allowed (already is) | Already the case | This is the unbounded variant |
+| Each word used at most once | 0/1 word break | Right-to-left DP update |
+| Streaming dictionary | Words added over time | Trie with dynamic insertion; re-run DP on change |
+
+**Trie optimisation:** Instead of checking every word in the dictionary at each position i (O(n × |dict| × L)), use a Trie to match all possible endings from position i in O(L) time — reducing to O(n × L) where L = max word length.
+
+**Scaling:** For s of length 10⁴ and dictionary of 10⁵ words each of length up to 20, naive DP is O(n² × dict) = 2×10¹² operations. Trie reduces to O(n × L) = 2×10⁵.
