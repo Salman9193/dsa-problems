@@ -71,6 +71,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | [Graph Cycle Detection](./guides/GRAPH_CYCLE_DETECTION.md) | Floyd's vs DFS vs Kahn's — undirected, directed, functional graphs, common mistakes |
 | [Complexity Theory](./guides/COMPLEXITY_THEORY.md) | P vs NP, NP-complete, reductions — why some problems are fundamentally hard |
 | [k-Colouring](./guides/K_COLOURING.md) | Generalising bipartite check to k colours — complexity jump at k=3, algorithms, applications |
+| [Knapsack Variants](./guides/KNAPSACK_VARIANTS.md) | All 6 knapsack scenarios — decision, count, optimise, unbounded, 2D, bounded — with the direction rule |
 
 ---
 > More problems and guides will be added progressively.
