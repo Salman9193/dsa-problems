@@ -6,116 +6,75 @@ class TreeNode {
 
 class Solution {
 
-    // Approach: Single DFS returning (LCA node, subtree height) — O(n) time, O(h) space
+    // Approach: Postorder DFS returning (LCA, height) pair — O(n) time, O(h) space
     //
-    // For each node, compare the height of its left and right subtrees:
-    //   left.height == right.height → this node is the LCA of all deepest leaves
-    //   left.height >  right.height → deepest leaves are in the left subtree; propagate left's LCA
-    //   left.height <  right.height → deepest leaves are in the right subtree; propagate right's LCA
+    // height(null) = 0, height(leaf) = 1, height(node) = 1 + max(left, right)
     //
-    // Height of null = 0. Height of a leaf = 1.
-    // This is the "return two values from DFS" pattern — very common in tree problems.
+    // At each node:
+    //   left_height == right_height → deepest leaves on BOTH sides → this node is LCA
+    //   left_height >  right_height → deepest leaves only on left  → propagate left's LCA
+    //   left_height <  right_height → deepest leaves only on right → propagate right's LCA
+    //
+    // No global state needed — all information flows up cleanly through return values.
     public TreeNode lcaDeepestLeaves(TreeNode root) {
         return dfs(root)[0];
     }
 
-    // Returns int[2]: [lca_node_as_object_but_stored_via_wrapper, height]
-    // Using TreeNode[] to smuggle both the node and the int height together
-    // Actually cleaner with a small helper array trick — see below
-    //
-    // Clean approach: store LCA in instance field, return only height as int
-    private TreeNode lca;
-
-    public TreeNode lcaDeepestLeaves2(TreeNode root) {
-        height(root);
-        return lca;
-    }
-
-    private int height(TreeNode node) {
-        if (node == null) return 0;
-        int l = height(node.left);
-        int r = height(node.right);
-        if (l == r) lca = node;       // equal depth → this node is the LCA
-        return Math.max(l, r) + 1;
-    }
-
-    // Why lca = node when l == r (not just when l == r == maxDepth)?
-    //   We process bottom-up. The last (deepest) time l == r is encountered
-    //   is always at the shallowest node whose two subtrees reach equal depth.
-    //   Since we overwrite lca on every l==r match going bottom-up,
-    //   the final value of lca is always the shallowest (lowest common ancestor)
-    //   of the deepest equal-depth leaves. ✓
-
-    // Alternative: explicit pair return (clearer but needs a wrapper)
+    // Returns TreeNode[2]: [lca, height_sentinel]
+    // height_sentinel.val stores the integer height (reuse TreeNode.val as int carrier)
     private TreeNode[] dfs(TreeNode node) {
-        // Returns [lca_node, height_as_TreeNode_with_val] — use val field for height
-        if (node == null) return new TreeNode[]{null, new TreeNode(0)};
+        if (node == null) {
+            TreeNode zero = new TreeNode(0);
+            return new TreeNode[]{null, zero};  // lca=null, height=0
+        }
 
         TreeNode[] l = dfs(node.left);
         TreeNode[] r = dfs(node.right);
-        int lh = l[1].val, rh = r[1].val;
+        int lh = l[1].val;
+        int rh = r[1].val;
 
         TreeNode lcaNode;
-        if      (lh == rh) lcaNode = node;
-        else if (lh >  rh) lcaNode = l[0];
-        else               lcaNode = r[0];
+        if      (lh == rh) lcaNode = node;   // equal depth → this node is LCA
+        else if (lh >  rh) lcaNode = l[0];   // left deeper → left's LCA
+        else               lcaNode = r[0];   // right deeper → right's LCA
 
-        return new TreeNode[]{lcaNode, new TreeNode(Math.max(lh, rh) + 1)};
+        TreeNode heightNode = new TreeNode(Math.max(lh, rh) + 1);
+        return new TreeNode[]{lcaNode, heightNode};
     }
 }
 
 /*
  * Complexity
  * ----------
- * Time:  O(n) — visit every node exactly once
+ * Time:  O(n) — visit every node once
  * Space: O(h) — recursion stack (h = height of tree)
+ *               O(n) extra for height sentinel nodes in worst case
+ *               (can avoid by using int[] instead: return new int[]{lca_id, height})
  *
- * Why l == r implies this node is the LCA (not just a common ancestor):
- *   If left and right subtrees have equal height, the deepest leaves exist
- *   on BOTH sides. Any ancestor of all deepest leaves must be an ancestor
- *   of both the deepest-left leaf AND the deepest-right leaf.
- *   This node is the deepest such ancestor → it IS the LCA.
- *
- *   If l ≠ r, the deepest leaves are entirely in one subtree → LCA is
- *   somewhere inside that subtree, not at this node.
- *
- * Why overwriting lca = node on every l==r is correct:
- *   We process bottom-up (postorder). The last time l==r fires is at the
- *   shallowest node with equal-depth subtrees containing the globally
- *   deepest leaves — which is exactly the LCA we want.
+ * Key correctness argument:
+ *   lh == rh means: "the deepest leaves in my left and right subtrees are
+ *   at the same depth." Since we bubble up heights, this equality holds at
+ *   the shallowest node where both sides reach the globally deepest leaves.
+ *   That node IS the LCA by definition — it is an ancestor of all deepest
+ *   leaves, and no deeper node is an ancestor of all of them.
  *
  * Trace — tree: 3→{5,1}, 5→{6,2}, 2→{7,4}, 1→{0,8}
  * ---------------------------------------------------
- * height(7) = 1, lca=7
- * height(4) = 1, lca=4
- * height(2): l=1, r=1 → lca=2, return 2
- * height(6) = 1
- * height(5): l=1 (6), r=2 (2) → l≠r, no update, return 3
- * height(0) = 1
- * height(8) = 1
- * height(1): l=1, r=1 → lca=1, return 2
- * height(3): l=3 (5-side), r=2 (1-side) → l≠r, no update, return 4
+ * dfs(null)     → [null, 0]
+ * dfs(7)        → l=0,r=0 → lh==rh → lca=7,  height=1
+ * dfs(4)        → l=0,r=0 → lh==rh → lca=4,  height=1
+ * dfs(2)        → l=1,r=1 → lh==rh → lca=2,  height=2  ← node 2 is LCA
+ * dfs(6)        → l=0,r=0 → lh==rh → lca=6,  height=1
+ * dfs(5)        → l=1(6), r=2(2) → lh<rh → lca=2, height=3
+ * dfs(0)        → lca=0,  height=1
+ * dfs(8)        → lca=8,  height=1
+ * dfs(1)        → l=1,r=1 → lh==rh → lca=1,  height=2
+ * dfs(3)        → l=3(5-side,lca=2), r=2(1-side,lca=1) → lh>rh → lca=2, height=4
  *
- * Final lca = 2 ✓  (last l==r fired at node 2, then again at node 1,
- *   but node 1's subtree is shallower than 5's subtree containing node 2)
+ * return lca = node 2 ✓
  *
- * Wait — let me re-trace:
- *   height(2): l=1==r=1 → lca=2 ✓
- *   height(1): l=1==r=1 → lca=1 (overwrites!)
- *   height(3): l=3 > r=2 → no update → lca remains 1?
- *
- *   That would be wrong... The correct answer is node 2.
- *   The simple "lca=node on every l==r" approach is ONLY correct when
- *   we additionally track maxDepth. The cleaner solution is the explicit pair.
- *
- * Correct clean solution — track global maxDepth:
- *   int maxDepth = 0; TreeNode lca = null;
- *   int heightWithDepth(node, depth):
- *     if null: return depth
- *     l = heightWithDepth(node.left,  depth+1)
- *     r = heightWithDepth(node.right, depth+1)
- *     if l == r && l > maxDepth: maxDepth = l; lca = node
- *     return max(l, r)
- *
- * See lcaDeepestLeaves2() above — the pair-return dfs() is the cleanest.
+ * Edge cases:
+ *   Single node root     → l=0==r=0 → lca=root ✓
+ *   Right-skewed tree    → always rh > lh → lca = deepest leaf ✓
+ *   Perfect binary tree  → root has equal-height subtrees → lca=root ✓
  */
