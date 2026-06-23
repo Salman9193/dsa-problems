@@ -132,3 +132,31 @@ This is O(1) per insert and O(1) per query — vs O(n) rescan with int[26].
 | `"aaa"` | `-1` | Only one char, all repeat |
 | `"z"` | `0` | Last letter of alphabet |
 | `"abcabc"` | `-1` | All chars repeat exactly twice |
+
+## Extensions
+
+| Variant | Change | Approach |
+|---------|--------|---------|
+| First unique in a stream (#1429) | Characters arrive one at a time | Doubly linked list + HashMap: O(1) per insert and query |
+| K-th unique character | Not first, but k-th | Scan frequency array; find k-th element with count=1 |
+| First non-repeating in window | Sliding window of size n | Deque + HashMap tracking last insertion |
+| All unique characters | Return all unique positions | Scan all freq==1, collect indices |
+| Most frequent character | Opposite problem | Find max in frequency array |
+| Unicode strings | Non-ASCII | Use HashMap instead of int[26] |
+| Case-insensitive | 'A' == 'a' | Lowercase before counting |
+
+**Streaming solution (LRU-style):**
+```
+HashMap<char, Node> map     // char → doubly linked list node
+DoublyLinkedList list        // ordered by insertion; only unique chars
+
+insert(c):
+    if c already in map:
+        remove its node from list (it's now a repeat)
+    else:
+        add new node to tail of list, put in map
+
+getFirstUnique():
+    return list.head.val    // O(1)
+```
+This achieves O(1) per operation vs O(n) for the two-pass approach on each query.
