@@ -2,21 +2,19 @@ import java.util.TreeSet;
 
 class ExamRoom {
 
-    // Approach: TreeSet of occupied seats — O(k) seat(), O(log k) leave()
+    // Approach 1: TreeSet of occupied seats — O(k) seat(), O(log k) leave()
     //
-    // Key insight: Between any two consecutive occupied seats [a, b],
-    // the optimal new seat is the midpoint: (a+b)/2, distance = (b-a)/2.
+    // Key insight: between consecutive occupied seats [a, b], the optimal
+    // new seat is the midpoint (a+b)/2, giving distance (b-a)/2.
+    // Two boundary gaps need special handling:
+    //   Left  [virtual -inf, first]:  best seat = 0,   distance = first
+    //   Right [last, virtual +inf]:   best seat = n-1, distance = n-1-last
     //
-    // Special boundary cases:
-    //   Left boundary  [_, first]: best seat = 0,   distance = first
-    //   Right boundary [last, _]:  best seat = n-1, distance = n-1-last
-    //
-    // For tie-breaking (equal distance → lower seat):
-    //   Interior gap mid = (a+b)/2 is always ≤ right boundary seat (n-1)
-    //   Among equal-distance interior gaps, the leftmost is encountered first
-    //   during sorted iteration → naturally picks the lower index.
-    //
-    // TreeSet maintains sorted order for O(k) iteration and O(log k) add/remove.
+    // Tie-breaking (equal distance → lower seat index):
+    //   Using strict '>' means the FIRST valid candidate seen wins.
+    //   Iterating in ascending seat order guarantees we see lower seats first.
+    //   Right boundary (n-1) only wins if STRICTLY greater than all interior gaps —
+    //   so on a tie, any interior seat (lower index) is kept. ✓
     private final TreeSet<Integer> occupied;
     private final int n;
 
@@ -25,33 +23,39 @@ class ExamRoom {
         this.occupied = new TreeSet<>();
     }
 
-    // O(k) where k = current number of students
+    // O(k) — iterate k occupied seats to evaluate all k+1 gaps
     public int seat() {
         if (occupied.isEmpty()) {
             occupied.add(0);
             return 0;
         }
 
+        // Baseline: sit at seat 0 (left boundary gap)
+        // Distance at seat 0 = first occupied seat - 0 = occupied.first()
         int bestSeat = 0;
-        int bestDist = occupied.first();   // distance if we sit at seat 0 (left boundary)
+        int bestDist = occupied.first();
 
-        // Check all interior gaps between consecutive occupied seats
-        int prev = -1;
-        for (int s : occupied) {
-            if (prev != -1) {
-                int mid  = (s + prev) / 2;
-                int dist = mid - prev;     // distance to nearest neighbour at midpoint
-                if (dist > bestDist) {     // strictly greater: lower seat wins ties
-                    bestDist = dist;
-                    bestSeat = mid;
+        // Evaluate each interior gap [prev, curr]
+        // Candidate seat = midpoint, candidate distance = midpoint - prev
+        Integer prev = null;
+        for (int curr : occupied) {
+            if (prev != null) {
+                int candidateSeat = (prev + curr) / 2;
+                int candidateDist = candidateSeat - prev;
+                // Strict '>' preserves left-to-right (lower seat) on ties
+                if (candidateDist > bestDist) {
+                    bestDist = candidateDist;
+                    bestSeat = candidateSeat;
                 }
             }
-            prev = s;
+            prev = curr;
         }
 
-        // Check right boundary: sitting at seat n-1
-        int last = occupied.last();
-        if (n - 1 - last > bestDist) {    // strictly greater: interior wins ties (lower seat)
+        // Evaluate right boundary gap: sit at seat n-1
+        // Distance = n-1 - last occupied seat
+        int rightDist = n - 1 - occupied.last();
+        // Strict '>' means interior gaps (lower seat) win ties with right boundary
+        if (rightDist > bestDist) {
             bestSeat = n - 1;
         }
 
@@ -68,53 +72,78 @@ class ExamRoom {
 /*
  * Complexity
  * ----------
- * seat():   O(k) — iterate all k occupied seats to find best gap
+ * seat():   O(k) — iterate k occupied seats
  * leave(p): O(log k) — TreeSet remove
- * Space:    O(k) — k = number of currently seated students
+ * Space:    O(k) — k ≤ 10^4 seats, n ≤ 10^9 (sparse — only store occupied seats)
  *
- * For 10^4 calls and k ≤ 10^4: total work = O(k^2) = O(10^8) — acceptable.
+ * For 10^4 total calls, k ≤ 10^4: worst-case total work = O(k^2) = O(10^8) — fine.
  *
- * Tie-breaking proof:
- *   Two gaps with equal distance d:
- *   Case 1: both interior → leftmost gap found first in sorted iteration;
- *           its midpoint is smaller → naturally selected (strict > check).
- *   Case 2: interior gap vs right boundary (n-1):
- *           Interior mid < n-1 by definition (gap strictly before last seat).
- *           Strict > check means right boundary only wins if STRICTLY larger.
- *           Interior wins on tie → lower seat chosen. ✓
- *   Case 3: left boundary (seat 0) vs interior:
- *           Left boundary wins only if its distance is STRICTLY greater.
- *           On tie, interior mid > 0 → left boundary (seat 0) wins. ✓
- *           Wait — bestDist starts as first (left boundary), interior needs
- *           dist > bestDist to win. So left boundary wins all ties with
- *           the same distance interior gap. But seat 0 < any interior seat. ✓
+ * Tie-breaking correctness proof:
+ *   Three tie cases, all resolved correctly by strict '>':
+ *
+ *   Case 1 — Two interior gaps with equal distance:
+ *     Sorted iteration visits the leftmost gap first.
+ *     Its midpoint sets bestSeat/bestDist.
+ *     Later equal-distance gaps fail the '>' check and are skipped. ✓
+ *
+ *   Case 2 — Interior gap ties with left boundary (seat 0):
+ *     bestDist initialised from left boundary (seat 0).
+ *     Interior gap needs strictly '>' to displace seat 0.
+ *     On tie, seat 0 is kept (lower index). ✓
+ *
+ *   Case 3 — Interior gap ties with right boundary (seat n-1):
+ *     Right boundary check uses strict '>'.
+ *     On tie, interior candidate already in bestSeat (lower index). ✓
  *
  * Trace — n=10
  * -------------
- * seat(): empty → return 0. occupied={0}
+ * seat(): empty → 0. occupied={0}
+ *
  * seat(): bestSeat=0, bestDist=0 (first=0)
- *   right: n-1-0=9 > 0 → bestSeat=9
+ *   no interior gaps (one seat)
+ *   rightDist=9-0=9 > 0 → bestSeat=9
  *   return 9. occupied={0,9}
- * seat(): bestDist=0 (first=0, left boundary dist=0)
- *   gap [0,9]: mid=4, dist=4 > 0 → bestSeat=4, bestDist=4
- *   right: 9-9=0, not > 4
+ *
+ * seat(): bestSeat=0, bestDist=0
+ *   gap [0,9]: candidateSeat=4, candidateDist=4 > 0 → bestSeat=4, bestDist=4
+ *   rightDist=9-9=0, NOT > 4
  *   return 4. occupied={0,4,9}
- * seat(): bestDist=0
- *   gap [0,4]: mid=2, dist=2 > 0 → bestSeat=2, bestDist=2
- *   gap [4,9]: mid=6, dist=2, NOT > bestDist=2 → skip (tie goes to lower=2)
- *   right: 0
+ *
+ * seat(): bestSeat=0, bestDist=0
+ *   gap [0,4]: candidateSeat=2, candidateDist=2 > 0 → bestSeat=2, bestDist=2
+ *   gap [4,9]: candidateSeat=6, candidateDist=2, NOT > 2 (tie → keep seat 2)
+ *   rightDist=0
  *   return 2. occupied={0,2,4,9}
+ *
  * leave(4): occupied={0,2,9}
- * seat(): bestDist=0
- *   gap [0,2]: mid=1, dist=1 > 0 → bestSeat=1, bestDist=1
- *   gap [2,9]: mid=5, dist=3 > 1 → bestSeat=5, bestDist=3
- *   right: 9-9=0
+ *
+ * seat(): bestSeat=0, bestDist=0
+ *   gap [0,2]: candidateSeat=1, candidateDist=1 > 0 → bestSeat=1, bestDist=1
+ *   gap [2,9]: candidateSeat=5, candidateDist=3 > 1 → bestSeat=5, bestDist=3
+ *   rightDist=0
  *   return 5 ✓. occupied={0,2,5,9}
  *
- * Optimised O(log k) approach — TreeSet of Intervals:
- *   Instead of iterating all gaps, maintain a TreeSet of (distance, seat) pairs.
- *   Each gap [a,b] maps to its best candidate (midpoint, distance).
- *   seat(): O(log k) — pick max from interval set.
- *   leave(p): O(log k) — merge two adjacent intervals back.
- *   Implementation is more complex (handle boundary intervals specially).
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Approach 2: TreeSet of Intervals — O(log k) seat() and leave()
+ *
+ * For large k (many students), O(k) per seat() becomes expensive.
+ * Maintain a TreeSet<int[]> of intervals sorted by (distance DESC, seat ASC).
+ * Each interval [a, b] stores its best candidate seat and distance.
+ *
+ * seat():
+ *   Pop the best interval (max distance, lowest seat on tie).
+ *   Split [a, bestSeat] and [bestSeat, b]; push both back.
+ *   O(log k)
+ *
+ * leave(p):
+ *   Find intervals [a, p] and [p, b] in the set (use a HashMap<seat, interval>).
+ *   Remove both, merge into [a, b], push back.
+ *   O(log k)
+ *
+ * Boundary intervals: use virtual sentinels -1 and n to unify boundary/interior logic.
+ *   Interval [-1, first]: distance = first (left boundary)
+ *   Interval [last, n]:   distance = n-1-last (right boundary)
+ *
+ * This approach is preferred at Staff Engineer level when k is large.
+ * ─────────────────────────────────────────────────────────────────────────────
  */
