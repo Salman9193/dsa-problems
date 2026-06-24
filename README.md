@@ -64,6 +64,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 45 | [LCA of Deepest Leaves](./trees/lca-deepest-leaves) | Trees / DFS | Medium |
 | 46 | [Partition Equal Subset Sum](./dynamic-programming/partition-equal-subset-sum) | Dynamic Programming / 0-1 Knapsack | Medium |
 | 47 | [LRU Cache](./design/lru-cache) | Design / Linked List + HashMap | Medium |
+| 48 | [Evaluate Division](./graphs/evaluate-division) | Graphs / BFS / Weighted | Medium |
 
 ## Guides
 
