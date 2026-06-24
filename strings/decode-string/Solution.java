@@ -3,19 +3,21 @@ import java.util.Deque;
 
 class Solution {
 
-    // Approach: Two-Stack Iterative — O(maxK^depth × n) time, O(depth) space
+    // Approach: Two-Stack Iterative — O(output_length) time, O(depth) space
     //
-    // Two stacks track context across bracket levels:
-    //   countStack  — repeat count k at each bracket level
-    //   stringStack — string accumulated before each '[' (the prefix)
+    // Key insight: nested brackets mirror recursive calls.
+    //   '[' = push current context (string built so far, pending repeat count)
+    //   ']' = pop context, repeat inner string k times, prepend prefix
     //
-    // When we hit '[': save current state (k and current string) onto stacks; reset
-    // When we hit ']': pop saved state; repeat current string k times; prepend prefix
+    // Two stacks because on ']' we need TWO independent pieces of state:
+    //   1. How many times to repeat the inner string → countStack
+    //   2. What was accumulated before this '[' → stringStack
+    // A single stack cannot hold both without encoding tricks.
     //
-    // This is structurally identical to the stack used in:
-    //   - LZW decompression (nested symbol resolution)
-    //   - RLE decoding (count + value pairs)
-    //   - Recursive descent parsers (call stack simulation)
+    // Why k = k*10 + (c-'0'):
+    //   Multi-digit numbers arrive one digit at a time.
+    //   '1','2','3' → k=1 → k=12 → k=123.
+    //   k resets to 0 after each '[' so it never bleeds across brackets.
     public String decodeString(String s) {
         Deque<Integer>       countStack  = new ArrayDeque<>();
         Deque<StringBuilder> stringStack = new ArrayDeque<>();
@@ -24,71 +26,49 @@ class Solution {
 
         for (char c : s.toCharArray()) {
             if (Character.isDigit(c)) {
-                k = k * 10 + (c - '0');       // build multi-digit number: "123" → 1→12→123
+                k = k * 10 + (c - '0');
 
             } else if (c == '[') {
-                countStack.push(k);            // save repeat count
-                stringStack.push(current);     // save accumulated string before '['
-                current = new StringBuilder(); // start fresh inside bracket
-                k = 0;                         // reset for next number
+                countStack.push(k);       // save repeat count for this level
+                stringStack.push(current); // save string accumulated before this '['
+                current = new StringBuilder();
+                k = 0;
 
             } else if (c == ']') {
-                int    repeat = countStack.pop();
-                StringBuilder prev = stringStack.pop();
-                String inner  = current.toString();
-                current = prev;
-                for (int i = 0; i < repeat; i++) current.append(inner); // repeat and append
+                int           repeat = countStack.pop();
+                StringBuilder prefix = stringStack.pop();
+                String        inner  = current.toString();
+                // String.repeat() is O(repeat × inner.length) — acceptable
+                // since problem guarantees total output length ≤ 10^5
+                prefix.append(inner.repeat(repeat));
+                current = prefix;
 
             } else {
-                current.append(c);             // regular character: accumulate
+                current.append(c);
             }
         }
 
         return current.toString();
-    }
-
-    // Alternative: Recursive Descent — O(maxK^depth × n) time, O(depth) call stack
-    //
-    // More elegant but uses O(n) system call stack (risk of overflow for deep nesting).
-    // The iterative version above simulates this call stack explicitly.
-    private int idx = 0;
-
-    public String decodeStringRecursive(String s) {
-        StringBuilder sb = new StringBuilder();
-        while (idx < s.length() && s.charAt(idx) != ']') {
-            if (!Character.isDigit(s.charAt(idx))) {
-                sb.append(s.charAt(idx++));
-            } else {
-                int repeat = 0;
-                while (idx < s.length() && Character.isDigit(s.charAt(idx)))
-                    repeat = repeat * 10 + s.charAt(idx++) - '0';
-                idx++; // skip '['
-                String inner = decodeStringRecursive(s);
-                idx++; // skip ']'
-                sb.append(inner.repeat(repeat));
-            }
-        }
-        return sb.toString();
     }
 }
 
 /*
  * Complexity
  * ----------
- * Time:  O(maxK^depth × n) — building the decoded string
- *   Worst case: k=300, depth=5, n=30 → 300^5 chars (problem guarantees output ≤ 10^5)
- * Space: O(depth) for stacks + O(output length) for string buffers
+ * Time:  O(output_length) — each character in the output is written once
+ *        Worst case: k=300, depth=5 → 300^5 chars (bounded to 10^5 by problem)
+ * Space: O(depth) for stacks + O(output_length) for string buffers
  *
- * Why multi-digit k = k*10 + (c-'0')?
- *   Accumulates digits left-to-right into an integer.
- *   '1','2','3' → k=1 → k=12 → k=123
- *   The k is reset to 0 after each '['.
+ * Correctness argument:
+ *   At any point, 'current' holds the fully decoded string for the current
+ *   bracket level. On ']', we pop the saved prefix and repeat count,
+ *   reconstruct the decoded string for this level, and assign it to 'current'.
+ *   By induction on nesting depth, 'current' at depth 0 is the full answer.
  *
- * Why TWO stacks (not one)?
- *   When we encounter ']', we need two pieces of state:
- *     1. The repeat count (how many times to repeat the inner string)
- *     2. The string accumulated BEFORE this '[' (the prefix to prepend)
- *   These are independent — one stack can't hold both without encoding tricks.
+ * Why NOT a recursive solution with 'idx' as instance state:
+ *   An instance field 'idx' is shared across calls — not reusable and not
+ *   thread-safe. The iterative approach is stateless between calls and
+ *   avoids O(n) call-stack depth risk for deeply nested inputs.
  *
  * Trace — "3[a2[c]]"
  * --------------------
@@ -98,22 +78,16 @@ class Solution {
  * c='2': k=2
  * c='[': push(2), push("a"), current="", k=0
  * c='c': current="c"
- * c=']': repeat=2, prev="a", inner="c"
- *         current = "a" + "c"×2 = "acc"
- * c=']': repeat=3, prev="", inner="acc"
- *         current = "" + "acc"×3 = "accaccacc"
+ * c=']': repeat=2, prefix="a", inner="c"
+ *         prefix += "c".repeat(2) = "acc" → current="acc"
+ * c=']': repeat=3, prefix="", inner="acc"
+ *         prefix += "acc".repeat(3) = "accaccacc" → current="accaccacc"
  * return "accaccacc" ✓
  *
  * Trace — "2[abc]3[cd]ef"
  * -------------------------
- * c='2': k=2
- * c='[': push(2), push(""), current=""
- * c='a','b','c': current="abc"
- * c=']': current="" + "abc"×2 = "abcabc"
- * c='3': k=3
- * c='[': push(3), push("abcabc"), current=""
- * c='c','d': current="cd"
- * c=']': current="abcabc" + "cd"×3 = "abcabccdcdcd"
- * c='e','f': current="abcabccdcdcdef"
+ * After "2[abc]": current="abcabc"
+ * After "3[cd]":  current="abcabccdcdcd"
+ * After "ef":     current="abcabccdcdcdef"
  * return "abcabccdcdcdef" ✓
  */
