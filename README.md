@@ -68,6 +68,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 49 | [Minimum Cost to Hire K Workers](./arrays/minimum-cost-hire-k-workers) | Arrays / Greedy / Heap | Hard |
 | 50 | [Decode String](./strings/decode-string) | Strings / Stack | Medium |
 | 51 | [Exam Room](./design/exam-room) | Design / Sorted Set | Medium |
+| 52 | [Make Two Arrays Equal by Reversing Subarrays](./arrays/make-two-arrays-equal) | Arrays / Sorting | Easy |
 
 ## Guides
 
