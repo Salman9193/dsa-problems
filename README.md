@@ -69,6 +69,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 50 | [Decode String](./strings/decode-string) | Strings / Stack | Medium |
 | 51 | [Exam Room](./design/exam-room) | Design / Sorted Set | Medium |
 | 52 | [Make Two Arrays Equal by Reversing Subarrays](./arrays/make-two-arrays-equal) | Arrays / Sorting | Easy |
+| 53 | [Minimum Remove to Make Valid Parentheses](./strings/minimum-remove-valid-parentheses) | Strings / Stack | Medium |
 
 ## Guides
 
