@@ -74,6 +74,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 55 | [Find if Path Exists in Graph](./graphs/find-if-path-exists) | Graphs / BFS / DFS / Union-Find | Easy |
 | 56 | [Number of Islands](./graphs/number-of-islands) | Graphs / BFS / DFS / Union-Find | Medium |
 | 57 | [Rotting Oranges](./graphs/rotting-oranges) | Graphs / Multi-Source BFS | Medium |
+| 58 | [01 Matrix](./graphs/01-matrix) | Graphs / Multi-Source BFS / DP | Medium |
 
 ## Guides
 
