@@ -72,6 +72,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 53 | [Minimum Remove to Make Valid Parentheses](./strings/minimum-remove-valid-parentheses) | Strings / Stack | Medium |
 | 54 | [Number of Ways to Paint N×3 Grid](./dynamic-programming/number-of-ways-paint-grid) | Dynamic Programming / Combinatorics | Hard |
 | 55 | [Find if Path Exists in Graph](./graphs/find-if-path-exists) | Graphs / BFS / DFS / Union-Find | Easy |
+| 56 | [Number of Islands](./graphs/number-of-islands) | Graphs / BFS / DFS / Union-Find | Medium |
 
 ## Guides
 
