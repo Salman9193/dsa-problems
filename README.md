@@ -71,6 +71,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 52 | [Make Two Arrays Equal by Reversing Subarrays](./arrays/make-two-arrays-equal) | Arrays / Sorting | Easy |
 | 53 | [Minimum Remove to Make Valid Parentheses](./strings/minimum-remove-valid-parentheses) | Strings / Stack | Medium |
 | 54 | [Number of Ways to Paint N×3 Grid](./dynamic-programming/number-of-ways-paint-grid) | Dynamic Programming / Combinatorics | Hard |
+| 55 | [Find if Path Exists in Graph](./graphs/find-if-path-exists) | Graphs / BFS / DFS / Union-Find | Easy |
 
 ## Guides
 
