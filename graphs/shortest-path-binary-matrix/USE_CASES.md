@@ -138,6 +138,33 @@ Answer: forward_dist[meeting] + backward_dist[meeting]
 Bidirectional BFS is used in Google Maps and Apple Maps routing — expanding
 from both origin and destination simultaneously.
 
+### Google Maps connection
+
+Google Maps uses bidirectional Dijkstra (the weighted generalisation of
+bidirectional BFS) for road network routing. The graph has ~10⁹ nodes
+(road intersections worldwide). A standard single-source Dijkstra would
+expand a sphere of radius ~distance/2 from the source. Bidirectional
+expansion from both origin AND destination meets in the middle — each
+search expands a sphere of radius ~distance/4, reducing the explored
+area from π(d/2)² to 2×π(d/4)² = πd²/8. This is a 4× reduction in
+nodes explored.
+
+For the binary matrix problem, bidirectional BFS reduces explored cells
+from O(n²) worst case to O(n) in the optimal case — the two BFS frontiers
+meet after each has expanded ~n/2 steps.
+
+```
+Standard BFS:        explores all n² cells in worst case
+Bidirectional BFS:   each frontier expands ~n/2 steps
+                     meet in middle after ~n total steps
+                     cells explored ≈ 2 × (n/2)² = n²/2  (50% saving)
+```
+
+**Reference:** *Engineering Route Planning Algorithms*, Delling et al.,
+Springer 2009 — the foundational paper on bidirectional Dijkstra and
+advanced routing techniques (Contraction Hierarchies, A* landmarks)
+used in Google Maps and Apple Maps production routing engines.
+
 ---
 
 ## Summary
