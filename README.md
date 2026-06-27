@@ -76,6 +76,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 57 | [Rotting Oranges](./graphs/rotting-oranges) | Graphs / Multi-Source BFS | Medium |
 | 58 | [01 Matrix](./graphs/01-matrix) | Graphs / Multi-Source BFS / DP | Medium |
 | 59 | [Shortest Path in Binary Matrix](./graphs/shortest-path-binary-matrix) | Graphs / BFS | Medium |
+| 60 | [Word Ladder](./graphs/word-ladder) | Graphs / BFS / Implicit Graph | Hard |
 
 ## Guides
 
