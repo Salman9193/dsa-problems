@@ -75,6 +75,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 56 | [Number of Islands](./graphs/number-of-islands) | Graphs / BFS / DFS / Union-Find | Medium |
 | 57 | [Rotting Oranges](./graphs/rotting-oranges) | Graphs / Multi-Source BFS | Medium |
 | 58 | [01 Matrix](./graphs/01-matrix) | Graphs / Multi-Source BFS / DP | Medium |
+| 59 | [Shortest Path in Binary Matrix](./graphs/shortest-path-binary-matrix) | Graphs / BFS | Medium |
 
 ## Guides
 
