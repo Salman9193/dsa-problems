@@ -79,6 +79,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 60 | [Word Ladder](./graphs/word-ladder) | Graphs / BFS / Implicit Graph | Hard |
 | 61 | [Max Area of Island](./graphs/max-area-of-island) | Graphs / DFS / BFS | Medium |
 | 62 | [Pacific Atlantic Water Flow](./graphs/pacific-atlantic-water-flow) | Graphs / Multi-Source BFS | Medium |
+| 63 | [Surrounded Regions](./graphs/surrounded-regions) | Graphs / BFS / Union-Find | Medium |
 
 ## Guides
 
