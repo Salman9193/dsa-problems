@@ -192,6 +192,21 @@ public boolean isBipartite(int[][] graph) {
     }
     return true;
 }
+
+// find with path compression — O(α(n)) amortised
+private int find(int[] parent, int x) {
+    if (parent[x] != x) parent[x] = find(parent, parent[x]); // path compression
+    return parent[x];
+}
+
+// union by rank — keeps tree height O(log n) → ensures near-O(1) find()
+private void union(int[] parent, int[] rank, int x, int y) {
+    int px = find(parent, x), py = find(parent, y);
+    if (px == py) return;
+    if      (rank[px] < rank[py]) parent[px] = py;
+    else if (rank[px] > rank[py]) parent[py] = px;
+    else { parent[py] = px; rank[px]++; }
+}
 ```
 
 **Why this works:** In a bipartite graph, all neighbours of u must be in
