@@ -153,3 +153,34 @@ Query b/a (BFS from b):
 | Shortest path (#743) | Additive weights | This uses multiplicative weights |
 | Currency arbitrage | Multiplicative cycle detection | Negate log weights → Bellman-Ford |
 | Weighted Union-Find | Ratio tracking | Generalises standard DSU |
+
+---
+
+## Union-Find Alternative — Weighted DSU
+
+For many queries on the same graph, weighted DSU gives O(α) per query after O(E) build.
+
+```
+parent[x] = root of x's component
+ratio[x]  = x / parent[x]   (x's value relative to its root)
+
+find(x):  path-compress AND accumulate ratios up to root
+  if parent[x] != x:
+      root = find(parent[x])
+      ratio[x] *= ratio[parent[x]]   // chain multiplication
+      parent[x] = root
+  return parent[x]
+
+union(x, y, val):  // x / y = val
+  rx = find(x), ry = find(y)
+  parent[rx] = ry
+  ratio[rx] = ratio[y] * val / ratio[x]
+
+query(x, y):
+  if find(x) != find(y): return -1.0   // different components
+  return ratio[x] / ratio[y]           // (x/root) / (y/root) = x/y
+```
+
+**When DSU beats BFS:** For Q queries on a static graph:
+- BFS: O(E + Q×(V+E))
+- Weighted DSU: O(E×α(E) + Q×α(V)) — much better for large Q.
