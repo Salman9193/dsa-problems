@@ -108,6 +108,72 @@ Result: "wertf" ✓
 
 ---
 
+## Phase 2 (Alternative) — DFS Postorder
+
+DFS adds a character to the result AFTER all its successors are fully explored
+(postorder). Reversing gives topological order.
+
+**3-colour marking (same as Course Schedule):**
+```
+White (0): unvisited
+Grey  (1): currently on DFS stack — being explored
+Black (2): fully explored, confirmed no cycle
+```
+
+```java
+// For each unvisited character, DFS
+for char c in all chars:
+    if colour[c] == WHITE:
+        if !dfs(c): return ""  // cycle detected
+
+// Reverse postorder = topological order
+Collections.reverse(result)
+return result
+
+dfs(node):
+    colour[node] = GREY        // currently exploring
+    for each next in adj[node]:
+        if colour[next] == GREY: return false  // back edge → cycle
+        if colour[next] == WHITE:
+            if !dfs(next): return false
+    colour[node] = BLACK       // fully explored
+    result.add(node)           // add AFTER all successors (postorder)
+    return true
+```
+
+**Why postorder = reverse topological order?**
+A character is added AFTER all characters that must come after it in the
+alien alphabet. So characters with no successors (end of chains) are added
+first, and characters that precede everything are added last.
+Reversing gives the correct alien alphabet order.
+
+```
+Graph: w→e→r→t→f
+
+DFS from w:
+  grey(w) → grey(e) → grey(r) → grey(t) → grey(f)
+  f has no successors → result=[f], black(f)
+  back to t → result=[f,t], black(t)
+  back to r → result=[f,t,r], black(r)
+  back to e → result=[f,t,r,e], black(e)
+  back to w → result=[f,t,r,e,w], black(w)
+
+Reversed: [w,e,r,t,f] → "wertf" ✓
+```
+
+**Cycle detection in DFS:**
+If DFS reaches a GREY node → back edge → directed cycle → return `""`.
+
+```
+Cycle example: ["z","x","z"]
+Graph: z→x, x→z
+
+DFS from z:
+  grey(z) → grey(x) → x's neighbour is z → z is GREY → CYCLE → return "" ✓
+```
+
+---
+
 ## Why NOT Union-Find?
 
 This is a directed ordering problem — character A comes BEFORE B.
