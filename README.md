@@ -82,6 +82,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 63 | [Surrounded Regions](./graphs/surrounded-regions) | Graphs / BFS / Union-Find | Medium |
 | 64 | [Number of Provinces](./graphs/number-of-provinces) | Graphs / DFS / BFS / Union-Find | Medium |
 | 65 | [Course Schedule](./graphs/course-schedule) | Graphs / Topological Sort / Cycle Detection | Medium |
+| 66 | [Course Schedule II](./graphs/course-schedule-ii) | Graphs / Topological Sort | Medium |
 
 ## Guides
 
