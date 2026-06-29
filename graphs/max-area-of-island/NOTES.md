@@ -130,3 +130,54 @@ maxArea = 5 ✓
 | Count cells per island | Return all sizes | Collect DFS return values |
 | Min area island | Smallest non-zero island | Track minArea alongside maxArea |
 | 8-directional | Diagonals count too | Add 4 diagonal dirs to BFS/DFS |
+
+---
+
+## Union-Find Alternative
+
+DSU can compute max area by tracking the **size of each component**:
+
+```java
+public int maxAreaOfIsland(int[][] grid) {
+    int rows = grid.length, cols = grid[0].length;
+    int[] parent = new int[rows * cols];
+    int[] size   = new int[rows * cols]; // size[root] = component size
+    Arrays.fill(size, 1);
+    for (int i = 0; i < rows * cols; i++) parent[i] = i;
+
+    int[][] dirs = {{1,0},{0,1}}; // right + down only (process each edge once)
+    int maxArea = 0;
+
+    for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < cols; c++) {
+            if (grid[r][c] != 1) continue;
+            maxArea = Math.max(maxArea, size[find(parent, r*cols+c)]);
+            for (int[] d : dirs) {
+                int nr = r+d[0], nc = c+d[1];
+                if (nr < rows && nc < cols && grid[nr][nc] == 1) {
+                    int ra = find(parent, r*cols+c);
+                    int rb = find(parent, nr*cols+nc);
+                    if (ra != rb) {
+                        // Merge smaller into larger; update size
+                        parent[ra] = rb;
+                        size[rb] += size[ra];
+                        maxArea = Math.max(maxArea, size[rb]);
+                    }
+                }
+            }
+        }
+    }
+    return maxArea;
+}
+```
+
+**Key addition over standard DSU:** `size[]` array tracks component size.
+When two components merge, their sizes add. `maxArea` is updated at each merge.
+
+**BFS vs DSU:** BFS/DFS is simpler and preferred here (no extra size array needed).
+DSU shines when the grid is queried multiple times after dynamic cell additions —
+`union(new_cell, neighbour)` updates max area in O(α) without re-running DFS.
+
+**Related:** LeetCode #827 (Making a Large Island) — flip one 0→1, find max area.
+DSU is the natural approach: precompute component sizes, then for each 0 cell
+check the sum of sizes of its distinct neighbouring components + 1.
