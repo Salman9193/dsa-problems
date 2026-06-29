@@ -159,3 +159,46 @@ colour: 1 → -1 → 1 → -1 → needs 1 at 0 ✓
 - Network flow reduction: max bipartite matching = max flow in a unit-capacity flow network
 
 **Why bipartite check is O(V+E) but k-colouring is NP-complete:** With 2 colours, every assignment is forced — there's only one valid colour for each node. With k≥3, multiple choices exist at each step. This breaks the greedy correctness — see COMPLEXITY_THEORY.md and K_COLOURING.md.
+
+---
+
+## Union-Find Alternative
+
+DSU can solve bipartite checking using a **virtual node trick per node**:
+For each node u, union all its neighbours together. If u and any of its
+neighbours end up in the same component as u itself, a cycle of odd length
+exists → not bipartite.
+
+More precisely: for each node u with neighbours v1, v2, ...:
+- union(v1, v2), union(v2, v3), ... (all neighbours in one group)
+- If find(u) == find(any_neighbour) → odd cycle detected → not bipartite
+
+```java
+public boolean isBipartite(int[][] graph) {
+    int n = graph.length;
+    int[] parent = new int[n]; int[] rank = new int[n];
+    for (int i = 0; i < n; i++) parent[i] = i;
+
+    for (int u = 0; u < n; u++) {
+        if (graph[u].length == 0) continue;
+        int firstNeighbour = graph[u][0];
+        for (int v : graph[u]) {
+            // u and v are adjacent → they must be in different sets
+            // If they're already in the same set → odd cycle → not bipartite
+            if (find(parent, u) == find(parent, v)) return false;
+            // Union all neighbours of u together (they share the same colour)
+            union(parent, rank, firstNeighbour, v);
+        }
+    }
+    return true;
+}
+```
+
+**Why this works:** In a bipartite graph, all neighbours of u must be in
+the same colour class (opposite to u). So unioning all neighbours of u is
+valid. If u itself ends up in the same component as its neighbours, a
+contradition arises → not bipartite.
+
+**BFS vs DSU:** BFS is cleaner and more intuitive for bipartite checking.
+DSU is useful when the graph evolves dynamically (edges added online) —
+BFS would need to re-run from scratch; DSU handles new edges incrementally.
