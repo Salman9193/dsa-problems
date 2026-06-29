@@ -84,6 +84,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 65 | [Course Schedule](./graphs/course-schedule) | Graphs / Topological Sort / Cycle Detection | Medium |
 | 66 | [Course Schedule II](./graphs/course-schedule-ii) | Graphs / Topological Sort | Medium |
 | 67 | [Find Eventual Safe States](./graphs/find-eventual-safe-states) | Graphs / DFS / Cycle Detection | Medium |
+| 68 | [Alien Dictionary](./graphs/alien-dictionary) | Graphs / Topological Sort / Graph Construction | Hard |
 
 ## Guides
 
