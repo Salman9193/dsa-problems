@@ -181,3 +181,34 @@ DSU shines when the grid is queried multiple times after dynamic cell additions 
 **Related:** LeetCode #827 (Making a Large Island) — flip one 0→1, find max area.
 DSU is the natural approach: precompute component sizes, then for each 0 cell
 check the sum of sizes of its distinct neighbouring components + 1.
+
+**Complete DSU helper methods (path compression + union by rank):**
+
+```java
+// find with path compression — O(α(n)) amortised
+// After find(x), x points directly to root — future finds are O(1)
+private int find(int[] parent, int x) {
+    if (parent[x] != x) parent[x] = find(parent, parent[x]); // path compression
+    return parent[x];
+}
+
+// union by rank — attach shorter tree under taller tree
+// Keeps tree height O(log n) so find() stays near-O(1)
+// Note: when tracking size[], we update size on the ROOT after merge
+private void union(int[] parent, int[] rank, int[] size, int x, int y) {
+    int px = find(parent, x), py = find(parent, y);
+    if (px == py) return;
+    if (rank[px] < rank[py]) {
+        parent[px] = py; size[py] += size[px];
+    } else if (rank[px] > rank[py]) {
+        parent[py] = px; size[px] += size[py];
+    } else {
+        parent[py] = px; size[px] += size[py]; rank[px]++;
+    }
+}
+```
+
+*Why both matter:*
+- Without path compression: find() is O(log n) per call (tree height after union by rank)
+- Without union by rank: tree can degenerate to O(n) height → find() is O(n)
+- Together (Tarjan 1975): amortised O(α(n)) per operation — effectively O(1)
