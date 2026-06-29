@@ -81,6 +81,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 62 | [Pacific Atlantic Water Flow](./graphs/pacific-atlantic-water-flow) | Graphs / Multi-Source BFS | Medium |
 | 63 | [Surrounded Regions](./graphs/surrounded-regions) | Graphs / BFS / Union-Find | Medium |
 | 64 | [Number of Provinces](./graphs/number-of-provinces) | Graphs / DFS / BFS / Union-Find | Medium |
+| 65 | [Course Schedule](./graphs/course-schedule) | Graphs / Topological Sort / Cycle Detection | Medium |
 
 ## Guides
 
