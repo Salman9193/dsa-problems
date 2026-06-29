@@ -182,16 +182,45 @@ Use Kahn's BFS or DFS 3-colour for directed topological ordering.
 
 ---
 
-## Comparison: Kahn's vs DFS
+## Comparison: Kahn's BFS vs DFS Postorder — Which Is More Apt?
 
-| | Kahn's BFS | DFS Postorder |
-|--|-----------|--------------|
-| Cycle detection | `result.length() < total_chars` | Grey node hit |
-| Order built | Directly (correct order) | Reversed (must reverse at end) |
-| Code clarity | Higher | Lower (reverse + recursion) |
-| Stack overflow risk | No | Yes for deep dependency chains |
+**Kahn's BFS is the better choice for Alien Dictionary.** Here's why:
 
-Kahn's preferred for this problem.
+| Dimension | Kahn's BFS ✓ | DFS Postorder |
+|-----------|-------------|---------------|
+| Order built | Directly — no extra step | Reversed → must call `Collections.reverse()` |
+| Cycle detection | `result.length() < inDegree.size()` — single check | Must track grey/white/black — 3-state colour array |
+| Code clarity | Higher — linear flow | Lower — recursive + reverse + conversion overhead |
+| Stack overflow risk | None (iterative queue) | Risk on deep chains (26 chars max here — safe) |
+| Extra data structures | `inDegree` map + queue | `colour` map + `result` list + reversal |
+| Handles isolated chars | Naturally (inDegree=0 → queue) | Naturally (white → DFS from it) |
+
+**Why Kahn's wins specifically for this problem:**
+
+1. **Cycle detection is simpler.** With Kahn's, one check at the end suffices:
+   `result.length() != inDegree.size()`. With DFS, you need the 3-colour
+   system and must propagate the `false` return through the call stack.
+
+2. **No reversal needed.** Kahn's produces the answer in correct order as it runs.
+   DFS postorder builds the REVERSE — you must reverse the result at the end.
+   This is an extra O(V) step and a common source of bugs.
+
+3. **Alphabet is small (≤ 26 characters).** The main advantage of DFS over Kahn's
+   in other problems is handling very deep dependency chains without a queue.
+   Here the graph has at most 26 nodes — stack overflow is impossible either way.
+   So DFS's iterative-safety advantage doesn't apply.
+
+4. **Interview clarity.** Kahn's maps directly to the mental model: "process
+   characters with no prerequisites first, unlock others as you go" — same
+   intuition as the problem statement's sorted dictionary structure.
+
+**When DFS would be preferred:**
+- You're already using DFS for graph construction and want a single traversal
+- You need to detect cycles during exploration (not just at the end)
+- The problem also asks for strongly connected components (Kosaraju/Tarjan)
+
+**Bottom line for interviews:** Implement Kahn's BFS. Mention DFS as an
+alternative and explain the reversal requirement — that shows depth of understanding.
 
 ---
 
