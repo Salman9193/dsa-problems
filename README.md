@@ -86,6 +86,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 67 | [Find Eventual Safe States](./graphs/find-eventual-safe-states) | Graphs / DFS / Cycle Detection | Medium |
 | 68 | [Alien Dictionary](./graphs/alien-dictionary) | Graphs / Topological Sort / Graph Construction | Hard |
 | 69 | [Redundant Connection](./graphs/redundant-connection) | Graphs / Union-Find | Medium |
+| 70 | [Accounts Merge](./graphs/accounts-merge) | Graphs / Union-Find | Medium |
 
 ## Guides
 
