@@ -88,6 +88,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 69 | [Redundant Connection](./graphs/redundant-connection) | Graphs / Union-Find | Medium |
 | 70 | [Accounts Merge](./graphs/accounts-merge) | Graphs / Union-Find | Medium |
 | 71 | [Most Stones Removed with Same Row or Column](./graphs/most-stones-removed) | Graphs / Union-Find | Medium |
+| 72 | [Network Delay Time](./graphs/network-delay-time) | Graphs / Dijkstra's Algorithm | Medium |
 
 ## Guides
 
