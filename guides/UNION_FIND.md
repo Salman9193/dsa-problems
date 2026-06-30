@@ -18,33 +18,60 @@ union(x, y) → merge the groups containing x and y
 ## Implementation with Path Compression + Union by Rank
 
 ```java
+// ═══════════════════════════════════════════════════════════════════════
+// REFERENCE TEMPLATE — copy this class as-is into any DSU problem.
+// Covers every variant needed across this repo's problems:
+//   - path compression + union by rank (near-O(1) amortised)
+//   - components count            (Number of Provinces, Number of Islands)
+//   - connected() query           (Find if Path Exists)
+//   - size tracking per component (Max Area of Island, #827)
+//   - works with a virtual node   (Surrounded Regions — just pass index n)
+// ═══════════════════════════════════════════════════════════════════════
 class UnionFind {
     int[] parent;
     int[] rank;
-    int components;  // number of distinct groups
+    int[] size;       // size[root] = number of elements in that component
+    int components;   // number of distinct groups remaining
 
     UnionFind(int n) {
         parent = new int[n];
         rank   = new int[n];
+        size   = new int[n];
         components = n;
-        for (int i = 0; i < n; i++) parent[i] = i;  // each node is its own root
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;   // each node is its own root initially
+            size[i]   = 1;   // each component starts with 1 element
+        }
     }
 
-    // Path compression: make every node point directly to root
+    // Path compression: every node on the path points directly to root.
+    // After find(x), future find(x) calls are O(1).
     int find(int x) {
         if (parent[x] != x)
-            parent[x] = find(parent[x]);  // recursive path compression
+            parent[x] = find(parent[x]);   // recursive path compression
         return parent[x];
     }
 
-    // Union by rank: attach smaller tree under larger tree
+    // Union by rank: attach the shorter tree under the taller tree.
+    // Keeps tree height O(log n), which keeps find() fast even before
+    // path compression kicks in.
+    // Returns false if x and y were ALREADY in the same component —
+    // this return value is exactly what Redundant Connection (#684) checks.
     boolean union(int x, int y) {
         int px = find(x), py = find(y);
-        if (px == py) return false;  // already in same group
+        if (px == py) return false;  // already connected — caller decides what this means
 
-        if      (rank[px] < rank[py]) parent[px] = py;
-        else if (rank[px] > rank[py]) parent[py] = px;
-        else { parent[py] = px; rank[px]++; }
+        if (rank[px] < rank[py]) {
+            parent[px] = py;
+            size[py]  += size[px];
+        } else if (rank[px] > rank[py]) {
+            parent[py] = px;
+            size[px]  += size[py];
+        } else {
+            parent[py] = px;
+            size[px]  += size[py];
+            rank[px]++;             // only increase rank on a tie
+        }
 
         components--;
         return true;
@@ -53,8 +80,33 @@ class UnionFind {
     boolean connected(int x, int y) {
         return find(x) == find(y);
     }
+
+    // Size of the component containing x — O(α(n))
+    int getSize(int x) {
+        return size[find(x)];
+    }
+
+    int getComponentCount() {
+        return components;
+    }
 }
 ```
+
+### How to adapt this template per problem
+
+| Need | What to do |
+|------|-----------|
+| Count connected components | Read `uf.components` after all unions |
+| "Are u and v connected?" query | `uf.connected(u, v)` |
+| Largest component size (#695, #827) | `uf.getSize(x)` after building, or track a running max during `union()` |
+| Detect the edge that creates a cycle (#684) | Check `union()` return value — `false` means cycle |
+| Virtual node pattern (#130 Surrounded Regions) | Pass `n+1` to the constructor; use index `n` as the virtual node; `union(cell, n)` to mark "special" |
+| 2D grid coordinates | Flatten `(r, c)` to a single index: `r * cols + c` |
+| Weighted DSU (#399 Evaluate Division) | This template doesn't cover weighted unions — see `graphs/evaluate-division/Solution.java` for the `ratio[]`-tracking variant |
+
+This template is reused (in spirit, sometimes inlined for clarity) across:
+`find-if-path-exists`, `number-of-islands`, `number-of-provinces`,
+`surrounded-regions`, `max-area-of-island`, `redundant-connection`.
 
 ---
 
