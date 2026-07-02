@@ -91,6 +91,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 72 | [Network Delay Time](./graphs/network-delay-time) | Graphs / Dijkstra's Algorithm | Medium |
 | 73 | [Path with Minimum Effort](./graphs/path-minimum-effort) | Graphs / Dijkstra's / Binary Search / DSU | Medium |
 | 74 | [Cheapest Flights Within K Stops](./graphs/cheapest-flights-k-stops) | Graphs / Bellman-Ford | Medium |
+| 75 | [Swim in Rising Water](./graphs/swim-in-rising-water) | Graphs / Dijkstra's / Binary Search / DSU | Hard |
 
 ## Guides
 
