@@ -92,6 +92,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 73 | [Path with Minimum Effort](./graphs/path-minimum-effort) | Graphs / Dijkstra's / Binary Search / DSU | Medium |
 | 74 | [Cheapest Flights Within K Stops](./graphs/cheapest-flights-k-stops) | Graphs / Bellman-Ford | Medium |
 | 75 | [Swim in Rising Water](./graphs/swim-in-rising-water) | Graphs / Dijkstra's / Binary Search / DSU | Hard |
+| 76 | [Min Cost to Connect All Points](./graphs/min-cost-connect-points) | Graphs / MST / Prim's / Kruskal's | Medium |
 
 ## Guides
 
