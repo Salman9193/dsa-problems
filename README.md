@@ -94,6 +94,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 75 | [Swim in Rising Water](./graphs/swim-in-rising-water) | Graphs / Dijkstra's / Binary Search / DSU | Hard |
 | 76 | [Min Cost to Connect All Points](./graphs/min-cost-connect-points) | Graphs / MST / Prim's / Kruskal's | Medium |
 | 77 | [Connecting Cities With Minimum Cost](./graphs/connecting-cities-min-cost) | Graphs / MST / Kruskal's | Medium |
+| 78 | [Possible Bipartition](./graphs/possible-bipartition) | Graphs / BFS / DFS / Union-Find | Medium |
 
 ## Guides
 
