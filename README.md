@@ -96,6 +96,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 77 | [Connecting Cities With Minimum Cost](./graphs/connecting-cities-min-cost) | Graphs / MST / Kruskal's | Medium |
 | 78 | [Possible Bipartition](./graphs/possible-bipartition) | Graphs / BFS / DFS / Union-Find | Medium |
 | 79 | [Critical Connections in a Network](./graphs/critical-connections) | Graphs / Tarjan's Bridge Algorithm | Hard |
+| 80 | [Minimum Height Trees](./graphs/minimum-height-trees) | Graphs / BFS / Topological Sort | Medium |
 
 ## Guides
 
