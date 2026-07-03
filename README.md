@@ -95,6 +95,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 76 | [Min Cost to Connect All Points](./graphs/min-cost-connect-points) | Graphs / MST / Prim's / Kruskal's | Medium |
 | 77 | [Connecting Cities With Minimum Cost](./graphs/connecting-cities-min-cost) | Graphs / MST / Kruskal's | Medium |
 | 78 | [Possible Bipartition](./graphs/possible-bipartition) | Graphs / BFS / DFS / Union-Find | Medium |
+| 79 | [Critical Connections in a Network](./graphs/critical-connections) | Graphs / Tarjan's Bridge Algorithm | Hard |
 
 ## Guides
 
@@ -113,6 +114,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | [Binary Search on Answer](./guides/BINARY_SEARCH_ON_ANSWER.md) | Koko, ship packages, split array |
 | [Backtracking](./guides/BACKTRACKING.md) | Subsets, permutations, N-Queens, word search |
 | [String DP](./guides/STRING_DP.md) | LCS, edit distance, LPS, distinct subsequences |
+| [SCC, Bridges & Articulation Points](./guides/SCC_BRIDGES_AP.md) | Kosaraju, Tarjan SCC, bridge/AP finding, lowlink intuition |
 
 ---
 > More problems and guides will be added progressively.
