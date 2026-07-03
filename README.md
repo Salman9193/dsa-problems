@@ -93,6 +93,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 74 | [Cheapest Flights Within K Stops](./graphs/cheapest-flights-k-stops) | Graphs / Bellman-Ford | Medium |
 | 75 | [Swim in Rising Water](./graphs/swim-in-rising-water) | Graphs / Dijkstra's / Binary Search / DSU | Hard |
 | 76 | [Min Cost to Connect All Points](./graphs/min-cost-connect-points) | Graphs / MST / Prim's / Kruskal's | Medium |
+| 77 | [Connecting Cities With Minimum Cost](./graphs/connecting-cities-min-cost) | Graphs / MST / Kruskal's | Medium |
 
 ## Guides
 
