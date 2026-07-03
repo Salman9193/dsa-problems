@@ -97,6 +97,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 78 | [Possible Bipartition](./graphs/possible-bipartition) | Graphs / BFS / DFS / Union-Find | Medium |
 | 79 | [Critical Connections in a Network](./graphs/critical-connections) | Graphs / Tarjan's Bridge Algorithm | Hard |
 | 80 | [Minimum Height Trees](./graphs/minimum-height-trees) | Graphs / BFS / Topological Sort | Medium |
+| 81 | [Lowest Common Ancestor of a Binary Tree](./trees/lowest-common-ancestor) | Trees / DFS | Medium |
 
 ## Guides
 
