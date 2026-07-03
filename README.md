@@ -117,6 +117,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | [Backtracking](./guides/BACKTRACKING.md) | Subsets, permutations, N-Queens, word search |
 | [String DP](./guides/STRING_DP.md) | LCS, edit distance, LPS, distinct subsequences |
 | [SCC, Bridges & Articulation Points](./guides/SCC_BRIDGES_AP.md) | Kosaraju, Tarjan SCC, bridge/AP finding, lowlink intuition |
+| [Floyd-Warshall, Max Flow & Bipartite Matching](./guides/FLOW_MATCHING.md) | Tier 3: all-pairs SP, flow/cut theorem, matching reductions |
 
 ---
 > More problems and guides will be added progressively.
