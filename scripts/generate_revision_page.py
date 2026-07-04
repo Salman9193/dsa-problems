@@ -360,7 +360,7 @@ TOPIC_META={"arrays":("🧩","Foundation"),"strings":("🔤","Foundation"),"link
 emitted_groups=set()
 sidebar_html='<div class="sidebar-group">Guides</div>'
 emitted_groups.add("Guides")
-sidebar_html += '<li><a href="#section-roadmap" onclick="showSection(\'section-roadmap\');return false;">''<span class="nav-icon">🗺️</span>Preparation Roadmap</a></li>'
+sidebar_html += '<li><a href="#section-roadmap" onclick="showSection(&quot;section-roadmap&quot;);return false;"><span class="nav-icon">🗺️</span>Preparation Roadmap</a></li>'
 
 for topic_slug, topic_name in TOPICS:
     tp = ROOT / topic_slug
