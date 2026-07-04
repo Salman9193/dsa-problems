@@ -131,6 +131,10 @@ LC = {
     "exam-room":(855,"exam-room"),
     "find-median-data-stream":(295,"find-median-from-data-stream"),
     "hamming-weight":(191,"number-of-1-bits"),
+    "serialize-deserialize-binary-tree":(297,"serialize-and-deserialize-binary-tree"),
+    "range-sum-query-mutable":(307,"range-sum-query-mutable"),
+    "merge-k-sorted-lists":(23,"merge-k-sorted-lists"),
+    "word-search-ii":(212,"word-search-ii"),
 }
 
 ROOT = Path(".")
