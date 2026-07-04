@@ -360,7 +360,7 @@ TOPIC_META={"arrays":("🧩","Foundation"),"strings":("🔤","Foundation"),"link
 emitted_groups=set()
 sidebar_html='<div class="sidebar-group">Guides</div>'
 emitted_groups.add("Guides")
-sidebar_html+='<li><a href="#section-roadmap" data-section="section-roadmap" onclick="showSection(this.dataset.section);return false;"><span class="nav-icon">🗺️</span>Preparation Roadmap</a></li>'
+sidebar_html += '<li><a href="#section-roadmap" onclick="showSection(\'section-roadmap\');return false;">''<span class="nav-icon">🗺️</span>Preparation Roadmap</a></li>'
 
 for topic_slug, topic_name in TOPICS:
     tp = ROOT / topic_slug
@@ -371,8 +371,10 @@ for topic_slug, topic_name in TOPICS:
         sidebar_html+='<div class="sidebar-group">'+_grp+'</div>'
         emitted_groups.add(_grp)
     _cnt=len([d for d in tp.iterdir() if d.is_dir()]) if topic_slug!="guides" else len(list(tp.glob("*.md")))
-    sidebar_html+=('<li><a href="#'+sid+'" data-section="'+sid+'" onclick="showSection(this.dataset.section);return false;">'
-                   '<span class="nav-icon">'+_icon+'</span>'+esc(topic_name)+'<span class="nav-count">'+str(_cnt)+'</span></a></li>')
+    sidebar_html += ('<li><a href="#' + sid + '" '
+                    'onclick="showSection(\'' + sid + '\');return false;">'
+                    '<span class="nav-icon">' + _m[0] + '</span>' + esc(topic_name)
+                    + '<span class="nav-count">' + str(_cnt) + '</span></a></li>')
     cards = ""
     if topic_slug == "guides":
         for gf in sorted(tp.glob("*.md")): cards += build_guide_card(gf)
@@ -444,8 +446,18 @@ p code,li code{background:var(--surface2);border:1px solid var(--border);padding
 """
 
 JS = """
-function showSection(id){document.querySelectorAll(".topic-section").forEach(function(s){s.classList.remove("active");});document.querySelectorAll(".sidebar li a").forEach(function(a){a.classList.remove("active");});var sec=document.getElementById(id);if(sec)sec.classList.add("active");document.querySelectorAll("[data-section=\""+id+"\"]").forEach(function(a){a.classList.add("active");});window.scrollTo(0,0);}
-window.addEventListener("DOMContentLoaded",function(){var first=document.querySelector(".topic-section");if(first)showSection(first.id);});
+function showSection(id){
+  document.querySelectorAll('.topic-section').forEach(function(s){s.classList.remove('active');});
+  document.querySelectorAll('.sidebar li a').forEach(function(a){a.classList.remove('active');});
+  var sec=document.getElementById(id);
+  if(sec) sec.classList.add('active');
+  document.querySelectorAll('.sidebar li a[href="#'+id+'"]').forEach(function(a){a.classList.add('active');});
+  window.scrollTo(0,0);
+}
+window.addEventListener('DOMContentLoaded',function(){
+  var first=document.querySelector('.topic-section');
+  if(first) showSection(first.id);
+});
 function toggleCard(id){var c=document.getElementById(id),b=c.querySelector('.card-body');c.classList.toggle('open');b.classList.toggle('collapsed');}
 function expandAll(){document.querySelectorAll('.topic-section.active .card:not(.hidden)').forEach(function(c){c.classList.add('open');c.querySelector('.card-body').classList.remove('collapsed');});}
 function collapseAll(){document.querySelectorAll('.topic-section.active .card').forEach(function(c){c.classList.remove('open');c.querySelector('.card-body').classList.add('collapsed');});}
@@ -453,8 +465,6 @@ function switchTab(e,pid){var card=e.target.closest('.card');card.querySelectorA
 var activeDiff='all';
 function filterDiff(diff,btn){activeDiff=diff;document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');filterCards();}
 function filterCards(){var q=document.getElementById('search').value.toLowerCase();document.querySelectorAll('.topic-section.active .card').forEach(function(card){var name=(card.dataset.name||'').toLowerCase();var topic=(card.dataset.topic||'').toLowerCase();var badge=card.querySelector('.badge');var diff=badge?badge.className.replace('badge ','').toLowerCase():'';var ok=(!q||name.includes(q)||topic.includes(q))&&(activeDiff==='all'||diff===activeDiff);card.classList.toggle('hidden',!ok);});}
-var secs=document.querySelectorAll('section[id]'),navs=document.querySelectorAll('.sidebar li a');
-if('IntersectionObserver' in window){var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)navs.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id);});});},{rootMargin:'-20% 0px -70% 0px'});secs.forEach(function(s){obs.observe(s);});}
 """
 
 page = (
