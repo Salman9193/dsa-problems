@@ -44,6 +44,110 @@ JAVA_KW = {
     "extends","implements",
 }
 
+
+LC = {
+    "two-sum-ii":(167,"two-sum-ii-input-array-is-sorted"),
+    "3sum":(15,"3sum"),
+    "container-with-most-water":(11,"container-with-most-water"),
+    "trapping-rain-water":(42,"trapping-rain-water"),
+    "product-of-array-except-self":(238,"product-of-array-except-self"),
+    "find-pivot-index":(724,"find-pivot-index"),
+    "sliding-window-maximum":(239,"sliding-window-maximum"),
+    "car-pooling":(1094,"car-pooling"),
+    "longest-consecutive-sequence":(128,"longest-consecutive-sequence"),
+    "group-anagrams":(49,"group-anagrams"),
+    "top-k-frequent-elements":(347,"top-k-frequent-elements"),
+    "divide-two-integers":(29,"divide-two-integers"),
+    "minimum-cost-hire-k-workers":(857,"minimum-cost-to-hire-k-workers"),
+    "best-time-to-buy-and-sell-stock":(121,"best-time-to-buy-and-sell-stock"),
+    "best-time-to-buy-and-sell-stock-ii":(122,"best-time-to-buy-and-sell-stock-ii"),
+    "best-time-to-buy-and-sell-stock-iii":(123,"best-time-to-buy-and-sell-stock-iii"),
+    "best-time-to-buy-and-sell-stock-iv":(188,"best-time-to-buy-and-sell-stock-iv"),
+    "make-two-arrays-equal":(1460,"make-two-arrays-equal-by-reversing"),
+    "minimum-time-visiting-all-points":(1266,"minimum-time-visiting-all-points"),
+    "merge-intervals":(56,"merge-intervals"),
+    "meeting-rooms-ii":(253,"meeting-rooms-ii"),
+    "kth-largest-element":(215,"kth-largest-element-in-an-array"),
+    "valid-palindrome":(125,"valid-palindrome"),
+    "longest-palindromic-substring":(5,"longest-palindromic-substring"),
+    "longest-substring-without-repeating":(3,"longest-substring-without-repeating-characters"),
+    "longest-repeating-character-replacement":(424,"longest-repeating-character-replacement"),
+    "minimum-window-substring":(76,"minimum-window-substring"),
+    "find-all-anagrams":(438,"find-all-anagrams-in-a-string"),
+    "first-unique-character":(387,"first-unique-character-in-a-string"),
+    "encode-and-decode-strings":(271,"encode-and-decode-strings"),
+    "decode-string":(394,"decode-string"),
+    "minimum-remove-valid-parentheses":(1249,"minimum-remove-to-make-valid-parentheses"),
+    "implement-trie":(208,"implement-trie-prefix-tree"),
+    "reverse-linked-list":(206,"reverse-linked-list"),
+    "linked-list-cycle":(141,"linked-list-cycle"),
+    "linked-list-random-node":(382,"linked-list-random-node"),
+    "search-in-rotated-sorted-array":(33,"search-in-rotated-sorted-array"),
+    "find-in-mountain-array":(1095,"find-in-mountain-array"),
+    "sqrt-x":(69,"sqrtx"),
+    "online-election":(911,"online-election"),
+    "valid-parentheses":(20,"valid-parentheses"),
+    "daily-temperatures":(739,"daily-temperatures"),
+    "largest-rectangle-histogram":(84,"largest-rectangle-in-histogram"),
+    "climbing-stairs":(70,"climbing-stairs"),
+    "coin-change":(322,"coin-change"),
+    "word-break":(139,"word-break"),
+    "house-robber":(198,"house-robber"),
+    "jump-game":(55,"jump-game"),
+    "unique-paths":(62,"unique-paths"),
+    "cherry-pickup-ii":(1463,"cherry-pickup-ii"),
+    "number-of-ways-paint-grid":(1411,"number-of-ways-to-paint-n-3-grid"),
+    "partition-equal-subset-sum":(416,"partition-equal-subset-sum"),
+    "longest-increasing-subsequence":(300,"longest-increasing-subsequence"),
+    "burst-balloons":(312,"burst-balloons"),
+    "subsets":(78,"subsets"),
+    "permutations":(46,"permutations"),
+    "combination-sum":(39,"combination-sum"),
+    "word-search":(79,"word-search"),
+    "populating-next-right-pointers-ii":(117,"populating-next-right-pointers-in-each-node-ii"),
+    "delete-nodes-and-return-forest":(1110,"delete-nodes-and-return-forest"),
+    "lca-deepest-leaves":(1123,"lowest-common-ancestor-of-deepest-leaves"),
+    "all-possible-full-binary-trees":(894,"all-possible-full-binary-trees"),
+    "binary-search-tree-iterator":(173,"binary-search-tree-iterator"),
+    "lowest-common-ancestor":(236,"lowest-common-ancestor-of-a-binary-tree"),
+    "binary-tree-max-path-sum":(124,"binary-tree-maximum-path-sum"),
+    "validate-bst":(98,"validate-binary-search-tree"),
+    "clone-graph":(133,"clone-graph"),
+    "find-if-path-exists":(1971,"find-if-path-exists-in-graph"),
+    "number-of-islands":(200,"number-of-islands"),
+    "rotting-oranges":(994,"rotting-oranges"),
+    "01-matrix":(542,"01-matrix"),
+    "shortest-path-binary-matrix":(1091,"shortest-path-in-binary-matrix"),
+    "word-ladder":(127,"word-ladder"),
+    "max-area-of-island":(695,"max-area-of-island"),
+    "pacific-atlantic-water-flow":(417,"pacific-atlantic-water-flow"),
+    "surrounded-regions":(130,"surrounded-regions"),
+    "number-of-provinces":(547,"number-of-provinces"),
+    "course-schedule":(207,"course-schedule"),
+    "course-schedule-ii":(210,"course-schedule-ii"),
+    "find-eventual-safe-states":(802,"find-eventual-safe-states"),
+    "alien-dictionary":(269,"alien-dictionary"),
+    "is-graph-bipartite":(785,"is-graph-bipartite"),
+    "possible-bipartition":(886,"possible-bipartition"),
+    "redundant-connection":(684,"redundant-connection"),
+    "accounts-merge":(721,"accounts-merge"),
+    "most-stones-removed":(947,"most-stones-removed-with-same-row-or-column"),
+    "evaluate-division":(399,"evaluate-division"),
+    "network-delay-time":(743,"network-delay-time"),
+    "path-minimum-effort":(1631,"path-with-minimum-effort"),
+    "cheapest-flights-k-stops":(787,"cheapest-flights-within-k-stops"),
+    "swim-in-rising-water":(778,"swim-in-rising-water"),
+    "min-cost-connect-points":(1584,"min-cost-to-connect-all-points"),
+    "connecting-cities-min-cost":(1135,"connecting-cities-with-minimum-cost"),
+    "critical-connections":(1192,"critical-connections-in-a-network"),
+    "minimum-height-trees":(310,"minimum-height-trees"),
+    "lru-cache":(146,"lru-cache"),
+    "exam-room":(855,"exam-room"),
+    "find-median-data-stream":(295,"find-median-from-data-stream"),
+    "hamming-weight":(191,"number-of-1-bits"),
+}
+
+
 def highlight_code_token(text):
     """
     Highlight a plain-code token (no comments/strings inside).
@@ -230,7 +334,10 @@ def build_problem_card(prob_dir, topic_slug):
         f"<div class='card' id='{cid}' data-topic='{topic_slug}' data-name='{esc(display.lower())}'>"
         f"<div class='card-header' onclick=\"toggleCard('{cid}')\">"
         f"<span class='card-title'>{esc(display)}</span>"
-        f"<span class='badge {diff.lower()}'>{diff}</span>"
+        + (f"<a class='lc-link' href='https://leetcode.com/problems/{LC[name][1]}/' "
+           f"target='_blank' onclick='event.stopPropagation()'>#{LC[name][0]}</a>"
+           if name in LC else "")
+        + f"<span class='badge {diff.lower()}'>{diff}</span>"
         f"<span class='chevron'>&#9658;</span></div>"
         f"<div class='card-body collapsed'><div class='tabs'>{tabs}</div>{panels}</div></div>"
     )
@@ -315,6 +422,7 @@ p code,li code{background:var(--surface2);border:1px solid var(--border);padding
 .tab-panel th,.tab-panel td{border:1px solid var(--border);padding:.4rem .8rem;text-align:left}
 .tab-panel th{background:var(--surface2);color:var(--text);font-weight:600}.tab-panel td{color:var(--muted)}
 .tab-panel a{color:var(--accent)}.tab-panel strong{color:var(--text)}
+.lc-link{font-size:.72rem;font-weight:700;padding:.18rem .55rem;border-radius:6px;background:rgba(255,161,22,.12);color:#ffa116;text-decoration:none;border:1px solid rgba(255,161,22,.25);transition:all .15s;white-space:nowrap}.lc-link:hover{background:rgba(255,161,22,.25);color:#ffa116}
 ::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 @media(max-width:768px){.sidebar{display:none}.main{padding:1rem}}
