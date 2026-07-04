@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Generates a single-page HTML revision site from the DSA problems repo.
-# Triggered by GitHub Actions; outputs ./site/index.html
-import os, re, html
+# Outputs: ./site/index.html
+import re, html
 from pathlib import Path
 
 TOPICS = [
@@ -32,343 +32,331 @@ def read_file(path):
         return ""
 
 def esc(s):
-    return html.escape(str(s))
+    return html.escape(str(s), quote=True)
 
-def highlight_java(code):
-    keywords = (r"\b(public|private|protected|static|final|class|interface|"
-                r"void|int|long|boolean|char|String|return|new|if|else|for|"
-                r"while|break|continue|null|true|false|this|import|"
-                r"List|Map|Set|Queue|Deque|Arrays|Collections|"
-                r"ArrayList|HashMap|HashSet|LinkedList|ArrayDeque|"
-                r"PriorityQueue|TreeMap|TreeSet|Integer|Math|"
-                r"throws|throw|try|catch|finally|extends|implements)\b")
-    code = esc(code)
-    code = re.sub(r"(//.+?)(?=\n|$)", r'<span class="cm">\1</span>', code)
-    code = re.sub(r"(/\*.*?\*/)", r'<span class="cm">\1</span>', code, flags=re.DOTALL)
-    code = re.sub(r'(".*?")', r'<span class="st">\1</span>', code)
-    code = re.sub(r'\b(\d+)\b', r'<span class="nm">\1</span>', code)
-    code = re.sub(keywords, r'<span class="kw">\1</span>', code)
-    return code
+JAVA_KW = {
+    "public","private","protected","static","final","class","interface",
+    "void","int","long","boolean","char","String","return","new","if","else",
+    "for","while","break","continue","null","true","false","this","import",
+    "List","Map","Set","Queue","Deque","Arrays","Collections","ArrayList",
+    "HashMap","HashSet","LinkedList","ArrayDeque","PriorityQueue","TreeMap",
+    "TreeSet","Integer","Math","throws","throw","try","catch","finally",
+    "extends","implements",
+}
+
+def highlight_code_token(text):
+    """
+    Highlight a plain-code token (no comments/strings inside).
+    Scan character-by-character to emit: identifiers, numbers, punctuation.
+    Never runs a second regex pass over already-emitted HTML.
+    """
+    out = []
+    i = 0
+    n = len(text)
+    while i < n:
+        c = text[i]
+        # Identifier or keyword
+        if c.isalpha() or c == '_':
+            j = i
+            while j < n and (text[j].isalnum() or text[j] == '_'):
+                j += 1
+            word = text[i:j]
+            if word in JAVA_KW:
+                out.append(f"<span class='kw'>{word}</span>")
+            else:
+                out.append(html.escape(word, quote=False))
+            i = j
+        # Number literal
+        elif c.isdigit():
+            j = i
+            while j < n and (text[j].isdigit() or text[j] in '.xXaAbBcCdDeEfFLl_'):
+                j += 1
+            out.append(f"<span class='nm'>{html.escape(text[i:j], quote=False)}</span>")
+            i = j
+        # Any other character — escape and emit
+        else:
+            out.append(html.escape(c, quote=False))
+            i += 1
+    return "".join(out)
+
+
+def highlight_java(raw_code):
+    """
+    Tokenise Java source into comments / string literals / plain code,
+    then syntax-highlight only the plain-code tokens.
+    No regex ever runs over already-emitted HTML.
+    """
+    out = []
+    i = 0
+    s = raw_code
+    n = len(s)
+
+    while i < n:
+        # Block comment
+        if s[i:i+2] == "/*":
+            end = s.find("*/", i+2)
+            end = end + 2 if end != -1 else n
+            out.append("<span class='cm'>" + html.escape(s[i:end], quote=False) + "</span>")
+            i = end
+
+        # Line comment
+        elif s[i:i+2] == "//":
+            end = s.find("\n", i)
+            end = end if end != -1 else n
+            out.append("<span class='cm'>" + html.escape(s[i:end], quote=False) + "</span>")
+            i = end
+
+        # String literal
+        elif s[i] == '"':
+            j = i + 1
+            while j < n:
+                if s[j] == '\\':   j += 2
+                elif s[j] == '"':  j += 1; break
+                else:              j += 1
+            out.append("<span class='st'>" + html.escape(s[i:j], quote=False) + "</span>")
+            i = j
+
+        # Char literal
+        elif s[i] == "'":
+            j = i + 1
+            while j < n:
+                if s[j] == '\\':   j += 2
+                elif s[j] == "'":  j += 1; break
+                else:              j += 1
+            out.append("<span class='st'>" + html.escape(s[i:j], quote=False) + "</span>")
+            i = j
+
+        # Plain code — accumulate until next special boundary
+        else:
+            j = i
+            while j < n and s[j:j+2] not in ("//", "/*") and s[j] not in ('"', "'"):
+                j += 1
+            if j > i:
+                out.append(highlight_code_token(s[i:j]))
+            i = j
+
+    return "".join(out)
+
 
 def inline_md(text):
-    text = re.sub(r"`([^`]+)`", r"<code>\1</code>", text)
+    def code_sub(m):
+        return "<code>" + esc(m.group(1)) + "</code>"
+    text = re.sub(r"`([^`]+)`", code_sub, text)
     text = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", text)
     text = re.sub(r"\*([^*]+)\*", r"<em>\1</em>", text)
-    text = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r'<a href="\2" target="_blank">\1</a>', text)
+    text = re.sub(
+        r"\[([^\]]+)\]\(([^)]+)\)",
+        lambda m: f'<a href="{esc(m.group(2))}" target="_blank">{esc(m.group(1))}</a>',
+        text
+    )
     return text
+
 
 def md_to_html(text):
     lines = text.split("\n")
     out = []
     in_code = False
     code_buf = []
+    code_lang = ""
     in_table = False
+    had_th = False
+
     for line in lines:
         if line.startswith("```"):
             if in_code:
-                lang = code_buf[0] if code_buf else ""
-                code = "\n".join(code_buf[1:] if code_buf else [])
-                code = highlight_java(code) if lang.lower() in ("java", "") else esc(code)
-                out.append(f'<pre><code>{code}</code></pre>')
-                code_buf = []
-                in_code = False
+                raw = "\n".join(code_buf)
+                body = highlight_java(raw) if code_lang.lower() in ("java","") else html.escape(raw, quote=False)
+                out.append(f"<pre><code>{body}</code></pre>")
+                code_buf = []; code_lang = ""; in_code = False
+                in_table = False; had_th = False
             else:
-                in_code = True
-                code_buf = [line[3:].strip()]
+                in_code = True; code_lang = line[3:].strip()
             continue
+
         if in_code:
-            code_buf.append(line)
-            continue
+            code_buf.append(line); continue
+
         if line.startswith("|"):
             if not in_table:
-                out.append("<table>")
-                in_table = True
-            if re.match(r"^\|[-| :]+\|$", line):
-                continue
+                out.append("<table>"); in_table = True; had_th = False
+            if re.match(r"^\|[-| :]+\|$", line): continue
             cells = [c.strip() for c in line.strip("|").split("|")]
-            has_th = not any("<td" in o for o in out[-5:])
-            tag = "th" if has_th else "td"
-            row = "".join(f"<{tag}>{inline_md(c)}</{tag}>" for c in cells)
-            out.append(f"<tr>{row}</tr>")
+            tag = "th" if not had_th else "td"
+            if not had_th: had_th = True
+            out.append("<tr>" + "".join(f"<{tag}>{inline_md(c)}</{tag}>" for c in cells) + "</tr>")
             continue
         else:
             if in_table:
-                out.append("</table>")
-                in_table = False
+                out.append("</table>"); in_table = False; had_th = False
+
         m = re.match(r"^(#{1,4})\s+(.*)", line)
         if m:
-            level = min(len(m.group(1)) + 1, 6)
-            out.append(f"<h{level}>{inline_md(m.group(2))}</h{level}>")
-            continue
+            lvl = min(len(m.group(1)) + 1, 6)
+            out.append(f"<h{lvl}>{inline_md(m.group(2))}</h{lvl}>"); continue
         if re.match(r"^-{3,}$", line.strip()):
-            out.append("<hr>")
-            continue
-        m = re.match(r"^(\s*)([-*]|\d+\.)\s+(.*)", line)
-        if m:
-            out.append(f"<li>{inline_md(m.group(3))}</li>")
-            continue
-        if not line.strip():
-            out.append("<br>")
-            continue
+            out.append("<hr>"); continue
+        m = re.match(r"^\s*[-*]\s+(.*)", line)
+        if m: out.append(f"<li>{inline_md(m.group(1))}</li>"); continue
+        m = re.match(r"^\s*\d+\.\s+(.*)", line)
+        if m: out.append(f"<li>{inline_md(m.group(1))}</li>"); continue
+        if not line.strip(): out.append("<br>"); continue
         out.append(f"<p>{inline_md(line)}</p>")
-    if in_table:
-        out.append("</table>")
+
+    if in_table: out.append("</table>")
     return "\n".join(out)
 
+
 def build_problem_card(prob_dir, topic_slug):
-    name = prob_dir.name
+    name    = prob_dir.name
     display = name.replace("-", " ").title()
-    card_id = f"{topic_slug}-{name}"
-    sol   = read_file(prob_dir / "Solution.java")
-    notes = read_file(prob_dir / "NOTES.md")
-    uses  = read_file(prob_dir / "USE_CASES.md")
+    cid     = f"{topic_slug}-{name}"
+    sol     = read_file(prob_dir / "Solution.java")
+    notes   = read_file(prob_dir / "NOTES.md")
+    uses    = read_file(prob_dir / "USE_CASES.md")
     diff = "Medium"
-    if "| Easy" in notes or "Easy |" in notes or "| Easy" in uses: diff = "Easy"
+    if "| Easy" in notes or "Easy |" in notes: diff = "Easy"
     elif "| Hard" in notes or "Hard |" in notes: diff = "Hard"
-    tabs, panels = "", ""
+    tabs = ""; panels = ""
     if sol:
-        tabs   += f'<button class="tab-btn active" onclick="switchTab(event,\'{card_id}-sol\')">Solution.java</button>'
-        panels += f'<div id="{card_id}-sol" class="tab-panel active"><pre><code>{highlight_java(sol)}</code></pre></div>'
+        tabs   += f"<button class='tab-btn active' onclick=\"switchTab(event,'{cid}-sol')\">Solution.java</button>"
+        panels += f"<div id='{cid}-sol' class='tab-panel active'><pre><code>{highlight_java(sol)}</code></pre></div>"
     if notes:
-        tabs   += f'<button class="tab-btn" onclick="switchTab(event,\'{card_id}-notes\')">Notes</button>'
-        panels += f'<div id="{card_id}-notes" class="tab-panel">{md_to_html(notes)}</div>'
+        tabs   += f"<button class='tab-btn' onclick=\"switchTab(event,'{cid}-notes')\">Notes</button>"
+        panels += f"<div id='{cid}-notes' class='tab-panel'>{md_to_html(notes)}</div>"
     if uses:
-        tabs   += f'<button class="tab-btn" onclick="switchTab(event,\'{card_id}-uses\')">Use Cases</button>'
-        panels += f'<div id="{card_id}-uses" class="tab-panel">{md_to_html(uses)}</div>'
-    return f"""
-<div class="card" id="{card_id}" data-topic="{topic_slug}" data-name="{esc(display.lower())}">
-  <div class="card-header" onclick="toggleCard(\'{card_id}\')">
-    <span class="card-title">{esc(display)}</span>
-    <span class="badge {diff.lower()}">{diff}</span>
-    <span class="chevron">&#9658;</span>
-  </div>
-  <div class="card-body collapsed">
-    <div class="tabs">{tabs}</div>
-    {panels}
-  </div>
-</div>"""
+        tabs   += f"<button class='tab-btn' onclick=\"switchTab(event,'{cid}-uses')\">Use Cases</button>"
+        panels += f"<div id='{cid}-uses' class='tab-panel'>{md_to_html(uses)}</div>"
+    return (
+        f"<div class='card' id='{cid}' data-topic='{topic_slug}' data-name='{esc(display.lower())}'>"
+        f"<div class='card-header' onclick=\"toggleCard('{cid}')\">"
+        f"<span class='card-title'>{esc(display)}</span>"
+        f"<span class='badge {diff.lower()}'>{diff}</span>"
+        f"<span class='chevron'>&#9658;</span></div>"
+        f"<div class='card-body collapsed'><div class='tabs'>{tabs}</div>{panels}</div></div>"
+    )
 
-def build_guide_card(guide_file):
-    name = guide_file.stem
+
+def build_guide_card(gf):
+    name    = gf.stem
     display = name.replace("_", " ").title()
-    card_id = f"guide-{slugify(name)}"
-    content = read_file(guide_file)
-    return f"""
-<div class="card" id="{card_id}" data-topic="guides" data-name="{esc(display.lower())}">
-  <div class="card-header" onclick="toggleCard(\'{card_id}\')">
-    <span class="card-title">{esc(display)}</span>
-    <span class="badge guide">Guide</span>
-    <span class="chevron">&#9658;</span>
-  </div>
-  <div class="card-body collapsed">
-    {md_to_html(content)}
-  </div>
-</div>"""
+    cid     = f"guide-{slugify(name)}"
+    return (
+        f"<div class='card' id='{cid}' data-topic='guides' data-name='{esc(display.lower())}'>"
+        f"<div class='card-header' onclick=\"toggleCard('{cid}')\">"
+        f"<span class='card-title'>{esc(display)}</span>"
+        f"<span class='badge guide'>Guide</span>"
+        f"<span class='chevron'>&#9658;</span></div>"
+        f"<div class='card-body collapsed'>{md_to_html(read_file(gf))}</div></div>"
+    )
 
-sections_html = ""
-sidebar_html = ""
-total_problems = 0
+
+sections_html = ""; sidebar_html = ""; total_problems = 0
 
 for topic_slug, topic_name in TOPICS:
-    topic_path = ROOT / topic_slug
-    if not topic_path.exists():
-        continue
-    section_id = f"section-{topic_slug}"
-    sidebar_html += f'<li><a href="#{section_id}">{topic_name}</a></li>'
-    cards_html = ""
+    tp = ROOT / topic_slug
+    if not tp.exists(): continue
+    sid = f"section-{topic_slug}"
+    sidebar_html += f"<li><a href='#{sid}'>{esc(topic_name)}</a></li>"
+    cards = ""
     if topic_slug == "guides":
-        for gf in sorted(topic_path.glob("*.md")):
-            cards_html += build_guide_card(gf)
+        for gf in sorted(tp.glob("*.md")): cards += build_guide_card(gf)
     else:
-        for pd in sorted(d for d in topic_path.iterdir() if d.is_dir()):
-            cards_html += build_problem_card(pd, topic_slug)
-            total_problems += 1
-    sections_html += f"""
-<section id="{section_id}">
-  <h2 class="section-title">{esc(topic_name)}</h2>
-  {cards_html}
-</section>"""
+        for pd in sorted(d for d in tp.iterdir() if d.is_dir()):
+            cards += build_problem_card(pd, topic_slug); total_problems += 1
+    sections_html += f"<section id='{sid}'><h2 class='section-title'>{esc(topic_name)}</h2>{cards}</section>"
 
 CSS = """
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0d1117;--surface:#161b22;--surface2:#21262d;--border:#30363d;
+:root{--bg:#0d1117;--surface:#161b22;--surface2:#21262d;--border:#30363d;
   --accent:#58a6ff;--text:#e6edf3;--muted:#8b949e;
-  --easy:#3fb950;--medium:#e3b341;--hard:#f85149;--guide:#58a6ff;
-  --sidebar-w:220px;--font:'Segoe UI',system-ui,sans-serif;
-  --mono:'Cascadia Code','Fira Code',Consolas,monospace;
-}
-body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
+  --easy:#3fb950;--medium:#e3b341;--hard:#f85149;--guide:#58a6ff;--sidebar-w:220px}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
 .layout{display:flex;min-height:100vh}
 .sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--surface);
-  border-right:1px solid var(--border);padding:1.5rem 0;position:sticky;top:0;
-  height:100vh;overflow-y:auto;flex-shrink:0}
+  border-right:1px solid var(--border);padding:1.5rem 0;position:sticky;top:0;height:100vh;overflow-y:auto;flex-shrink:0}
 .sidebar h1{font-size:.8rem;color:var(--muted);padding:0 1rem 1rem;text-transform:uppercase;letter-spacing:.08em}
 .sidebar ul{list-style:none}
-.sidebar li a{display:block;padding:.4rem 1rem;color:var(--muted);text-decoration:none;
-  font-size:.82rem;border-left:2px solid transparent;transition:all .15s}
-.sidebar li a:hover{color:var(--text);border-left-color:var(--accent);background:var(--surface2)}
-.sidebar li a.active{color:var(--accent);border-left-color:var(--accent)}
+.sidebar li a{display:block;padding:.4rem 1rem;color:var(--muted);text-decoration:none;font-size:.82rem;border-left:2px solid transparent;transition:all .15s}
+.sidebar li a:hover,.sidebar li a.active{color:var(--accent);border-left-color:var(--accent);background:var(--surface2)}
 .main{flex:1;padding:2rem;max-width:1100px}
-.topbar{background:var(--surface);border:1px solid var(--border);border-radius:10px;
-  padding:1.5rem 2rem;margin-bottom:2rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap}
-.topbar-title{font-size:1.4rem;font-weight:700}
-.topbar-sub{font-size:.82rem;color:var(--muted)}
-.stats{display:flex;gap:1.5rem;margin-left:auto}
-.stat{text-align:center}
-.stat-n{font-size:1.5rem;font-weight:700;color:var(--accent)}
-.stat-l{font-size:.72rem;color:var(--muted);text-transform:uppercase}
+.topbar{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.5rem 2rem;margin-bottom:2rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap}
+.topbar-title{font-size:1.4rem;font-weight:700}.topbar-sub{font-size:.82rem;color:var(--muted)}
+.stats{display:flex;gap:1.5rem;margin-left:auto}.stat{text-align:center}
+.stat-n{font-size:1.5rem;font-weight:700;color:var(--accent)}.stat-l{font-size:.72rem;color:var(--muted);text-transform:uppercase}
 .controls{display:flex;gap:.75rem;margin-bottom:1.5rem;flex-wrap:wrap}
-.search-box{flex:1;min-width:200px;padding:.55rem .9rem;background:var(--surface);
-  border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:.9rem;outline:none}
+.search-box{flex:1;min-width:200px;padding:.55rem .9rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:.9rem;outline:none}
 .search-box:focus{border-color:var(--accent)}
-.filter-btn{padding:.5rem 1rem;border-radius:8px;border:1px solid var(--border);
-  background:var(--surface);color:var(--muted);cursor:pointer;font-size:.82rem;transition:all .15s}
+.filter-btn{padding:.5rem 1rem;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;font-size:.82rem;transition:all .15s;font-family:inherit}
 .filter-btn:hover,.filter-btn.active{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
-.section-title{font-size:1.05rem;font-weight:700;color:var(--accent);
-  border-bottom:1px solid var(--border);padding-bottom:.5rem;margin:2rem 0 1rem}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;
-  margin-bottom:.75rem;overflow:hidden;transition:border-color .15s}
-.card:hover{border-color:#444d56}
-.card.hidden{display:none}
+.section-title{font-size:1.05rem;font-weight:700;color:var(--accent);border-bottom:1px solid var(--border);padding-bottom:.5rem;margin:2rem 0 1rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:.75rem;overflow:hidden;transition:border-color .15s}
+.card:hover{border-color:#444d56}.card.hidden{display:none}
 .card-header{display:flex;align-items:center;gap:.75rem;padding:.9rem 1.2rem;cursor:pointer;user-select:none}
-.card-header:hover{background:var(--surface2)}
-.card-title{font-weight:600;font-size:.95rem;flex:1}
+.card-header:hover{background:var(--surface2)}.card-title{font-weight:600;font-size:.95rem;flex:1}
 .badge{font-size:.7rem;font-weight:700;padding:.2rem .6rem;border-radius:20px;text-transform:uppercase;letter-spacing:.05em}
-.badge.easy{background:rgba(63,185,80,.15);color:var(--easy)}
-.badge.medium{background:rgba(227,179,65,.15);color:var(--medium)}
-.badge.hard{background:rgba(248,81,73,.15);color:var(--hard)}
-.badge.guide{background:rgba(88,166,255,.15);color:var(--guide)}
-.chevron{color:var(--muted);font-size:.85rem;transition:transform .2s}
-.card.open .chevron{transform:rotate(90deg)}
-.card-body{overflow:hidden;border-top:1px solid var(--border)}
-.card-body.collapsed{display:none}
+.badge.easy{background:rgba(63,185,80,.15);color:var(--easy)}.badge.medium{background:rgba(227,179,65,.15);color:var(--medium)}
+.badge.hard{background:rgba(248,81,73,.15);color:var(--hard)}.badge.guide{background:rgba(88,166,255,.15);color:var(--guide)}
+.chevron{color:var(--muted);font-size:.85rem;transition:transform .2s}.card.open .chevron{transform:rotate(90deg)}
+.card-body{overflow:hidden;border-top:1px solid var(--border)}.card-body.collapsed{display:none}
 .tabs{display:flex;border-bottom:1px solid var(--border)}
-.tab-btn{padding:.6rem 1.1rem;background:none;border:none;border-bottom:2px solid transparent;
-  color:var(--muted);cursor:pointer;font-size:.82rem;font-family:var(--font);transition:all .15s;margin-bottom:-1px}
-.tab-btn:hover{color:var(--text)}
-.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
-.tab-panel{display:none;padding:1.2rem}
-.tab-panel.active{display:block}
-pre{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:1rem;
-  overflow-x:auto;font-size:.82rem;line-height:1.55;font-family:var(--mono)}
-code{font-family:var(--mono);font-size:.82rem}
-p code,li code{background:var(--surface2);border:1px solid var(--border);
-  padding:.1em .35em;border-radius:4px;color:#e3b341}
+.tab-btn{padding:.6rem 1.1rem;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);cursor:pointer;font-size:.82rem;font-family:inherit;transition:all .15s;margin-bottom:-1px}
+.tab-btn:hover{color:var(--text)}.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-panel{display:none;padding:1.2rem}.tab-panel.active{display:block}
+pre{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:1rem;overflow-x:auto;font-size:.82rem;line-height:1.55;font-family:'Cascadia Code','Fira Code',Consolas,monospace}
+code{font-family:'Cascadia Code','Fira Code',Consolas,monospace;font-size:.82rem}
+p code,li code{background:var(--surface2);border:1px solid var(--border);padding:.1em .35em;border-radius:4px;color:#e3b341}
 .kw{color:#ff7b72}.cm{color:#8b949e;font-style:italic}.st{color:#a5d6ff}.nm{color:#79c0ff}
-.tab-panel h2{font-size:1.05rem;color:var(--accent);border-bottom:1px solid var(--border);
-  padding-bottom:.3rem;margin:1.2rem 0 .4rem}
+.tab-panel h2{font-size:1.05rem;color:var(--accent);border-bottom:1px solid var(--border);padding-bottom:.3rem;margin:1.2rem 0 .4rem}
 .tab-panel h3,.tab-panel h4{color:var(--text);margin:1rem 0 .3rem;font-size:.95rem}
 .tab-panel p{margin:.5rem 0;color:var(--muted);font-size:.88rem}
 .tab-panel li{margin:.25rem 0 .25rem 1.5rem;color:var(--muted);font-size:.88rem}
 .tab-panel hr{border:none;border-top:1px solid var(--border);margin:1rem 0}
 .tab-panel table{border-collapse:collapse;width:100%;margin:.75rem 0;font-size:.82rem}
 .tab-panel th,.tab-panel td{border:1px solid var(--border);padding:.4rem .8rem;text-align:left}
-.tab-panel th{background:var(--surface2);color:var(--text);font-weight:600}
-.tab-panel td{color:var(--muted)}
-.tab-panel a{color:var(--accent)}
-.tab-panel strong{color:var(--text)}
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:transparent}
+.tab-panel th{background:var(--surface2);color:var(--text);font-weight:600}.tab-panel td{color:var(--muted)}
+.tab-panel a{color:var(--accent)}.tab-panel strong{color:var(--text)}
+::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 @media(max-width:768px){.sidebar{display:none}.main{padding:1rem}}
 """
 
 JS = """
-function toggleCard(id){
-  var c=document.getElementById(id),b=c.querySelector('.card-body');
-  c.classList.toggle('open'); b.classList.toggle('collapsed');
-}
-function expandAll(){
-  document.querySelectorAll('.card:not(.hidden)').forEach(function(c){
-    c.classList.add('open'); c.querySelector('.card-body').classList.remove('collapsed');
-  });
-}
-function collapseAll(){
-  document.querySelectorAll('.card').forEach(function(c){
-    c.classList.remove('open'); c.querySelector('.card-body').classList.add('collapsed');
-  });
-}
-function switchTab(e,pid){
-  var card=e.target.closest('.card');
-  card.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
-  card.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
-  e.target.classList.add('active');
-  document.getElementById(pid).classList.add('active');
-}
+function toggleCard(id){var c=document.getElementById(id),b=c.querySelector('.card-body');c.classList.toggle('open');b.classList.toggle('collapsed');}
+function expandAll(){document.querySelectorAll('.card:not(.hidden)').forEach(function(c){c.classList.add('open');c.querySelector('.card-body').classList.remove('collapsed');});}
+function collapseAll(){document.querySelectorAll('.card').forEach(function(c){c.classList.remove('open');c.querySelector('.card-body').classList.add('collapsed');});}
+function switchTab(e,pid){var card=e.target.closest('.card');card.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});card.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});e.target.classList.add('active');document.getElementById(pid).classList.add('active');}
 var activeDiff='all';
-function filterDiff(diff,btn){
-  activeDiff=diff;
-  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
-  btn.classList.add('active');
-  filterCards();
-}
-function filterCards(){
-  var q=document.getElementById('search').value.toLowerCase();
-  document.querySelectorAll('.card').forEach(function(card){
-    var name=(card.dataset.name||'').toLowerCase();
-    var topic=(card.dataset.topic||'').toLowerCase();
-    var badge=card.querySelector('.badge');
-    var diff=badge?badge.className.replace('badge ','').toLowerCase():'';
-    var ok=(!q||name.includes(q)||topic.includes(q))&&(activeDiff==='all'||diff===activeDiff);
-    card.classList.toggle('hidden',!ok);
-  });
-}
-var sections=document.querySelectorAll('section[id]');
-var navLinks=document.querySelectorAll('.sidebar li a');
-if('IntersectionObserver' in window){
-  var obs=new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting) navLinks.forEach(function(a){
-        a.classList.toggle('active',a.getAttribute('href')=='#'+e.target.id);
-      });
-    });
-  },{rootMargin:'-20% 0px -70% 0px'});
-  sections.forEach(function(s){obs.observe(s);});
-}
+function filterDiff(diff,btn){activeDiff=diff;document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');filterCards();}
+function filterCards(){var q=document.getElementById('search').value.toLowerCase();document.querySelectorAll('.card').forEach(function(card){var name=(card.dataset.name||'').toLowerCase();var topic=(card.dataset.topic||'').toLowerCase();var badge=card.querySelector('.badge');var diff=badge?badge.className.replace('badge ','').toLowerCase():'';var ok=(!q||name.includes(q)||topic.includes(q))&&(activeDiff==='all'||diff===activeDiff);card.classList.toggle('hidden',!ok);});}
+var secs=document.querySelectorAll('section[id]'),navs=document.querySelectorAll('.sidebar li a');
+if('IntersectionObserver' in window){var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)navs.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id);});});},{rootMargin:'-20% 0px -70% 0px'});secs.forEach(function(s){obs.observe(s);});}
 """
 
-page = f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>DSA Revision &mdash; Staff/Principal Engineer Prep</title>
-<style>{CSS}</style>
-</head>
-<body>
-<div class="layout">
-<nav class="sidebar">
-  <h1>DSA Topics</h1>
-  <ul id="sidebar-nav">{sidebar_html}</ul>
-</nav>
-<main class="main">
-  <div class="topbar">
-    <div>
-      <div class="topbar-title">DSA Revision</div>
-      <div class="topbar-sub">Staff / Principal Engineer Preparation</div>
-    </div>
-    <div class="stats">
-      <div class="stat"><div class="stat-n">{total_problems}</div><div class="stat-l">Problems</div></div>
-      <div class="stat"><div class="stat-n">15</div><div class="stat-l">Guides</div></div>
-    </div>
-  </div>
-  <div class="controls">
-    <input class="search-box" type="text" id="search" placeholder="Search problems, topics, patterns..." oninput="filterCards()">
-    <button class="filter-btn active" onclick="filterDiff('all',this)">All</button>
-    <button class="filter-btn" onclick="filterDiff('easy',this)">Easy</button>
-    <button class="filter-btn" onclick="filterDiff('medium',this)">Medium</button>
-    <button class="filter-btn" onclick="filterDiff('hard',this)">Hard</button>
-    <button class="filter-btn" onclick="filterDiff('guide',this)">Guides</button>
-    <button class="filter-btn" onclick="expandAll()">Expand All</button>
-    <button class="filter-btn" onclick="collapseAll()">Collapse All</button>
-  </div>
-  {sections_html}
-</main>
-</div>
-<script>{JS}</script>
-</body>
-</html>"""
+page = (
+    "<!DOCTYPE html><html lang='en'><head>"
+    "<meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1.0'>"
+    "<title>DSA Revision &mdash; Staff/Principal Engineer Prep</title>"
+    f"<style>{CSS}</style></head><body>"
+    "<div class='layout'>"
+    f"<nav class='sidebar'><h1>DSA Topics</h1><ul>{sidebar_html}</ul></nav>"
+    "<main class='main'>"
+    "<div class='topbar'><div><div class='topbar-title'>DSA Revision</div>"
+    "<div class='topbar-sub'>Staff / Principal Engineer Preparation</div></div>"
+    f"<div class='stats'><div class='stat'><div class='stat-n'>{total_problems}</div>"
+    "<div class='stat-l'>Problems</div></div>"
+    "<div class='stat'><div class='stat-n'>15</div><div class='stat-l'>Guides</div></div></div></div>"
+    "<div class='controls'>"
+    "<input class='search-box' type='text' id='search' placeholder='Search problems, topics, patterns...' oninput='filterCards()'>"
+    "<button class='filter-btn active' onclick=\"filterDiff('all',this)\">All</button>"
+    "<button class='filter-btn' onclick=\"filterDiff('easy',this)\">Easy</button>"
+    "<button class='filter-btn' onclick=\"filterDiff('medium',this)\">Medium</button>"
+    "<button class='filter-btn' onclick=\"filterDiff('hard',this)\">Hard</button>"
+    "<button class='filter-btn' onclick=\"filterDiff('guide',this)\">Guides</button>"
+    "<button class='filter-btn' onclick='expandAll()'>Expand All</button>"
+    "<button class='filter-btn' onclick='collapseAll()'>Collapse All</button>"
+    f"</div>{sections_html}</main></div>"
+    f"<script>{JS}</script></body></html>"
+)
 
 (SITE / "index.html").write_text(page, encoding="utf-8")
-print(f"Generated site/index.html ({len(page):,} chars) — {total_problems} problems")
+print(f"Generated site/index.html  ({len(page):,} bytes)  problems={total_problems}")
