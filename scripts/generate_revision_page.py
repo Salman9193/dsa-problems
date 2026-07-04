@@ -135,6 +135,7 @@ LC = {
     "range-sum-query-mutable":(307,"range-sum-query-mutable"),
     "merge-k-sorted-lists":(23,"merge-k-sorted-lists"),
     "word-search-ii":(212,"word-search-ii"),
+    "find-duplicate-subtrees":(652,"find-duplicate-subtrees"),
 }
 
 ROOT = Path(".")
