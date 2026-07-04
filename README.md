@@ -182,4 +182,4 @@ Each problem lives in `topic/problem-name/` and contains:
 ---
 > 100 problems · 16 guides · Complete Staff/Principal Engineer preparation resource
 
-> Last updated: 2026-07-04 — added 4 staff-level problems + segment tree guide
+> Last updated: 2026-07-04 — added Find Duplicate Subtrees (#652)
