@@ -604,13 +604,13 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
 .tab-panel{display:none;padding:1.1rem}
 .tab-panel.active{display:block}
-pre{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:1rem;
-  overflow-x:auto;font-size:.8rem;line-height:1.55;
+pre{background:#f6f8fa;border:1px solid var(--border);border-radius:8px;padding:1rem;
+  overflow-x:auto;font-size:.8rem;line-height:1.55;color:#1f2328;
   font-family:'Cascadia Code','Fira Code',Consolas,monospace}
 code{font-family:'Cascadia Code','Fira Code',Consolas,monospace;font-size:.8rem}
 p code,li code{background:var(--surface2);border:1px solid var(--border);
   padding:.1em .35em;border-radius:4px;color:#b45309}
-.kw{color:#cf222e}.cm{color:#57606a;font-style:italic}.st{color:#0a3069}.nm{color:#0550ae}
+.kw{color:#cf222e}.cm{color:#6e7781;font-style:italic}.st{color:#0a3069}.nm{color:#0550ae}
 .tab-panel h2{font-size:1rem;color:var(--accent);border-bottom:1px solid var(--border);
   padding-bottom:.3rem;margin:1.1rem 0 .35rem}
 .tab-panel h3,.tab-panel h4{color:var(--text);margin:.9rem 0 .3rem;font-size:.9rem}
