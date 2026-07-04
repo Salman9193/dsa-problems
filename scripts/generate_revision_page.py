@@ -539,7 +539,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .sidebar li a.active .nav-count{background:#d0e4fb;color:var(--accent)}
 
 /* Main */
-.main{flex:1;padding:2rem;max-width:960px;min-width:0}
+.main{flex:1;padding:2rem;min-width:0}
 
 /* Section show/hide — THE KEY RULE */
 .topic-section{display:none}
