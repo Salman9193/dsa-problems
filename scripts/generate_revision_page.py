@@ -289,60 +289,97 @@ def md_to_html(text):
 def build_problem_card(prob_dir, topic_slug):
     name = prob_dir.name
     display = name.replace("-", " ").title()
-    cid = topic_slug + "-" + name
+    notes = read_file(prob_dir / "NOTES.md")
+    diff = "Medium"
+    if "| Easy" in notes or "Easy |" in notes: diff = "Easy"
+    elif "| Hard" in notes or "Hard |" in notes: diff = "Hard"
+    lc_badge = ""
+    if name in LC:
+        lc_num, lc_slug = LC[name]
+        lc_badge = ("<a class='lc-link' href='https://leetcode.com/problems/" + lc_slug + "/' "
+                    "target='_blank' onclick='event.stopPropagation()'>#" + str(lc_num) + "</a>")
+    hash_id = topic_slug + "/" + name
+    return (
+        "<div class='card' data-topic='" + topic_slug + "' data-name='" + esc(display.lower()) + "' "
+        "data-diff='" + diff.lower() + "' onclick=\"navTo('" + hash_id + "')\">"        "<span class='card-title'>" + esc(display) + "</span>"
+        + lc_badge +
+        "<span class='badge " + diff.lower() + "'>" + diff + "</span>"
+        "<span class='card-arrow'>&#8250;</span>"
+        "</div>"
+    )
+
+
+def build_problem_page(prob_dir, topic_slug):
+    name = prob_dir.name
+    display = name.replace("-", " ").title()
+    pid = "prob-" + topic_slug + "-" + name
     sol   = read_file(prob_dir / "Solution.java")
     notes = read_file(prob_dir / "NOTES.md")
     uses  = read_file(prob_dir / "USE_CASES.md")
     diff = "Medium"
     if "| Easy" in notes or "Easy |" in notes: diff = "Easy"
     elif "| Hard" in notes or "Hard |" in notes: diff = "Hard"
-
     lc_badge = ""
     if name in LC:
         lc_num, lc_slug = LC[name]
         lc_badge = ("<a class='lc-link' href='https://leetcode.com/problems/" + lc_slug + "/' "
-                    "target='_blank' onclick='event.stopPropagation()'>#" + str(lc_num) + "</a>")
-
-    tabs = ""
-    panels = ""
+                    "target='_blank'>#" + str(lc_num) + "</a>")
+    tabs = panels = ""
     if sol:
-        tabs   += "<button class='tab-btn active' onclick=\"switchTab(event,'" + cid + "-sol')\">Solution.java</button>"
-        panels += "<div id='" + cid + "-sol' class='tab-panel active'><pre><code>" + highlight_java(sol) + "</code></pre></div>"
+        tabs   += "<button class='tab-btn active' onclick=\"switchTab(event,'" + pid + "-sol')\">Solution.java</button>"
+        panels += "<div id='" + pid + "-sol' class='tab-panel active'><pre><code>" + highlight_java(sol) + "</code></pre></div>"
     if notes:
-        tabs   += "<button class='tab-btn' onclick=\"switchTab(event,'" + cid + "-notes')\">Notes</button>"
-        panels += "<div id='" + cid + "-notes' class='tab-panel'>" + md_to_html(notes) + "</div>"
+        tabs   += "<button class='tab-btn' onclick=\"switchTab(event,'" + pid + "-notes')\">Notes</button>"
+        panels += "<div id='" + pid + "-notes' class='tab-panel'>" + md_to_html(notes) + "</div>"
     if uses:
-        tabs   += "<button class='tab-btn' onclick=\"switchTab(event,'" + cid + "-uses')\">Use Cases</button>"
-        panels += "<div id='" + cid + "-uses' class='tab-panel'>" + md_to_html(uses) + "</div>"
-
+        tabs   += "<button class='tab-btn' onclick=\"switchTab(event,'" + pid + "-uses')\">Use Cases</button>"
+        panels += "<div id='" + pid + "-uses' class='tab-panel'>" + md_to_html(uses) + "</div>"
+    topic_display = dict(TOPICS).get(topic_slug, topic_slug.replace("-"," ").title())
     return (
-        "<div class='card' id='" + cid + "' data-topic='" + topic_slug + "' data-name='" + esc(display.lower()) + "'>"
-        "<div class='card-header' onclick=\"toggleCard('" + cid + "')\">"
-        "<span class='card-title'>" + esc(display) + "</span>"
+        "<div id='" + pid + "' class='prob-page'>"
+        "<div class='prob-header'>"
+        "<button class='back-btn' onclick=\"navTo('section-" + topic_slug + "')\">&#8592; " + esc(topic_display) + "</button>"
+        "<div class='prob-title-row'>"
+        "<h2 class='prob-title'>" + esc(display) + "</h2>"
         + lc_badge +
         "<span class='badge " + diff.lower() + "'>" + diff + "</span>"
-        "<span class='chevron'>&#9658;</span>"
-        "</div>"
-        "<div class='card-body collapsed'>"
+        "</div></div>"
         "<div class='tabs'>" + tabs + "</div>"
         + panels +
-        "</div></div>"
+        "</div>"
     )
 
 def build_guide_card(gf):
     name = gf.stem
     display = name.replace("_", " ").title()
-    cid = "guide-" + slugify(name)
+    hash_id = "guides/" + name
     return (
-        "<div class='card' id='" + cid + "' data-topic='guides' data-name='" + esc(display.lower()) + "'>"
-        "<div class='card-header' onclick=\"toggleCard('" + cid + "')\">"
-        "<span class='card-title'>" + esc(display) + "</span>"
+        "<div class='card' data-topic='guides' data-name='" + esc(display.lower()) + "' "
+        "data-diff='guide' onclick=\"navTo('" + hash_id + "')\">"        "<span class='card-title'>" + esc(display) + "</span>"
         "<span class='badge guide'>Guide</span>"
-        "<span class='chevron'>&#9658;</span>"
-        "</div>"
-        "<div class='card-body collapsed'>" + md_to_html(read_file(gf)) + "</div>"
+        "<span class='card-arrow'>&#8250;</span>"
         "</div>"
     )
+
+
+def build_guide_page(gf):
+    name = gf.stem
+    display = name.replace("_", " ").title()
+    gid = "guide-" + slugify(name)
+    content = md_to_html(read_file(gf))
+    return (
+        "<div id='" + gid + "' class='prob-page'>"
+        "<div class='prob-header'>"
+        "<button class='back-btn' onclick=\"navTo('section-guides')\">&#8592; Concept Guides</button>"
+        "<div class='prob-title-row'>"
+        "<h2 class='prob-title'>" + esc(display) + "</h2>"
+        "<span class='badge guide'>Guide</span>"
+        "</div></div>"
+        "<div class='guide-body'>" + content + "</div>"
+        "</div>"
+    )
+
+
 
 def build_roadmap_section():
     nodes = [
@@ -463,6 +500,7 @@ emitted_groups = set()
 sidebar_html = ""
 sections_html = ""
 total_problems = 0
+all_problem_pages = ""
 
 # Roadmap nav entry
 sidebar_html += "<div class='nav-group'>Guides</div>"
@@ -484,13 +522,17 @@ for topic_slug, topic_name in TOPICS:
         "<span class='nav-icon'>" + icon + "</span>" + esc(topic_name) +
         "<span class='nav-count'>" + str(cnt) + "</span></a></li>"
     )
-    cards = ""
+    cards = ""; pages = ""
     if topic_slug == "guides":
-        for gf in sorted(tp.glob("*.md")): cards += build_guide_card(gf)
+        for gf in sorted(tp.glob("*.md")):
+            cards += build_guide_card(gf)
+            pages += build_guide_page(gf)
     else:
         for pd in sorted(d for d in tp.iterdir() if d.is_dir()):
             cards += build_problem_card(pd, topic_slug)
+            pages += build_problem_page(pd, topic_slug)
             total_problems += 1
+    all_problem_pages += pages
     si = TOPIC_META.get(topic_slug, ("📁",""))[0]
     pc = len([d for d in tp.iterdir() if d.is_dir()]) if topic_slug != "guides" else len(list(tp.glob("*.md")))
     unit = "problems" if topic_slug != "guides" else "guides"
@@ -576,13 +618,22 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 
 /* Cards */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;
-  margin-bottom:.65rem;overflow:hidden;transition:border-color .15s}
-.card:hover{border-color:#adbac7}
+  margin-bottom:.5rem;display:flex;align-items:center;gap:.75rem;
+  padding:.75rem 1.1rem;cursor:pointer;transition:all .15s}
+.card:hover{border-color:var(--accent);background:var(--surface2);transform:translateX(2px)}
 .card.hidden{display:none}
-.card-header{display:flex;align-items:center;gap:.65rem;padding:.85rem 1.1rem;
-  cursor:pointer;user-select:none}
-.card-header:hover{background:var(--surface2)}
-.card-title{font-weight:600;font-size:.9rem;flex:1}
+.card-title{font-weight:600;font-size:.88rem;flex:1}
+.card-arrow{color:var(--muted);font-size:1.2rem;margin-left:auto;flex-shrink:0}
+.prob-page{display:none}.prob-page.active{display:block}
+#prob-pages{display:none}
+.prob-header{margin-bottom:1.25rem}
+.back-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.35rem .75rem;
+  background:var(--surface2);border:1px solid var(--border);border-radius:8px;
+  color:var(--muted);cursor:pointer;font-size:.8rem;font-family:inherit;transition:all .15s;margin-bottom:.85rem}
+.back-btn:hover{border-color:var(--accent);color:var(--accent)}
+.prob-title-row{display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;margin-bottom:1rem}
+.prob-title{font-size:1.1rem;font-weight:700;color:var(--text)}
+.guide-body{padding:.25rem 0}
 .lc-link{font-size:.7rem;font-weight:700;padding:.15rem .5rem;border-radius:6px;
   background:rgba(255,161,22,.1);color:#b45309;text-decoration:none;
   border:1px solid rgba(255,161,22,.3);transition:all .15s}
@@ -592,10 +643,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .badge.medium{background:rgba(154,103,0,.12);color:var(--medium)}
 .badge.hard{background:rgba(209,36,47,.12);color:var(--hard)}
 .badge.guide{background:rgba(9,105,218,.12);color:var(--guide)}
-.chevron{color:var(--muted);font-size:.82rem;transition:transform .2s}
-.card.open .chevron{transform:rotate(90deg)}
-.card-body{overflow:hidden;border-top:1px solid var(--border)}
-.card-body.collapsed{display:none}
+/* card inline-expand CSS removed — problems now open as full pages */
 .tabs{display:flex;border-bottom:1px solid var(--border)}
 .tab-btn{padding:.55rem 1rem;background:none;border:none;
   border-bottom:2px solid transparent;color:var(--muted);cursor:pointer;
@@ -675,88 +723,73 @@ p code,li code{background:var(--surface2);border:1px solid var(--border);
 
 # ── JS ────────────────────────────────────────────────────────────────────────
 JS = """
-/* ── Section navigation ── */
-function showSection(id) {
-  document.querySelectorAll('.topic-section').forEach(function(s) { s.classList.remove('active'); });
-  document.querySelectorAll('.sidebar li a').forEach(function(a) { a.classList.remove('active'); });
-  var sec = document.getElementById(id);
-  if (sec) sec.classList.add('active');
-  var link = document.querySelector('.sidebar li a[href="#' + id + '"]');
-  if (link) link.classList.add('active');
-  window.scrollTo(0, 0);
+function router(){
+  var h=window.location.hash.replace('#','');
+  if(!h){showFirstSection();return;}
+  if(h.indexOf('/')!==-1){var s=h.indexOf('/');showProblem(h.slice(0,s),h.slice(s+1));}
+  else if(h.indexOf('section-')===0){showSection(h);}
+  else{showFirstSection();}
 }
-window.addEventListener('DOMContentLoaded', function() {
-  var hash = window.location.hash.replace('#','');
-  var target = hash && document.getElementById(hash) ? hash : '';
-  if (!target) {
-    var first = document.querySelector('.topic-section');
-    if (first) target = first.id;
-  }
-  if (target) showSection(target);
-});
-window.addEventListener('hashchange', function() {
-  var id = window.location.hash.replace('#','');
-  if (id && document.getElementById(id)) showSection(id);
-});
-
-/* ── Cards ── */
-function toggleCard(id) {
-  var c = document.getElementById(id), b = c.querySelector('.card-body');
-  c.classList.toggle('open'); b.classList.toggle('collapsed');
+function showFirstSection(){var f=document.querySelector('.topic-section');if(f)showSection(f.id);}
+function navTo(id){window.location.hash=id;}
+function showSection(id){
+  document.getElementById('prob-pages').style.display='none';
+  document.querySelectorAll('.topic-section').forEach(function(s){s.classList.remove('active');});
+  document.querySelectorAll('.prob-page').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.sidebar li a').forEach(function(a){a.classList.remove('active');});
+  var sec=document.getElementById(id);if(sec)sec.classList.add('active');
+  var link=document.querySelector('.sidebar li a[href="#'+id+'"]');if(link)link.classList.add('active');
+  window.scrollTo(0,0);
 }
-function expandAll() {
-  document.querySelectorAll('.topic-section.active .card:not(.hidden)').forEach(function(c) {
-    c.classList.add('open'); c.querySelector('.card-body').classList.remove('collapsed');
+function showProblem(topic,slug){
+  document.querySelectorAll('.topic-section').forEach(function(s){s.classList.remove('active');});
+  document.querySelectorAll('.prob-page').forEach(function(p){p.classList.remove('active');});
+  var pid=topic==='guides'?'guide-'+slug.toLowerCase().replace(/_/g,'-'):'prob-'+topic+'-'+slug;
+  var page=document.getElementById(pid);
+  if(!page){showSection('section-'+topic);return;}
+  document.getElementById('prob-pages').style.display='block';
+  page.classList.add('active');
+  document.querySelectorAll('.sidebar li a').forEach(function(a){a.classList.remove('active');});
+  var link=document.querySelector('.sidebar li a[href="#section-'+topic+'"]');if(link)link.classList.add('active');
+  window.scrollTo(0,0);
+}
+window.addEventListener('DOMContentLoaded',router);
+window.addEventListener('hashchange',router);
+function switchTab(e,pid){
+  var c=e.target.closest('.prob-page')||e.target.closest('.topic-section');
+  c.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  c.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
+  e.target.classList.add('active');document.getElementById(pid).classList.add('active');
+}
+var activeDiff='all';
+function filterDiff(diff,btn){
+  activeDiff=diff;
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');filterCards();
+}
+function filterCards(){
+  var q=document.getElementById('search').value.toLowerCase();
+  document.querySelectorAll('.topic-section.active .card').forEach(function(card){
+    var name=(card.dataset.name||'').toLowerCase();
+    var topic=(card.dataset.topic||'').toLowerCase();
+    var diff=(card.dataset.diff||'').toLowerCase();
+    var ok=(!q||name.includes(q)||topic.includes(q))&&(activeDiff==='all'||diff===activeDiff);
+    card.classList.toggle('hidden',!ok);
   });
 }
-function collapseAll() {
-  document.querySelectorAll('.topic-section.active .card').forEach(function(c) {
-    c.classList.remove('open'); c.querySelector('.card-body').classList.add('collapsed');
-  });
+var rmOpen={};
+function toggleRM(id){
+  var node=document.getElementById(id);node.classList.toggle('open');
+  if(node.classList.contains('open'))rmOpen[id]=1;else delete rmOpen[id];
+  var done=Object.keys(rmOpen).length;
+  document.getElementById('rm-pct').textContent=done+' / 17';
+  document.getElementById('rm-bar').style.width=Math.round(done/17*100)+'%';
 }
-function switchTab(e, pid) {
-  var card = e.target.closest('.card');
-  card.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
-  card.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
-  e.target.classList.add('active');
-  document.getElementById(pid).classList.add('active');
-}
-
-/* ── Filter ── */
-var activeDiff = 'all';
-function filterDiff(diff, btn) {
-  activeDiff = diff;
-  document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+function filterRM(phase,btn){
+  document.querySelectorAll('.rm-pill').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
-  filterCards();
-}
-function filterCards() {
-  var q = document.getElementById('search').value.toLowerCase();
-  document.querySelectorAll('.topic-section.active .card').forEach(function(card) {
-    var name = (card.dataset.name || '').toLowerCase();
-    var topic = (card.dataset.topic || '').toLowerCase();
-    var badge = card.querySelector('.badge');
-    var diff = badge ? badge.className.replace('badge ','').toLowerCase() : '';
-    var ok = (!q || name.includes(q) || topic.includes(q)) && (activeDiff === 'all' || diff === activeDiff);
-    card.classList.toggle('hidden', !ok);
-  });
-}
-
-/* ── Roadmap ── */
-var rmOpen = {};
-function toggleRM(id) {
-  var node = document.getElementById(id);
-  node.classList.toggle('open');
-  if (node.classList.contains('open')) rmOpen[id] = 1; else delete rmOpen[id];
-  var done = Object.keys(rmOpen).length;
-  document.getElementById('rm-pct').textContent = done + ' / 17';
-  document.getElementById('rm-bar').style.width = Math.round(done / 17 * 100) + '%';
-}
-function filterRM(phase, btn) {
-  document.querySelectorAll('.rm-pill').forEach(function(b) { b.classList.remove('active'); });
-  btn.classList.add('active');
-  document.querySelectorAll('.rm-node').forEach(function(n) {
-    n.classList.toggle('rm-hidden', phase !== 'all' && n.id.indexOf(phase) === -1);
+  document.querySelectorAll('.rm-node').forEach(function(n){
+    n.classList.toggle('rm-hidden',phase!=='all'&&n.id.indexOf(phase)===-1);
   });
 }
 """
@@ -791,12 +824,11 @@ page = (
     "<button class='filter-btn' onclick=\"filterDiff('medium',this)\">Medium</button>"
     "<button class='filter-btn' onclick=\"filterDiff('hard',this)\">Hard</button>"
     "<button class='filter-btn' onclick=\"filterDiff('guide',this)\">Guides</button>"
-    "<button class='filter-btn' onclick='expandAll()'>Expand All</button>"
-    "<button class='filter-btn' onclick='collapseAll()'>Collapse All</button>"
     "</div>"
 
     + roadmap_html
-    + sections_html +
+    + sections_html
+    + "<div id='prob-pages'>" + all_problem_pages + "</div>" +
 
     "</main></div>"
     "<script>" + JS + "</script>"
