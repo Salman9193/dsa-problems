@@ -40,6 +40,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | 20 | [Merge Intervals](./arrays/merge-intervals) | Intervals | Medium |
 | 21 | [Meeting Rooms II](./arrays/meeting-rooms-ii) | Intervals/Heap | Medium |
 | 22 | [Kth Largest Element](./arrays/kth-largest-element) | Heap/Quickselect | Medium |
+| 23 | [Maximum of Absolute Value Expression](./arrays/maximum-of-absolute-value-expression) | Math/Geometry | Medium |
 
 ### Strings
 | # | Problem | Topic | Difficulty |
@@ -180,6 +181,6 @@ Each problem lives in `topic/problem-name/` and contains:
 | [Floyd-Warshall, Max Flow & Bipartite Matching](./guides/FLOW_MATCHING.md) | Tier 3 advanced |
 
 ---
-> 100 problems · 16 guides · Complete Staff/Principal Engineer preparation resource
+> 105 problems · 16 guides · Complete Staff/Principal Engineer preparation resource
 
-> Last updated: 2026-07-04 — problems open as individual pages
+> Last updated: 2026-07-05 — added Maximum of Absolute Value Expression (#1131): max Manhattan distance via sign expansion
