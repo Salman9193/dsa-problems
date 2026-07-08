@@ -56,6 +56,7 @@ LC = {
     "kth-largest-element":(215,"kth-largest-element-in-an-array"),
     "valid-palindrome":(125,"valid-palindrome"),
     "longest-palindromic-substring":(5,"longest-palindromic-substring"),
+    "palindromic-substrings":(647,"palindromic-substrings"),
     "longest-substring-without-repeating":(3,"longest-substring-without-repeating-characters"),
     "longest-repeating-character-replacement":(424,"longest-repeating-character-replacement"),
     "minimum-window-substring":(76,"minimum-window-substring"),
