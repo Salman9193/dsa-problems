@@ -37,6 +37,7 @@ LC = {
     "container-with-most-water":(11,"container-with-most-water"),
     "trapping-rain-water":(42,"trapping-rain-water"),
     "product-of-array-except-self":(238,"product-of-array-except-self"),
+    "maximum-of-absolute-value-expression":(1131,"maximum-of-absolute-value-expression"),
     "find-pivot-index":(724,"find-pivot-index"),
     "sliding-window-maximum":(239,"sliding-window-maximum"),
     "car-pooling":(1094,"car-pooling"),
