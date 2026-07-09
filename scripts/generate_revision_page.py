@@ -244,6 +244,13 @@ def inline_md(text):
     text = re.sub(r"\*([^*]+)\*", r"<em>\1</em>", text)
     text = re.sub(r"\[([^\]]+)\]\(([^)]+)\)",
         lambda m: '<a href="' + esc(m.group(2)) + '" target="_blank">' + esc(m.group(1)) + '</a>', text)
+    # auto-link bare URLs (not already inside an href="..."); strip trailing punctuation
+    def _autolink(m):
+        url = m.group(1); trail = ""
+        while url and url[-1] in ".,;:":
+            trail = url[-1] + trail; url = url[:-1]
+        return ('<a href="' + url + '" target="_blank" rel="noopener">' + url + "</a>" + trail)
+    text = re.sub(r'(?<![">=])(https?://[^\s<>")\]]+)', _autolink, text)
     return text
 
 def md_to_html(text):
@@ -322,6 +329,7 @@ def build_problem_page(prob_dir, topic_slug):
     sol   = read_file(prob_dir / "Solution.java")
     notes = read_file(prob_dir / "NOTES.md")
     uses  = read_file(prob_dir / "USE_CASES.md")
+    research = read_file(prob_dir / "RESEARCH.md")
     diff = "Medium"
     if "| Easy" in notes or "Easy |" in notes: diff = "Easy"
     elif "| Hard" in notes or "Hard |" in notes: diff = "Hard"
@@ -340,6 +348,9 @@ def build_problem_page(prob_dir, topic_slug):
     if uses:
         tabs   += "<button class='tab-btn' onclick=\"switchTab(event,'" + pid + "-uses')\">Use Cases</button>"
         panels += "<div id='" + pid + "-uses' class='tab-panel'>" + md_to_html(uses) + "</div>"
+    if research:
+        tabs   += "<button class='tab-btn' onclick=\"switchTab(event,'" + pid + "-research')\">Research &amp; Foundations</button>"
+        panels += "<div id='" + pid + "-research' class='tab-panel'>" + md_to_html(research) + "</div>"
     topic_display = dict(TOPICS).get(topic_slug, topic_slug.replace("-"," ").title())
     return (
         "<div id='" + pid + "' class='prob-page'>"
