@@ -47,26 +47,6 @@ methods in exactly this spirit).
 
 ---
 
-## Research & Foundations
-
-- **J. M. Morris (1979), "Traversing binary trees simply and cheaply,"** *Information
-  Processing Letters* 9(5):197–200. The rigorous form of what this problem does:
-  traverse a tree in **O(1) space by temporarily rewiring pointers** (threading),
-  restoring structure as you go. Solves a stackless-traversal problem posed by Knuth in
-  1968. https://dblp.org/rec/journals/ipl/Morris79a.html
-- **A. J. Perlis & C. Thornton (1960), "Symbol manipulation by threaded lists,"**
-  *Communications of the ACM* 3:195–204. The foundational paper introducing **threaded
-  lists** — adding pointers to a linked structure so it can be traversed without a
-  stack. The intellectual ancestor of "flatten/traverse by pointer surgery."
-- **D. E. Knuth, *The Art of Computer Programming*, Vol. 1 (Fundamental Algorithms),
-  §2.3.2.** The natural correspondence between general trees and binary trees — the
-  left-child/right-sibling representation that this problem's `child`/`next` node
-  embodies.
-
-(These are verified citations, not from memory — Morris and Perlis–Thornton are
-indexed in dblp / ACM / Springer.)
-
----
 
 ## The Unified Pattern
 
