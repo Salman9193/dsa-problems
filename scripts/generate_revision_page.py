@@ -244,13 +244,19 @@ def inline_md(text):
     text = re.sub(r"\*([^*]+)\*", r"<em>\1</em>", text)
     text = re.sub(r"\[([^\]]+)\]\(([^)]+)\)",
         lambda m: '<a href="' + esc(m.group(2)) + '" target="_blank">' + esc(m.group(1)) + '</a>', text)
-    # auto-link bare URLs (not already inside an href="..."); strip trailing punctuation
+    # auto-link bare URLs (not already inside an href="..."); keep balanced parens, strip trailing punctuation
     def _autolink(m):
         url = m.group(1); trail = ""
-        while url and url[-1] in ".,;:":
-            trail = url[-1] + trail; url = url[:-1]
+        while url:
+            c = url[-1]
+            if c in ".,;:":
+                trail = c + trail; url = url[:-1]
+            elif c == ")" and url.count(")") > url.count("("):
+                trail = c + trail; url = url[:-1]
+            else:
+                break
         return ('<a href="' + url + '" target="_blank" rel="noopener">' + url + "</a>" + trail)
-    text = re.sub(r'(?<![">=])(https?://[^\s<>")\]]+)', _autolink, text)
+    text = re.sub(r'(?<![">=])(https?://[^\s<>"\]]+)', _autolink, text)
     return text
 
 def md_to_html(text):
