@@ -158,11 +158,12 @@ Each problem lives in `topic/problem-name/` and contains:
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
 | 104 | [Number of 1 Bits](./bit-manipulation/hamming-weight) | Bit Manipulation | Easy |
+| 105 | [Reverse Bits](./bit-manipulation/reverse-bits) | Bit Manipulation | Easy |
 
 ### Binary Search (Advanced)
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 105 | [Lowest Common Ancestor (Binary Tree)](./trees/lowest-common-ancestor) | DFS | Medium |
+| 106 | [Lowest Common Ancestor (Binary Tree)](./trees/lowest-common-ancestor) | DFS | Medium |
 
 ## Guides
 
@@ -185,6 +186,6 @@ Each problem lives in `topic/problem-name/` and contains:
 | [Floyd-Warshall, Max Flow & Bipartite Matching](./guides/FLOW_MATCHING.md) | Tier 3 advanced |
 
 ---
-> 109 problems · 16 guides · Complete Staff/Principal Engineer preparation resource
+> 110 problems · 16 guides · Complete Staff/Principal Engineer preparation resource
 
-> Last updated: 2026-07-05 — added Flatten a Multilevel Doubly Linked List (#430): O(1)-space DFS via pointer splicing
+> Last updated: 2026-07-05 — added Reverse Bits (#190): bit-reversal permutation, FFT connection
