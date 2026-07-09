@@ -41,129 +41,130 @@ Each problem lives in `topic/problem-name/` and contains:
 | 21 | [Meeting Rooms II](./arrays/meeting-rooms-ii) | Intervals/Heap | Medium |
 | 22 | [Kth Largest Element](./arrays/kth-largest-element) | Heap/Quickselect | Medium |
 | 23 | [Maximum of Absolute Value Expression](./arrays/maximum-of-absolute-value-expression) | Math/Geometry | Medium |
+| 24 | [Max Points on a Line](./arrays/max-points-on-a-line) | Geometry / Hashing | Hard |
 
 ### Strings
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 24 | [Valid Palindrome](./strings/valid-palindrome) | Two Pointers | Easy |
-| 25 | [Longest Palindromic Substring](./strings/longest-palindromic-substring) | DP/Expand | Medium |
-| 26 | [Longest Substring Without Repeating](./strings/longest-substring-without-repeating) | Sliding Window | Medium |
-| 27 | [Longest Repeating Character Replacement](./strings/longest-repeating-character-replacement) | Sliding Window | Medium |
-| 28 | [Minimum Window Substring](./strings/minimum-window-substring) | Sliding Window | Hard |
-| 29 | [Find All Anagrams](./strings/find-all-anagrams) | Sliding Window | Medium |
-| 30 | [First Unique Character](./strings/first-unique-character) | HashMap | Easy |
-| 31 | [Encode and Decode Strings](./strings/encode-and-decode-strings) | Design | Medium |
-| 32 | [Decode String](./strings/decode-string) | Stack | Medium |
-| 33 | [Minimum Remove to Make Valid Parentheses](./strings/minimum-remove-valid-parentheses) | Stack | Medium |
-| 34 | [Implement Trie](./strings/implement-trie) | Trie | Medium |
-| 35 | [Sort Characters By Frequency](./strings/sort-characters-by-frequency) | Bucket Sort / Hashing | Medium |
+| 25 | [Valid Palindrome](./strings/valid-palindrome) | Two Pointers | Easy |
+| 26 | [Longest Palindromic Substring](./strings/longest-palindromic-substring) | DP/Expand | Medium |
+| 27 | [Longest Substring Without Repeating](./strings/longest-substring-without-repeating) | Sliding Window | Medium |
+| 28 | [Longest Repeating Character Replacement](./strings/longest-repeating-character-replacement) | Sliding Window | Medium |
+| 29 | [Minimum Window Substring](./strings/minimum-window-substring) | Sliding Window | Hard |
+| 30 | [Find All Anagrams](./strings/find-all-anagrams) | Sliding Window | Medium |
+| 31 | [First Unique Character](./strings/first-unique-character) | HashMap | Easy |
+| 32 | [Encode and Decode Strings](./strings/encode-and-decode-strings) | Design | Medium |
+| 33 | [Decode String](./strings/decode-string) | Stack | Medium |
+| 34 | [Minimum Remove to Make Valid Parentheses](./strings/minimum-remove-valid-parentheses) | Stack | Medium |
+| 35 | [Implement Trie](./strings/implement-trie) | Trie | Medium |
+| 36 | [Sort Characters By Frequency](./strings/sort-characters-by-frequency) | Bucket Sort / Hashing | Medium |
 
 ### Linked List
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 36 | [Reverse Linked List](./linked-list/reverse-linked-list) | Linked List | Easy |
-| 37 | [Linked List Cycle](./linked-list/linked-list-cycle) | Fast/Slow Pointers | Easy |
-| 38 | [Linked List Random Node](./linked-list/linked-list-random-node) | Reservoir Sampling | Medium |
-| 39 | [Palindrome Linked List](./linked-list/palindrome-linked-list) | Fast/Slow + Reversal | Easy |
-| 40 | [Flatten a Multilevel Doubly Linked List](./linked-list/flatten-a-multilevel-doubly-linked-list) | DFS / Pointer Rewiring | Medium |
+| 37 | [Reverse Linked List](./linked-list/reverse-linked-list) | Linked List | Easy |
+| 38 | [Linked List Cycle](./linked-list/linked-list-cycle) | Fast/Slow Pointers | Easy |
+| 39 | [Linked List Random Node](./linked-list/linked-list-random-node) | Reservoir Sampling | Medium |
+| 40 | [Palindrome Linked List](./linked-list/palindrome-linked-list) | Fast/Slow + Reversal | Easy |
+| 41 | [Flatten a Multilevel Doubly Linked List](./linked-list/flatten-a-multilevel-doubly-linked-list) | DFS / Pointer Rewiring | Medium |
 
 ### Binary Search
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 41 | [Search in Rotated Sorted Array](./binary-search/search-in-rotated-sorted-array) | Binary Search | Medium |
-| 42 | [Find in Mountain Array](./binary-search/find-in-mountain-array) | Binary Search | Hard |
-| 43 | [Sqrt(x)](./binary-search/sqrt-x) | Binary Search | Easy |
-| 44 | [Online Election](./binary-search/online-election) | Binary Search/Design | Medium |
+| 42 | [Search in Rotated Sorted Array](./binary-search/search-in-rotated-sorted-array) | Binary Search | Medium |
+| 43 | [Find in Mountain Array](./binary-search/find-in-mountain-array) | Binary Search | Hard |
+| 44 | [Sqrt(x)](./binary-search/sqrt-x) | Binary Search | Easy |
+| 45 | [Online Election](./binary-search/online-election) | Binary Search/Design | Medium |
 
 ### Stacks
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 45 | [Valid Parentheses](./stacks/valid-parentheses) | Stack | Easy |
-| 46 | [Daily Temperatures](./stacks/daily-temperatures) | Monotonic Stack | Medium |
-| 47 | [Largest Rectangle in Histogram](./stacks/largest-rectangle-histogram) | Monotonic Stack | Hard |
+| 46 | [Valid Parentheses](./stacks/valid-parentheses) | Stack | Easy |
+| 47 | [Daily Temperatures](./stacks/daily-temperatures) | Monotonic Stack | Medium |
+| 48 | [Largest Rectangle in Histogram](./stacks/largest-rectangle-histogram) | Monotonic Stack | Hard |
 
 ### Dynamic Programming
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 48 | [Climbing Stairs](./dynamic-programming/climbing-stairs) | 1D DP | Easy |
-| 49 | [Coin Change](./dynamic-programming/coin-change) | 1D DP | Medium |
-| 50 | [Word Break](./dynamic-programming/word-break) | 1D DP | Medium |
-| 51 | [House Robber](./dynamic-programming/house-robber) | 1D DP / Take-or-Skip | Medium |
-| 52 | [Jump Game](./dynamic-programming/jump-game) | Greedy/DP | Medium |
-| 53 | [Unique Paths](./dynamic-programming/unique-paths) | 2D Grid DP | Medium |
-| 54 | [Cherry Pickup II](./dynamic-programming/cherry-pickup-ii) | 2D DP | Hard |
-| 55 | [Number of Ways to Paint N×3 Grid](./dynamic-programming/number-of-ways-paint-grid) | DP/Combinatorics | Hard |
-| 56 | [Partition Equal Subset Sum](./dynamic-programming/partition-equal-subset-sum) | 0-1 Knapsack | Medium |
-| 57 | [Longest Increasing Subsequence](./dynamic-programming/longest-increasing-subsequence) | DP / Patience Sorting | Medium |
-| 58 | [Burst Balloons](./dynamic-programming/burst-balloons) | Interval DP | Hard |
-| 59 | [Subsets](./dynamic-programming/subsets) | Backtracking | Medium |
-| 60 | [Permutations](./dynamic-programming/permutations) | Backtracking | Medium |
-| 61 | [Combination Sum](./dynamic-programming/combination-sum) | Backtracking | Medium |
-| 62 | [Word Search](./dynamic-programming/word-search) | Backtracking / 2D Grid | Medium |
-| 63 | [Shortest Common Supersequence](./dynamic-programming/shortest-common-supersequence) | LCS / 2D DP | Hard |
+| 49 | [Climbing Stairs](./dynamic-programming/climbing-stairs) | 1D DP | Easy |
+| 50 | [Coin Change](./dynamic-programming/coin-change) | 1D DP | Medium |
+| 51 | [Word Break](./dynamic-programming/word-break) | 1D DP | Medium |
+| 52 | [House Robber](./dynamic-programming/house-robber) | 1D DP / Take-or-Skip | Medium |
+| 53 | [Jump Game](./dynamic-programming/jump-game) | Greedy/DP | Medium |
+| 54 | [Unique Paths](./dynamic-programming/unique-paths) | 2D Grid DP | Medium |
+| 55 | [Cherry Pickup II](./dynamic-programming/cherry-pickup-ii) | 2D DP | Hard |
+| 56 | [Number of Ways to Paint N×3 Grid](./dynamic-programming/number-of-ways-paint-grid) | DP/Combinatorics | Hard |
+| 57 | [Partition Equal Subset Sum](./dynamic-programming/partition-equal-subset-sum) | 0-1 Knapsack | Medium |
+| 58 | [Longest Increasing Subsequence](./dynamic-programming/longest-increasing-subsequence) | DP / Patience Sorting | Medium |
+| 59 | [Burst Balloons](./dynamic-programming/burst-balloons) | Interval DP | Hard |
+| 60 | [Subsets](./dynamic-programming/subsets) | Backtracking | Medium |
+| 61 | [Permutations](./dynamic-programming/permutations) | Backtracking | Medium |
+| 62 | [Combination Sum](./dynamic-programming/combination-sum) | Backtracking | Medium |
+| 63 | [Word Search](./dynamic-programming/word-search) | Backtracking / 2D Grid | Medium |
+| 64 | [Shortest Common Supersequence](./dynamic-programming/shortest-common-supersequence) | LCS / 2D DP | Hard |
 
 ### Trees
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 64 | [Populating Next Right Pointers II](./trees/populating-next-right-pointers-ii) | BFS | Medium |
-| 65 | [Delete Nodes and Return Forest](./trees/delete-nodes-and-return-forest) | DFS | Medium |
-| 66 | [LCA of Deepest Leaves](./trees/lca-deepest-leaves) | DFS | Medium |
-| 67 | [All Possible Full Binary Trees](./trees/all-possible-full-binary-trees) | Recursion/Memo | Medium |
-| 68 | [Binary Search Tree Iterator](./trees/binary-search-tree-iterator) | Stack/Design | Medium |
-| 69 | [Lowest Common Ancestor](./trees/lowest-common-ancestor) | DFS | Medium |
-| 70 | [Binary Tree Maximum Path Sum](./trees/binary-tree-max-path-sum) | DFS | Hard |
-| 71 | [Validate BST](./trees/validate-bst) | DFS / Range Passing | Medium |
+| 65 | [Populating Next Right Pointers II](./trees/populating-next-right-pointers-ii) | BFS | Medium |
+| 66 | [Delete Nodes and Return Forest](./trees/delete-nodes-and-return-forest) | DFS | Medium |
+| 67 | [LCA of Deepest Leaves](./trees/lca-deepest-leaves) | DFS | Medium |
+| 68 | [All Possible Full Binary Trees](./trees/all-possible-full-binary-trees) | Recursion/Memo | Medium |
+| 69 | [Binary Search Tree Iterator](./trees/binary-search-tree-iterator) | Stack/Design | Medium |
+| 70 | [Lowest Common Ancestor](./trees/lowest-common-ancestor) | DFS | Medium |
+| 71 | [Binary Tree Maximum Path Sum](./trees/binary-tree-max-path-sum) | DFS | Hard |
+| 72 | [Validate BST](./trees/validate-bst) | DFS / Range Passing | Medium |
 
 ### Graphs
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 72 | [Clone Graph](./graphs/clone-graph) | BFS/DFS | Medium |
-| 73 | [Find if Path Exists](./graphs/find-if-path-exists) | BFS/DFS/DSU | Easy |
-| 74 | [Number of Islands](./graphs/number-of-islands) | BFS/DFS/DSU | Medium |
-| 75 | [Rotting Oranges](./graphs/rotting-oranges) | Multi-Source BFS | Medium |
-| 76 | [01 Matrix](./graphs/01-matrix) | Multi-Source BFS | Medium |
-| 77 | [Shortest Path in Binary Matrix](./graphs/shortest-path-binary-matrix) | BFS | Medium |
-| 78 | [Word Ladder](./graphs/word-ladder) | BFS/Implicit Graph | Hard |
-| 79 | [Max Area of Island](./graphs/max-area-of-island) | DFS/BFS | Medium |
-| 80 | [Pacific Atlantic Water Flow](./graphs/pacific-atlantic-water-flow) | Multi-Source BFS | Medium |
-| 81 | [Surrounded Regions](./graphs/surrounded-regions) | BFS/Union-Find | Medium |
-| 82 | [Number of Provinces](./graphs/number-of-provinces) | DFS/BFS/DSU | Medium |
-| 83 | [Course Schedule](./graphs/course-schedule) | Topological Sort | Medium |
-| 84 | [Course Schedule II](./graphs/course-schedule-ii) | Topological Sort | Medium |
-| 85 | [Find Eventual Safe States](./graphs/find-eventual-safe-states) | DFS/Cycle Detection | Medium |
-| 86 | [Alien Dictionary](./graphs/alien-dictionary) | Topological Sort | Hard |
-| 87 | [Is Graph Bipartite?](./graphs/is-graph-bipartite) | BFS/DFS | Medium |
-| 88 | [Possible Bipartition](./graphs/possible-bipartition) | BFS/DFS/DSU | Medium |
-| 89 | [Redundant Connection](./graphs/redundant-connection) | Union-Find | Medium |
-| 90 | [Accounts Merge](./graphs/accounts-merge) | Union-Find | Medium |
-| 91 | [Most Stones Removed](./graphs/most-stones-removed) | Union-Find | Medium |
-| 92 | [Evaluate Division](./graphs/evaluate-division) | BFS/Weighted | Medium |
-| 93 | [Network Delay Time](./graphs/network-delay-time) | Dijkstra's | Medium |
-| 94 | [Path with Minimum Effort](./graphs/path-minimum-effort) | Dijkstra's/BST/DSU | Medium |
-| 95 | [Cheapest Flights Within K Stops](./graphs/cheapest-flights-k-stops) | Bellman-Ford | Medium |
-| 96 | [Swim in Rising Water](./graphs/swim-in-rising-water) | Dijkstra's/BST/DSU | Hard |
-| 97 | [Min Cost to Connect All Points](./graphs/min-cost-connect-points) | MST/Prim's/Kruskal's | Medium |
-| 98 | [Connecting Cities With Min Cost](./graphs/connecting-cities-min-cost) | MST/Kruskal's | Medium |
-| 99 | [Critical Connections](./graphs/critical-connections) | Tarjan's Bridge | Hard |
-| 100 | [Minimum Height Trees](./graphs/minimum-height-trees) | BFS/Topological | Medium |
+| 73 | [Clone Graph](./graphs/clone-graph) | BFS/DFS | Medium |
+| 74 | [Find if Path Exists](./graphs/find-if-path-exists) | BFS/DFS/DSU | Easy |
+| 75 | [Number of Islands](./graphs/number-of-islands) | BFS/DFS/DSU | Medium |
+| 76 | [Rotting Oranges](./graphs/rotting-oranges) | Multi-Source BFS | Medium |
+| 77 | [01 Matrix](./graphs/01-matrix) | Multi-Source BFS | Medium |
+| 78 | [Shortest Path in Binary Matrix](./graphs/shortest-path-binary-matrix) | BFS | Medium |
+| 79 | [Word Ladder](./graphs/word-ladder) | BFS/Implicit Graph | Hard |
+| 80 | [Max Area of Island](./graphs/max-area-of-island) | DFS/BFS | Medium |
+| 81 | [Pacific Atlantic Water Flow](./graphs/pacific-atlantic-water-flow) | Multi-Source BFS | Medium |
+| 82 | [Surrounded Regions](./graphs/surrounded-regions) | BFS/Union-Find | Medium |
+| 83 | [Number of Provinces](./graphs/number-of-provinces) | DFS/BFS/DSU | Medium |
+| 84 | [Course Schedule](./graphs/course-schedule) | Topological Sort | Medium |
+| 85 | [Course Schedule II](./graphs/course-schedule-ii) | Topological Sort | Medium |
+| 86 | [Find Eventual Safe States](./graphs/find-eventual-safe-states) | DFS/Cycle Detection | Medium |
+| 87 | [Alien Dictionary](./graphs/alien-dictionary) | Topological Sort | Hard |
+| 88 | [Is Graph Bipartite?](./graphs/is-graph-bipartite) | BFS/DFS | Medium |
+| 89 | [Possible Bipartition](./graphs/possible-bipartition) | BFS/DFS/DSU | Medium |
+| 90 | [Redundant Connection](./graphs/redundant-connection) | Union-Find | Medium |
+| 91 | [Accounts Merge](./graphs/accounts-merge) | Union-Find | Medium |
+| 92 | [Most Stones Removed](./graphs/most-stones-removed) | Union-Find | Medium |
+| 93 | [Evaluate Division](./graphs/evaluate-division) | BFS/Weighted | Medium |
+| 94 | [Network Delay Time](./graphs/network-delay-time) | Dijkstra's | Medium |
+| 95 | [Path with Minimum Effort](./graphs/path-minimum-effort) | Dijkstra's/BST/DSU | Medium |
+| 96 | [Cheapest Flights Within K Stops](./graphs/cheapest-flights-k-stops) | Bellman-Ford | Medium |
+| 97 | [Swim in Rising Water](./graphs/swim-in-rising-water) | Dijkstra's/BST/DSU | Hard |
+| 98 | [Min Cost to Connect All Points](./graphs/min-cost-connect-points) | MST/Prim's/Kruskal's | Medium |
+| 99 | [Connecting Cities With Min Cost](./graphs/connecting-cities-min-cost) | MST/Kruskal's | Medium |
+| 100 | [Critical Connections](./graphs/critical-connections) | Tarjan's Bridge | Hard |
+| 101 | [Minimum Height Trees](./graphs/minimum-height-trees) | BFS/Topological | Medium |
 
 ### Design
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 101 | [LRU Cache](./design/lru-cache) | DLL + HashMap | Medium |
-| 102 | [Exam Room](./design/exam-room) | Sorted Set | Medium |
-| 103 | [Find Median from Data Stream](./design/find-median-data-stream) | Two Heaps | Hard |
+| 102 | [LRU Cache](./design/lru-cache) | DLL + HashMap | Medium |
+| 103 | [Exam Room](./design/exam-room) | Sorted Set | Medium |
+| 104 | [Find Median from Data Stream](./design/find-median-data-stream) | Two Heaps | Hard |
 
 ### Bit Manipulation
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 104 | [Number of 1 Bits](./bit-manipulation/hamming-weight) | Bit Manipulation | Easy |
-| 105 | [Reverse Bits](./bit-manipulation/reverse-bits) | Bit Manipulation | Easy |
+| 105 | [Number of 1 Bits](./bit-manipulation/hamming-weight) | Bit Manipulation | Easy |
+| 106 | [Reverse Bits](./bit-manipulation/reverse-bits) | Bit Manipulation | Easy |
 
 ### Binary Search (Advanced)
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 106 | [Lowest Common Ancestor (Binary Tree)](./trees/lowest-common-ancestor) | DFS | Medium |
+| 107 | [Lowest Common Ancestor (Binary Tree)](./trees/lowest-common-ancestor) | DFS | Medium |
 
 ## Guides
 
@@ -186,6 +187,6 @@ Each problem lives in `topic/problem-name/` and contains:
 | [Floyd-Warshall, Max Flow & Bipartite Matching](./guides/FLOW_MATCHING.md) | Tier 3 advanced |
 
 ---
-> 110 problems · 16 guides · Complete Staff/Principal Engineer preparation resource
+> 111 problems · 16 guides · Complete Staff/Principal Engineer preparation resource
 
-> Last updated: 2026-07-05 — added Reverse Bits (#190): bit-reversal permutation, FFT connection
+> Last updated: 2026-07-05 — added Max Points on a Line (#149): O(n^2) slope grouping, 3SUM-hard
