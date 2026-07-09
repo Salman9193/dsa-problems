@@ -39,6 +39,7 @@ LC = {
     "product-of-array-except-self":(238,"product-of-array-except-self"),
     "maximum-of-absolute-value-expression":(1131,"maximum-of-absolute-value-expression"),
     "shortest-common-supersequence":(1092,"shortest-common-supersequence"),
+    "palindrome-linked-list":(234,"palindrome-linked-list"),
     "find-pivot-index":(724,"find-pivot-index"),
     "sliding-window-maximum":(239,"sliding-window-maximum"),
     "car-pooling":(1094,"car-pooling"),
