@@ -81,6 +81,59 @@ Result: `2` (10 + 1) ✓
 
 ---
 
+## Reconstructing the Optimal Coins (Which Coins, Not Just How Many)
+
+The `dp` array tells you *how many* coins; to recover *which* coins, remember the choice
+that produced each optimum.
+
+- Keep a companion array `choice[i]` = the **last coin used** to reach the optimal `dp[i]`
+  (`-1` while `i` is unreachable).
+- Whenever the recurrence *improves* `dp[i]` using coin `c`, record `choice[i] = c`.
+- After the table is filled, **backtrack** from `amount`: append `choice[cur]`, subtract it,
+  and repeat until you reach `0`.
+
+```java
+int[] dp     = new int[amount + 1];
+int[] choice = new int[amount + 1];        // last coin used to reach amount i
+Arrays.fill(dp, amount + 1);
+Arrays.fill(choice, -1);
+dp[0] = 0;
+
+for (int i = 1; i <= amount; i++)
+    for (int c : coins)
+        if (c <= i && dp[i - c] + 1 < dp[i]) {
+            dp[i] = dp[i - c] + 1;
+            choice[i] = c;                 // this coin achieved the new optimum
+        }
+
+if (dp[amount] > amount) return List.of();  // impossible
+
+List<Integer> used = new ArrayList<>();
+for (int cur = amount; cur > 0; cur -= choice[cur])
+    used.add(choice[cur]);                 // coins come out in reverse-usage order
+```
+
+**Trace — `coins = [1, 5, 10, 25]`, `amount = 11`** (`dp[11] = 2`, continuing the table
+above):
+
+| step | cur | choice[cur] | coin taken | remaining |
+|------|-----|-------------|------------|-----------|
+| 1 | 11 | 1 | 1 | 10 |
+| 2 | 10 | 10 | 10 | 0 |
+
+Backtracking yields `[1, 10]` → the 2-coin optimum `10 + 1 = 11`. The coins emerge in
+reverse-usage order and only the multiset matters, so sort if you want a tidy `10, 1`.
+Note the reconstruction need not follow greedy order — it returns *an* optimal set,
+whichever coin the strict-`<` rule recorded first (e.g. for `amount = 36` it yields
+`[1, 10, 25]`, not a 25-first sequence).
+
+**Why strict `<`:** improving only when `dp[i - c] + 1 < dp[i]` records the *first* coin
+that reaches each optimum. Any optimal coin is acceptable (the problem allows any minimal
+set), and reconstruction adds just O(amount) space plus O(answer length) backtracking on
+top of the base DP.
+
+---
+
 ## Bottom-Up vs Top-Down
 
 ### Bottom-Up (Tabulation) — implemented above
