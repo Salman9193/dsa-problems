@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 class Solution {
 
@@ -26,6 +28,37 @@ class Solution {
 
         // If dp[amount] was never updated from infinity, no valid combination exists
         return dp[amount] > amount ? -1 : dp[amount];
+    }
+
+    // Reconstruction variant: returns the actual coins of an optimal solution
+    // (empty list if the amount cannot be made).
+    //
+    // In addition to dp[], track choice[i] = the last coin used to reach the optimum for
+    // amount i. After filling the table, backtrack from `amount`: take choice[cur], subtract
+    // it, and repeat until reaching 0.
+    public List<Integer> coinChangeCoins(int[] coins, int amount) {
+        int[] dp = new int[amount + 1];
+        int[] choice = new int[amount + 1];   // last coin used to reach amount i (-1 = none)
+        Arrays.fill(dp, amount + 1);
+        Arrays.fill(choice, -1);
+        dp[0] = 0;
+
+        for (int i = 1; i <= amount; i++) {
+            for (int c : coins) {
+                if (c <= i && dp[i - c] + 1 < dp[i]) {
+                    dp[i] = dp[i - c] + 1;
+                    choice[i] = c;            // this coin achieved the new optimum
+                }
+            }
+        }
+
+        List<Integer> used = new ArrayList<>();
+        if (dp[amount] > amount) return used; // impossible -> empty list
+
+        for (int cur = amount; cur > 0; cur -= choice[cur]) {
+            used.add(choice[cur]);            // coins come out in reverse-usage order
+        }
+        return used;                          // e.g. amount=11 -> [1, 10]; amount=36 -> [1, 10, 25]
     }
 }
 
