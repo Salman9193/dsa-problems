@@ -45,6 +45,7 @@ LC = {
     "reverse-bits":(190,"reverse-bits"),
     "max-points-on-a-line":(149,"max-points-on-a-line"),
     "largest-divisible-subset":(368,"largest-divisible-subset"),
+    "combination-sum-ii":(40,"combination-sum-ii"),
     "find-pivot-index":(724,"find-pivot-index"),
     "sliding-window-maximum":(239,"sliding-window-maximum"),
     "car-pooling":(1094,"car-pooling"),
