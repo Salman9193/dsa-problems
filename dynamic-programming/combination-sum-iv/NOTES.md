@@ -45,6 +45,34 @@ return dp[target];
 
 ---
 
+## Why `dp[0] = 1` — the Base Case
+
+`dp[t]` counts the ways to reach `t`, and there's exactly **one way to reach 0: pick
+nothing** (the empty sequence). The recurrence forces it — when a `num` equals the remaining
+amount, the count flows through `dp[0]`:
+
+```
+dp[1] = dp[1 - 1] = dp[0]     // the only sequence summing to 1 is (1) → must be 1
+```
+
+so `dp[0]` has to be 1, or the whole table collapses to zero (every count ultimately bottoms
+out at "reached 0"). It's the same convention as `0! = 1` or "the empty set has one subset":
+the empty composition is the sole composition of 0.
+
+The base value isn't universal — **set it to the answer for the empty input**:
+
+| DP measures | `dp[0]` | Why |
+|-------------|---------|-----|
+| **count** of ways (#377, Coin Change II #518) | **1** | one way to reach 0 — the empty sequence |
+| **min** coins (Coin Change #322) | **0** | zero coins make amount 0 |
+| **feasibility** (boolean subset-sum) | **true** | 0 is always achievable (pick nothing) |
+
+Note [Coin Change #322](#dynamic-programming/coin-change) seeds `dp[0] = 0`, not 1 — same DP
+shape, different base value, purely because "min coins" and "number of ways" are different
+quantities.
+
+---
+
 ## The Key Insight — Loop Order Encodes Order-Sensitivity
 
 This is the exact mirror of *Coin Change II* (#518). The **only difference is which loop is
