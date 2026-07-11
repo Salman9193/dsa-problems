@@ -132,6 +132,13 @@ that reaches each optimum. Any optimal coin is acceptable (the problem allows an
 set), and reconstruction adds just O(amount) space plus O(answer length) backtracking on
 top of the base DP.
 
+> **Real-world implementation:** a vending machine's change dispenser *is* this algorithm —
+> the bounded (limited-supply) variant with reconstruction, since it must return *which*
+> coins to drop, not just how many. See the
+> [Vending Machine LLD](https://salman9193.github.io/system-design/#lld-vending-machine) in
+> the system-design repo, whose `BoundedDPChangeStrategy` is this DP; when the target is
+> unreachable it aborts and refunds (the real-world meaning of returning `-1`).
+
 ---
 
 ## Bottom-Up vs Top-Down
