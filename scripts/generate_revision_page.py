@@ -49,6 +49,7 @@ LC = {
     "combination-sum-iv":(377,"combination-sum-iv"),
     "coin-change-ii":(518,"coin-change-ii"),
     "inverse-coin-change":(3592,"inverse-coin-change"),
+    "task-scheduler":(621,"task-scheduler"),
     "find-pivot-index":(724,"find-pivot-index"),
     "sliding-window-maximum":(239,"sliding-window-maximum"),
     "car-pooling":(1094,"car-pooling"),
