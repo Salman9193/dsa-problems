@@ -50,6 +50,8 @@ LC = {
     "coin-change-ii":(518,"coin-change-ii"),
     "inverse-coin-change":(3592,"inverse-coin-change"),
     "task-scheduler":(621,"task-scheduler"),
+    "russian-doll-envelopes":(354,"russian-doll-envelopes"),
+    "number-of-lis":(673,"number-of-longest-increasing-subsequence"),
     "find-pivot-index":(724,"find-pivot-index"),
     "sliding-window-maximum":(239,"sliding-window-maximum"),
     "car-pooling":(1094,"car-pooling"),
