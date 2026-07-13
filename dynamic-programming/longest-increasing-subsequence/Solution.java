@@ -56,6 +56,48 @@ class Solution {
     }
 
     // Binary search: first index in list where list[i] >= target
+
+    // Reconstruction: return the actual LIS (not just its length) in O(n log n).
+    //
+    // The common misconception is that the patience/tails method can't reconstruct. It can:
+    // keep tails as INDICES, and record a parent pointer for each element.
+    //
+    //   tailIdx[len-1] = index of the smallest tail among increasing subsequences of length len
+    //   parent[i]      = index of i's predecessor in the LIS ending at i
+    //
+    // When nums[i] lands at position lo, it extends a subsequence of length lo whose best tail
+    // is tailIdx[lo-1] — an entry finalized before i was processed, so the pointer stays valid
+    // even though tailIdx[lo] is later overwritten.
+    //
+    // Time: O(n log n).  Space: O(n).
+    public List<Integer> lisSequence(int[] nums) {
+        int n = nums.length;
+        if (n == 0) return new ArrayList<>();
+
+        int[] tailIdx = new int[n];
+        int[] parent = new int[n];
+        Arrays.fill(parent, -1);
+        int size = 0;
+
+        for (int i = 0; i < n; i++) {
+            int lo = 0, hi = size;                       // lower bound on tail VALUES
+            while (lo < hi) {
+                int mid = (lo + hi) >>> 1;
+                if (nums[tailIdx[mid]] < nums[i]) lo = mid + 1;
+                else hi = mid;
+            }
+            if (lo > 0) parent[i] = tailIdx[lo - 1];     // the key line
+            tailIdx[lo] = i;
+            if (lo == size) size++;
+        }
+
+        LinkedList<Integer> lis = new LinkedList<>();
+        for (int cur = tailIdx[size - 1]; cur != -1; cur = parent[cur]) {
+            lis.addFirst(nums[cur]);                     // build front-to-back
+        }
+        return lis;
+    }
+
     private int lowerBound(List<Integer> list, int target) {
         int lo = 0, hi = list.size();
         while (lo < hi) {
@@ -82,9 +124,10 @@ class Solution {
  *   is ≥ the card (greedy). Number of piles = LIS length.
  *   This is equivalent to the tails array binary search approach.
  *
- * IMPORTANT: tails[] is NOT the actual LIS — it's the greedy structure
- * that only tracks lengths. To reconstruct the LIS, track parent pointers
- * in the O(n²) DP approach.
+ * IMPORTANT: tails[] is NOT the actual LIS — it's the greedy structure, and is often not
+ * even a subsequence of the input in order (for [3,4,5,1], tails ends as [1,4,5]). It gives
+ * the correct LENGTH only. To recover the sequence itself, use lisSequence() above: keep the
+ * tails as INDICES plus a parent[] array, which reconstructs in O(n log n).
  *
  * Trace — nums=[10,9,2,5,3,7,101,18]:
  * Patience (tails evolution):
