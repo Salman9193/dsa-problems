@@ -53,6 +53,7 @@ LC = {
     "russian-doll-envelopes":(354,"russian-doll-envelopes"),
     "number-of-lis":(673,"number-of-longest-increasing-subsequence"),
     "parallel-courses-iii":(2050,"parallel-courses-iii"),
+    "longest-increasing-subsequence-ii":(2407,"longest-increasing-subsequence-ii"),
     "find-pivot-index":(724,"find-pivot-index"),
     "sliding-window-maximum":(239,"sliding-window-maximum"),
     "car-pooling":(1094,"car-pooling"),
