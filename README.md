@@ -139,40 +139,41 @@ Each problem lives in `topic/problem-name/` and contains:
 | 91 | [Number of Provinces](./graphs/number-of-provinces) | DFS/BFS/DSU | Medium |
 | 92 | [Course Schedule](./graphs/course-schedule) | Topological Sort | Medium |
 | 93 | [Course Schedule II](./graphs/course-schedule-ii) | Topological Sort | Medium |
-| 94 | [Find Eventual Safe States](./graphs/find-eventual-safe-states) | DFS/Cycle Detection | Medium |
-| 95 | [Alien Dictionary](./graphs/alien-dictionary) | Topological Sort | Hard |
-| 96 | [Is Graph Bipartite?](./graphs/is-graph-bipartite) | BFS/DFS | Medium |
-| 97 | [Possible Bipartition](./graphs/possible-bipartition) | BFS/DFS/DSU | Medium |
-| 98 | [Redundant Connection](./graphs/redundant-connection) | Union-Find | Medium |
-| 99 | [Accounts Merge](./graphs/accounts-merge) | Union-Find | Medium |
-| 100 | [Most Stones Removed](./graphs/most-stones-removed) | Union-Find | Medium |
-| 101 | [Evaluate Division](./graphs/evaluate-division) | BFS/Weighted | Medium |
-| 102 | [Network Delay Time](./graphs/network-delay-time) | Dijkstra's | Medium |
-| 103 | [Path with Minimum Effort](./graphs/path-minimum-effort) | Dijkstra's/BST/DSU | Medium |
-| 104 | [Cheapest Flights Within K Stops](./graphs/cheapest-flights-k-stops) | Bellman-Ford | Medium |
-| 105 | [Swim in Rising Water](./graphs/swim-in-rising-water) | Dijkstra's/BST/DSU | Hard |
-| 106 | [Min Cost to Connect All Points](./graphs/min-cost-connect-points) | MST/Prim's/Kruskal's | Medium |
-| 107 | [Connecting Cities With Min Cost](./graphs/connecting-cities-min-cost) | MST/Kruskal's | Medium |
-| 108 | [Critical Connections](./graphs/critical-connections) | Tarjan's Bridge | Hard |
-| 109 | [Minimum Height Trees](./graphs/minimum-height-trees) | BFS/Topological | Medium |
+| 94 | [Parallel Courses III](./graphs/parallel-courses-iii) | Topological Sort + DP (critical path) | Hard |
+| 95 | [Find Eventual Safe States](./graphs/find-eventual-safe-states) | DFS/Cycle Detection | Medium |
+| 96 | [Alien Dictionary](./graphs/alien-dictionary) | Topological Sort | Hard |
+| 97 | [Is Graph Bipartite?](./graphs/is-graph-bipartite) | BFS/DFS | Medium |
+| 98 | [Possible Bipartition](./graphs/possible-bipartition) | BFS/DFS/DSU | Medium |
+| 99 | [Redundant Connection](./graphs/redundant-connection) | Union-Find | Medium |
+| 100 | [Accounts Merge](./graphs/accounts-merge) | Union-Find | Medium |
+| 101 | [Most Stones Removed](./graphs/most-stones-removed) | Union-Find | Medium |
+| 102 | [Evaluate Division](./graphs/evaluate-division) | BFS/Weighted | Medium |
+| 103 | [Network Delay Time](./graphs/network-delay-time) | Dijkstra's | Medium |
+| 104 | [Path with Minimum Effort](./graphs/path-minimum-effort) | Dijkstra's/BST/DSU | Medium |
+| 105 | [Cheapest Flights Within K Stops](./graphs/cheapest-flights-k-stops) | Bellman-Ford | Medium |
+| 106 | [Swim in Rising Water](./graphs/swim-in-rising-water) | Dijkstra's/BST/DSU | Hard |
+| 107 | [Min Cost to Connect All Points](./graphs/min-cost-connect-points) | MST/Prim's/Kruskal's | Medium |
+| 108 | [Connecting Cities With Min Cost](./graphs/connecting-cities-min-cost) | MST/Kruskal's | Medium |
+| 109 | [Critical Connections](./graphs/critical-connections) | Tarjan's Bridge | Hard |
+| 110 | [Minimum Height Trees](./graphs/minimum-height-trees) | BFS/Topological | Medium |
 
 ### Design
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 110 | [LRU Cache](./design/lru-cache) | DLL + HashMap | Medium |
-| 111 | [Exam Room](./design/exam-room) | Sorted Set | Medium |
-| 112 | [Find Median from Data Stream](./design/find-median-data-stream) | Two Heaps | Hard |
+| 111 | [LRU Cache](./design/lru-cache) | DLL + HashMap | Medium |
+| 112 | [Exam Room](./design/exam-room) | Sorted Set | Medium |
+| 113 | [Find Median from Data Stream](./design/find-median-data-stream) | Two Heaps | Hard |
 
 ### Bit Manipulation
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 113 | [Number of 1 Bits](./bit-manipulation/hamming-weight) | Bit Manipulation | Easy |
-| 114 | [Reverse Bits](./bit-manipulation/reverse-bits) | Bit Manipulation | Easy |
+| 114 | [Number of 1 Bits](./bit-manipulation/hamming-weight) | Bit Manipulation | Easy |
+| 115 | [Reverse Bits](./bit-manipulation/reverse-bits) | Bit Manipulation | Easy |
 
 ### Binary Search (Advanced)
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 115 | [Lowest Common Ancestor (Binary Tree)](./trees/lowest-common-ancestor) | DFS | Medium |
+| 116 | [Lowest Common Ancestor (Binary Tree)](./trees/lowest-common-ancestor) | DFS | Medium |
 
 ## Guides
 
@@ -195,6 +196,6 @@ Each problem lives in `topic/problem-name/` and contains:
 | [Floyd-Warshall, Max Flow & Bipartite Matching](./guides/FLOW_MATCHING.md) | Tier 3 advanced |
 
 ---
-> 119 problems · 16 guides · Complete Staff/Principal Engineer preparation resource
+> 120 problems · 16 guides · Complete Staff/Principal Engineer preparation resource
 
-> Last updated: 2026-07-05 — added Russian Doll Envelopes (#354) and Number of LIS (#673); LDS now explains why patience sorting fails (poset dimension)
+> Last updated: 2026-07-05 — added Parallel Courses III (#2050): the CPM critical path = longest weighted path in a DAG
