@@ -138,23 +138,43 @@ Under this order:
 
 So **LIS = the longest chain** (the poset's *height*).
 
-Now the two dual theorems — and the distinction matters:
+Now the two dual theorems — and *which* one applies depends on how you orient the poset:
 
-- **Mirsky's theorem (1971)** — *longest chain = minimum number of antichains needed to
-  partition the poset.* Here: **LIS length = minimum number of decreasing subsequences that
-  cover the sequence.** Each patience pile *is* a decreasing subsequence, so the pile count is
-  such a cover — and Mirsky says the minimum possible cover size equals the LIS. **Patience
-  sorting is a constructive proof of Mirsky's theorem**, which is exactly why the greedy pile
-  count is optimal and not merely a heuristic.
+- **Orientation A** — comparable iff `i < j` **and** `nums[i] < nums[j]` (as above). Then
+  chains = increasing subsequences, antichains = decreasing ones, and **LIS = the longest
+  chain**. The relevant theorem is **Mirsky's (1971)**: *longest chain = minimum number of
+  antichains partitioning the poset* → **LIS = the minimum number of decreasing subsequences
+  covering the sequence.**
 
-- **Dilworth's theorem (1950)** — the *dual*: *largest antichain = minimum number of chains
-  needed to cover.* Applied here: **the longest decreasing subsequence = the minimum number of
-  increasing subsequences needed to cover the sequence.**
+- **Orientation B** — comparable iff `i < j` **and** `nums[i] > nums[j]`. Now chains =
+  decreasing subsequences, antichains = increasing ones, and **LIS = the largest antichain**.
+  The relevant theorem is **Dilworth's (1950)**: *largest antichain = minimum number of chains
+  covering the poset* → **the same conclusion**.
 
-> **Precision note:** the "minimum number of decreasing subsequences = LIS" statement is
-> **Mirsky's** theorem (the dual), not Dilworth's — the two are frequently conflated, and both
-> are loosely cited as "Dilworth." Dilworth's own statement is the mirror image (swap
-> increasing ↔ decreasing).
+Both orientations yield the identical statement — **LIS = the minimum number of decreasing
+subsequences covering the sequence** — which is exactly the patience **pile count** (each pile
+*is* a decreasing subsequence). So citing either theorem is legitimate; they are duals of each
+other, and the choice is just a convention about which relation you call the order.
+
+---
+
+## What the Theorem Actually Does (it is *not* an algorithm)
+
+Dilworth/Mirsky **compute nothing**. They supply a **min-max duality** that proves the greedy
+is optimal. Patience sorting produces `k` piles, and:
+
+1. **Upper bound (pigeonhole / duality).** Every pile is *decreasing*, so an increasing
+   subsequence can take **at most one element per pile** — two from one pile would be
+   decreasing. With `k` piles: **LIS ≤ k**.
+2. **Lower bound (construction).** Each card on pile `j` back-points to a smaller, earlier card
+   on pile `j−1`. Following those pointers yields an actual increasing subsequence of length
+   `k`: **LIS ≥ k**.
+
+Hence **LIS = k**. The piles are simultaneously *an answer* and *a certificate that no better
+answer exists* — the same shape as an LP dual, or a cut certifying a max-flow. **Patience
+sorting is a constructive proof of the duality**, and that is why the greedy is provably
+optimal rather than merely a good heuristic. (Note the back-pointers in step 2 are exactly the
+`parent[]` array used for reconstruction above.)
 
 **Erdős–Szekeres falls straight out.** If a sequence has `n > (r−1)(s−1)` elements and its LIS
 were ≤ `r−1`, then by Mirsky it could be covered by ≤ `r−1` decreasing subsequences; by
