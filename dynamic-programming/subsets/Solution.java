@@ -42,6 +42,37 @@ class Solution {
         }
         return result;
     }
+
+    // ── Approach 3: Bitmask / Binary Enumeration ─────────────────────────────
+    // Each subset maps 1:1 to an n-bit number in [0, 2^n).
+    // Bit i set  ⇔  nums[i] is in the subset. So "enumerate all subsets" is
+    // literally "count from 0 to 2^n - 1" — the bijection IS the algorithm.
+    //
+    //   nums = [1,2,3]
+    //     mask 000 → []        mask 100 → [3]
+    //     mask 001 → [1]       mask 101 → [1,3]
+    //     mask 010 → [2]       mask 110 → [2,3]
+    //     mask 011 → [1,2]     mask 111 → [1,2,3]
+    //
+    // No recursion, no call stack — and the mask doubles as a canonical subset ID,
+    // which is what makes it the right choice for bitmask DP (e.g. TSP over subsets).
+    //
+    // Time: O(n * 2^n).  Space: O(n * 2^n) for the output, O(1) auxiliary.
+    public List<List<Integer>> subsetsBitmask(int[] nums) {
+        int n = nums.length;
+        List<List<Integer>> result = new ArrayList<>();
+
+        for (int mask = 0; mask < (1 << n); mask++) {   // all 2^n masks
+            List<Integer> subset = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                if ((mask & (1 << i)) != 0) {           // is bit i set?
+                    subset.add(nums[i]);
+                }
+            }
+            result.add(subset);
+        }
+        return result;
+    }
 }
 
 /*
