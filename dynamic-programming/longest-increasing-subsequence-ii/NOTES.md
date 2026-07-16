@@ -80,6 +80,73 @@ you is the actual skill.
 
 ---
 
+## Patience Sorting *Is* the Prefix Case of This Segment Tree
+
+The two "levers" aren't unrelated — one contains the other. **Plain LIS is the `k → ∞`
+special case** of this problem: the window's lower bound vanishes and the value window
+degenerates to a **prefix**.
+
+```
+with k:      max{ dp[j] : nums[i]−k ≤ nums[j] ≤ nums[i]−1 }     ← two-sided window
+plain LIS:   max{ dp[j] :             nums[j] ≤ nums[i]−1 }     ← prefix [0, nums[i]−1]
+```
+
+So the *same* value-indexed range-max tree solves plain LIS — just query the prefix `[0, x−1]`
+instead of `[x−k, x−1]`:
+
+```java
+for (int x : nums) {
+    int best = (x > 0) ? seg.query(0, x - 1) : 0;   // prefix max over all smaller values
+    seg.update(x, best + 1);
+}
+```
+
+That works and is `O(n log M)` — but for *plain* LIS it's **strictly worse than patience
+sorting**, and the reason is the whole point:
+
+> A **prefix-max** query is exactly what a monotone `tails` array answers with a plain binary
+> search. When the query degenerates to a prefix, **the sorted `tails` array *is* the compressed
+> segment tree, and the binary search *is* the range query.** The tree's extra machinery buys
+> nothing.
+
+So patience sorting isn't a *different* algorithm from the segment-tree DP — it's the segment
+tree collapsed to its prefix special case. (Verified by simulation: the prefix-query tree and
+patience sorting return identical lengths on 500 random inputs.)
+
+### The test for which tool to reach for
+
+Reach for the segment tree exactly when the predecessor condition **stops being a clean
+prefix** — because *that's* when the monotone `tails` array breaks:
+
+| Variant | Predecessor condition | `tails` array enough? |
+|---------|-----------------------|-----------------------|
+| Plain LIS (#300) | prefix `nums[j] < nums[i]` | ✅ patience sorting |
+| Non-decreasing / `≤` vs `<` | prefix `[0, x]` vs `[0, x−1]` | ✅ (tree just makes the boundary explicit) |
+| **Value window (#2407)** | two-sided `[x−k, x−1]` | ❌ **need range-max** |
+| **Weighted / max-sum IS** | prefix, but maximize **weight** not length | ❌ **need range-max** |
+| **Count of LIS (#673) at n log n** | prefix, but carry a **count** | ❌ need range-(max,count) |
+
+The subtle two are the last: the condition is *still a prefix*, yet patience sorting **fails
+anyway**. Its correctness rests on the invariant *"a smaller tail is always at least as
+extendable."* With **weights** that invariant is false — a smaller tail can carry **less
+accumulated weight** — so "keep the smallest tail" throws away the better chain.
+
+```
+nums = [1, 2, 10],  weights = [1, 100, 1]
+  max-sum increasing subsequence = [2] alone → weight 100 (beats [1,2,10] = 102? → 102 wins)
+  a length-oriented tails array prefers the SMALLER tail value (1), but the heavier chain
+  ends at 2 — "smaller tail is better" is simply the wrong objective here.
+```
+
+**The unifying test:** if extending depends only on the predecessor's value being *smaller* (a
+prefix) **and** "smaller value ⇒ at least as good" holds, patience sorting suffices. The moment
+the condition becomes a bounded **range**, or the objective makes "smaller value" stop implying
+"better" (weights, counts), the monotone array breaks and you need the segment tree's general
+range query. This problem is the first kind of break (a range); weighted/count LIS are the
+second (a broken invariant).
+
+---
+
 ## Trace — `nums = [4,2,1,4,3,4,5,8,15]`, `k = 3`
 
 | x | window `[x−3, x−1]` | max in window | dp[x] |
