@@ -56,6 +56,58 @@ what the segment tree indexes; the **position** axis is the loop.
 
 ---
 
+## The Space Catch — Index by Value, So Compress First
+
+The code above sizes the tree by `M = max(nums)` — it's indexed by **value**, not by element
+count. That's a real asymmetry with the other LIS methods:
+
+| Method | Space | Indexed by |
+|--------|-------|-----------|
+| O(n²) DP | O(n) | position |
+| Patience sorting (plain LIS) | O(n) | position (the `tails` array) |
+| Segment tree, **raw value index** | **O(max value)** | value ← the catch |
+| Segment tree, **coordinate-compressed** | **O(n)** | rank (compressed value) |
+
+The raw version allocates a `10⁵`-slot tree for `100` elements — and for values up to `10⁹`, or
+any **negative** values, you can't allocate it at all. The fix is **coordinate compression**: the
+tree only ever touches slots that are *actual values in `nums`* (at most `n` of them), so replace
+each value by its **rank** among the distinct sorted values.
+
+```java
+int[] sorted = Arrays.stream(nums).distinct().sorted().toArray();  // m ≤ n distinct values
+SegTree seg = new SegTree(sorted.length);                          // size m, not max(nums)
+int result = 1;
+for (int x : nums) {
+    int lo = lowerBound(sorted, x - k);        // window [x−k, x−1] lives in VALUE space —
+    int hi = lowerBound(sorted, x) - 1;        // translate its bounds into RANK space
+    int best = (lo <= hi) ? seg.query(lo, hi) : 0;
+    seg.update(lowerBound(sorted, x), best + 1);
+    result = Math.max(result, best + 1);
+}
+```
+
+**The subtlety the `k`-window forces:** the query window `[x−k, x−1]` is defined in *value*
+space, but the tree lives in *rank* space. You can't compress and forget — you must **locate the
+window's bounds by binary-searching** where `x−k` and `x` fall among the sorted values. Because
+rank order preserves value order, a contiguous value window maps to a contiguous rank window, so
+the range query stays valid. (This is exactly what the `longestUpgradePath` variant below does —
+its window `[m[i], v[i])` is translated the same way. Verified: compressed and raw agree on 600
+random inputs, including negatives.)
+
+**Why patience sorting never needs this:** its `tails` array is indexed by **subsequence
+length**, which is bounded by `n` by construction — it never touches value space, so it's
+automatically O(n). The segment tree indexes by value *because* it answers value **range**
+queries (the whole reason it beat patience sorting here), and coordinate compression is the price
+of that capability — it decouples the structure's size from the magnitude of the values and
+brings space back to par.
+
+> **Rule to carry:** any time you index a Fenwick/segment tree by value, **compress first** —
+> unless the values are guaranteed small and dense. LeetCode #2407 caps values at `10⁵` (so
+> `max value ≈ n` and compression buys little), which is why the lead code skips it; the
+> `longestUpgradePath` variant compresses because versions can be arbitrary.
+
+---
+
 ## Why Patience Sorting Fails Here
 
 Plain LIS is O(n log n) via patience sorting, which keeps only the **smallest tail per length**.
@@ -212,7 +264,7 @@ A legal two-step path exists with **no direct edge** — which is exactly the re
 | Approach | Time | Space |
 |----------|------|-------|
 | Naive DP (`dp[i]` over all `j < i`) | O(n²) | O(n) |
-| **Segment tree range-max** | **O(n log M)** | O(M) |
+| **Segment tree range-max** | **O(n log M)** | O(n) compressed · O(M) raw |
 | Monotonic deque (only if window is by *index*) | O(n) | O(n) |
 
 *(The deque trick doesn't apply here: the window slides on the **value** axis while we iterate the
@@ -226,7 +278,7 @@ A legal two-step path exists with **no direct edge** — which is exactly the re
 |------|----------|
 | `x - k < 1` | clamp the window's low end to 1 |
 | `x = 1` | window is empty → `dp[1] = 1` |
-| huge values | **coordinate-compress** to O(n) distinct values |
+| huge / negative values | **coordinate-compress** to O(n) distinct ranks (see the space section above) |
 | `k ≥ max(nums)` | degenerates to plain LIS |
 
 **The through-line:** key the DP by **value**, not position; the eligible predecessors form a
