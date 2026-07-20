@@ -159,3 +159,33 @@ to O(n^2) by avoiding substring allocations entirely.
 **Trie optimisation:** Instead of checking every word in the dictionary at each position i (O(n × |dict| × L)), use a Trie to match all possible endings from position i in O(L) time — reducing to O(n × L) where L = max word length.
 
 **Scaling:** For s of length 10⁴ and dictionary of 10⁵ words each of length up to 20, naive DP is O(n² × dict) = 2×10¹² operations. Trie reduces to O(n × L) = 2×10⁵.
+
+---
+
+## The Bigger Picture — Same DAG, Three Questions
+
+This problem builds a **DAG**: node `i` = position in the string, edge `i → j` whenever
+`s[i..j-1]` is a dictionary word. Positions are inherently topologically ordered, so it's the
+familiar *linearize, then relax* skeleton — only the accumulator changes:
+
+| Accumulator | Question | Problem | Complexity |
+|-------------|----------|---------|-----------|
+| boolean OR | *is there a path?* | **Word Break #139** (this) | **polynomial** O(n²·L) |
+| list concat | *all paths?* | [Word Break II #140](#dynamic-programming/word-break-ii) | **exponential output** |
+| max log-probability | *the best path?* | Chinese segmentation (jieba) | **linear** O(n·L) |
+
+**The decision problem is polynomial, enumeration is exponential, and optimization is linear
+again.** That's why production segmenters compute the *most probable* segmentation rather than all
+of them.
+
+### Real-World: this is Chinese text segmentation
+
+Chinese is written **without spaces**, so *every sentence* is a Word Break problem — and the
+ambiguity is real: `北京大学生` = `北京大学 / 生` (Peking University / student) **or**
+`北京 / 大学生` (Beijing / university student). Word frequencies pick the winner via a
+max-log-probability DP over this same DAG.
+
+> See the [Chinese Word Segmenter LLD](https://salman9193.github.io/system-design/#lld-chinese-word-segmenter)
+> (prefix dictionary, DAG, route DP, HMM/Viterbi for unknown words) and the
+> [Text Segmentation Service HLD](https://salman9193.github.io/system-design/#hld-text-segmentation-service)
+> (why a search engine must pin its dictionary version, or lose recall silently).
