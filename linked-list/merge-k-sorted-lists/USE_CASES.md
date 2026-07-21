@@ -91,3 +91,27 @@ and social-media timeline assembly both merge sorted per-source streams.
 - PostgreSQL external sort: https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-WORK-MEM
 - Lucene segment merge: https://www.elastic.co/blog/lucenes-handling-of-deleted-documents
 - Kafka log compaction: https://kafka.apache.org/documentation/#compaction
+
+---
+
+## Where This Sits in a Real Database
+
+The LSM-tree read and compaction paths above are the **defining characteristic** of Bigtable, HBase,
+Cassandra, and RocksDB — and the reason they're chosen for write-heavy workloads:
+
+```
+write → commit log (sequential append) + in-memory memtable     ← no random disk I/O
+memtable full → flush to a new immutable SSTable
+compaction → K-WAY MERGE of many SSTables into fewer            ← this problem
+read → K-WAY MERGE across memtable + relevant SSTables          ← this problem again
+```
+
+**The trade this buys:** writes become sequential appends (fast), and you pay for it later in
+**compaction** — which is exactly the k-way merge implemented here. That's the LSM bargain versus a
+B-tree's in-place updates, and it's why "which index structure?" is really "do I optimise writes or
+reads?"
+
+> See [Database Scaling → Native Scale-Out](https://salman9193.github.io/system-design/#fu-database-scaling)
+> for how this fits Bigtable's tablet architecture, and
+> [Sharded Database Platform](https://salman9193.github.io/system-design/#hld-sharded-database-platform)
+> for the operational side.
