@@ -136,3 +136,26 @@ understanding of the underlying data structures.
 - Redis maxmemory-policy allkeys-lru
 - PostgreSQL buffer pool page eviction
 - OS page replacement algorithms
+
+---
+
+## In Real Database Systems
+
+The eviction policy here is load-bearing infrastructure in every database, at two different layers —
+and the distinction between them is worth knowing:
+
+| Layer | What's cached | Granularity |
+|-------|---------------|-------------|
+| **Buffer pool** (MySQL InnoDB, Postgres) | **16 KB pages** from disk | page |
+| **Row cache** (e.g. Vitess's) | **individual rows** by primary key | row |
+
+**Why both exist:** a page cache is excellent for sequential scans and wasteful for the *random
+single-row* access that web applications actually generate — reading 16 KB to serve a 200-byte row.
+A row-level cache matches that access pattern, and can be invalidated precisely from the replication
+stream rather than by TTL guesswork.
+
+**The general lesson: cache granularity should match access granularity.** Caching a bigger unit than
+you read wastes memory and bandwidth; caching a smaller one loses locality.
+
+> See [Database Scaling → Sharding Middleware](https://salman9193.github.io/system-design/#fu-database-scaling)
+> and [Caching](https://salman9193.github.io/system-design/#fu-caching).
