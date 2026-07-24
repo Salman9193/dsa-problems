@@ -190,6 +190,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | [Trie](./guides/TRIE.md) | Prefix tree; insert/search/wildcard/Word Search II |
 | [Graph Algorithms](./guides/GRAPH_ALGORITHMS.md) | Topological sort + Dijkstra + Bellman-Ford |
 | [Intervals](./guides/INTERVALS.md) | Merge, insert, meeting rooms, non-overlapping |
+| [Klee's Algorithm](./guides/KLEES_ALGORITHM.md) | Union measure, sweep line, 2-D rectangle area, Ω(n log n) |
 | [Monotonic Stack](./guides/MONOTONIC_STACK.md) | Daily temperatures, histogram, next greater |
 | [Binary Search on Answer](./guides/BINARY_SEARCH_ON_ANSWER.md) | Koko, ship packages, split array |
 | [Backtracking](./guides/BACKTRACKING.md) | Subsets, permutations, N-Queens, word search |
@@ -198,6 +199,6 @@ Each problem lives in `topic/problem-name/` and contains:
 | [Floyd-Warshall, Max Flow & Bipartite Matching](./guides/FLOW_MATCHING.md) | Tier 3 advanced |
 
 ---
-> 122 problems · 16 guides · Complete Staff/Principal Engineer preparation resource
+> 122 problems · 17 guides · Complete Staff/Principal Engineer preparation resource
 
-> Last updated: 2026-07-05 — added Word Break II (#140); paired with the Chinese Word Segmenter LLD + Text Segmentation Service HLD
+> Last updated: 2026-07-05 — added Klee's Algorithm guide (union measure, sweep line, 2-D rectangle union, matching lower bound)
