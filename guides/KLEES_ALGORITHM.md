@@ -317,6 +317,108 @@ stop reaching for the exact algorithm is part of knowing it.
 
 ---
 
+## Streaming & Online Variants
+
+The classic sweep is a **blocking operator**: it sorts, so it can't emit anything until the input
+ends. That's fine for a batch job and useless for a live feed — and most of the use cases above
+(downtime, coverage, billing, watch time) arrive as *streams*.
+
+Whether it streams depends on exactly two questions: **is the input sorted**, and **do you need
+exact?**
+
+### Case 1 — Sorted by start: O(1) memory, exact, incremental ✅
+
+This is the case that matters in practice, because **event logs, metrics, and CDC streams are
+usually already time-ordered.** Once intervals arrive in start order, a run can only ever be
+*extended* — so the moment one starts beyond `curEnd`, the previous run is **final** and can be
+emitted immediately:
+
+```java
+class StreamingUnion {
+    private long total = 0;
+    private Integer curStart = null, curEnd = null;
+
+    void push(int a, int b) {
+        if (curStart == null) { curStart = a; curEnd = b; return; }
+        if (a <= curEnd) {
+            curEnd = Math.max(curEnd, b);        // extend the open run
+        } else {
+            total += curEnd - curStart;          // gap ⇒ previous run is FINAL — emit it
+            curStart = a; curEnd = b;
+        }
+    }
+    long value() {                                // running answer at any moment
+        return total + (curStart == null ? 0 : curEnd - curStart);
+    }
+}
+```
+
+**Constant state, one pass, incremental output**, and a valid running total at every point:
+
+```
+after (1,4):  union = 3
+after (2,6):  union = 5
+after (8,10): union = 7      ← run [1,6] now finalized and emitted
+after (9,12): union = 9
+```
+
+### Case 2 — Out-of-order arrivals: the failure mode is losing a closed run ⚠️
+
+The practical trap. A late event can **bridge a gap you already closed**:
+
+```
+stream: (1,2), (10,11)      → union = 2, and run [1,2] has already been emitted
+then LATE (3,9) arrives     → streaming says 2, truth is 8
+```
+
+This is precisely why stream processors use **watermarks**: buffer within a bounded lateness
+window, only finalize a run once the watermark passes its end, and send stragglers to a side
+output. Bounded out-of-orderness (Flink/Beam style) converts "sorted stream" from an *assumption*
+into an *engineered guarantee*, and the buffer is **O(events within the lateness window)** — not
+O(n).
+
+### Case 3 — Unsorted and exact: Ω(n) is unavoidable ❌
+
+The obstruction isn't the algorithm, it's **the answer**. Feed it `n` pairwise-disjoint intervals
+and the union *is* `n` disjoint pieces, so anything answering exactly must carry Ω(n) state.
+
+**You cannot sketch your way around an answer whose own description is linear.** Worth internalising
+as a general principle for streaming problems: check the output size before hunting for a sublinear
+algorithm.
+
+### Case 4 — Unsorted and approximate: polylog space ✅
+
+Here the connection is elegant: **streaming union measure is the continuous generalization of
+counting distinct elements.** F₀ (distinct elements) is the special case where every "set" is a
+single point; Klee's measure is the case where every set is a **box**. Same problem, richer sets —
+so the whole HyperLogLog/F₀ sketching toolkit applies in spirit.
+
+It's an active research line with strong bounds — **(ε,δ)-estimation in polylog(|Ω|) space**:
+
+| Work | Space |
+|------|-------|
+| Meel, Chakraborty & Vinodchandran (PODS '21, '22) | `O(log³|Ω| / ε² · log 1/δ)` |
+| Nandi, Vinodchandran, Ghosh, Meel, Pal & Chakraborty (APPROX '24) | `Õ(log²|Ω| / ε² · log 1/δ)` |
+
+The framework is **Delphic families** — sets supporting efficient membership, cardinality, and
+sampling queries. The applications those authors call out include **test coverage and hypervolume
+estimation**, two of the use cases listed above.
+
+### The Decision Table
+
+| Situation | Result |
+|-----------|--------|
+| Sorted by start | **O(1) memory, exact, incremental** |
+| Bounded lateness | **O(lateness window), exact** — watermarks |
+| Unsorted, exact | **Ω(n) — unavoidable** |
+| Unsorted, approximate | **polylog space**, F₀-style sketching |
+
+> **The reusable lesson:** "can this be streamed?" is rarely a yes/no about the algorithm. It's a
+> question about **input order** and **required exactness** — and relaxing either one changes the
+> answer completely.
+
+---
+
 ## Interview Notes
 
 - **Say "sweep line," then say what you accumulate.** That framing answers half the follow-ups
@@ -328,6 +430,10 @@ stop reaching for the exact algorithm is part of knowing it.
   [LIS II](#dynamic-programming/longest-increasing-subsequence-ii) for the same rule).
 - **Mention the lower bound if asked "can we do better?"** — "No: Fredman–Weide proved Ω(n log n)
   by reduction from element distinctness." That's a genuinely rare thing to be able to say.
+- **If asked "what if the data streams?"** — the strong answer is a question back: *is it sorted,
+  and do you need exact?* Sorted by start ⇒ O(1) memory exactly; unsorted + exact ⇒ Ω(n) because the
+  union itself can be n disjoint pieces; unsorted + approximate ⇒ polylog space, since this is the
+  continuous generalization of distinct-elements counting.
 - **Watch for overflow:** union measures over large coordinate ranges need `long`, and #850 wants
   the answer modulo 10⁹+7 (compute exactly, then reduce).
 
@@ -358,6 +464,27 @@ J. Algorithms records — not from memory.*
 - **M. H. Overmars & C.-K. Yap (1991), "New upper bounds in Klee's measure problem,"** *SIAM Journal
   on Computing* 20(6):1034–1045. DOI: [10.1137/0220065](https://doi.org/10.1137/0220065). The
   long-standing **O(n^(d/2) log n)** bound.
+
+### Streaming
+
+- **A. Pavan & S. Tirthapura (2007), "Range-Efficient Counting of Distinct Elements in a Massive
+  Data Stream,"** *SIAM Journal on Computing* 37(2):359–379.
+  DOI: [10.1137/050643672](https://doi.org/10.1137/050643672). The 1-D streaming case — counting
+  distinct elements covered by a stream of *ranges* rather than points.
+
+- **K. S. Meel, S. Chakraborty & N. V. Vinodchandran (2021), "Estimating the Size of Union of Sets
+  in Streaming Models,"** *PODS '21*, pp. 126–137.
+  DOI: [10.1145/3452021.3458333](https://doi.org/10.1145/3452021.3458333), and **PODS '22**,
+  "Estimation of the Size of Union of Delphic Sets." (ε,δ)-estimation over **Delphic families** in
+  `O(log³|Ω| / ε² · log 1/δ)` space.
+
+- **M. Nandi, N. V. Vinodchandran, A. Ghosh, K. S. Meel, S. Pal & S. Chakraborty (2024), "Improved
+  Streaming Algorithm for the Klee's Measure Problem and Generalizations,"** *APPROX/RANDOM 2024*,
+  LIPIcs vol. 317, 26:1–26:18.
+  DOI: [10.4230/LIPIcs.APPROX/RANDOM.2024.26](https://doi.org/10.4230/LIPIcs.APPROX/RANDOM.2024.26).
+  Improves the space bound to `Õ(log²|Ω| / ε² · log 1/δ)`, and states the framing used above: the
+  streaming union-measure problem **naturally generalizes F₀ (distinct elements) estimation**, where
+  each set is a single point.
 
 **Related in this repo:** [Intervals](#guides/INTERVALS) (the merge/insert/overlap patterns),
 [Segment Tree](#guides/SEGMENT_TREE) (the structure Bentley invented here),
