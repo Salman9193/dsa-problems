@@ -1,0 +1,271 @@
+# Klee's Algorithm — Measure of a Union
+
+**The problem:** given `n` intervals, how much of the line do they cover *in total*, counting
+overlaps once?
+
+```
+[1,4]  [2,6]  [8,10]
+        ├──────────┤        ├────┤
+   1    2    4     6   7    8    10
+covered: [1,6] ∪ [8,10]  =  5 + 2  =  7
+```
+
+It looks trivial. It is famous because **Victor Klee asked in 1977 whether it could be done in
+*less* than O(n log n)** — and the answer turned out to be **no**. This is one of the rare
+everyday algorithms with a **matching lower bound**, which makes it worth knowing for what it
+teaches, not just for what it computes.
+
+---
+
+## The 1-D Algorithm
+
+Two equivalent formulations. Both are O(n log n), both dominated by the sort.
+
+### Form A — Merge and sum (simplest)
+
+```java
+public long unionMeasure(int[][] intervals) {
+    if (intervals.length == 0) return 0;
+    Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+
+    long total = 0;
+    int curStart = intervals[0][0], curEnd = intervals[0][1];
+    for (int[] iv : intervals) {
+        if (iv[0] <= curEnd) {                 // overlaps: extend
+            curEnd = Math.max(curEnd, iv[1]);
+        } else {                               // disjoint: bank it, start fresh
+            total += curEnd - curStart;
+            curStart = iv[0];
+            curEnd = iv[1];
+        }
+    }
+    return total + (curEnd - curStart);
+}
+```
+
+This is [Merge Intervals #56](#arrays/merge-intervals) with a running sum instead of a list.
+
+### Form B — Event sweep (generalises)
+
+Turn each interval into two **events**, sort them, and sweep left to right holding a **coverage
+counter**:
+
+```java
+public long unionMeasure(int[][] intervals) {
+    int[][] events = new int[intervals.length * 2][2];
+    int k = 0;
+    for (int[] iv : intervals) {
+        events[k++] = new int[]{iv[0], +1};    // an interval opens
+        events[k++] = new int[]{iv[1], -1};    // an interval closes
+    }
+    Arrays.sort(events, (a, b) -> Integer.compare(a[0], b[0]));
+
+    long total = 0;
+    int cover = 0, prev = 0;
+    for (int[] e : events) {
+        if (cover > 0) total += e[0] - prev;    // this stretch was covered
+        cover += e[1];
+        prev = e[0];
+    }
+    return total;
+}
+```
+
+**Prefer Form B.** It costs the same and extends to everything else: counting *maximum* overlap
+([Meeting Rooms II #253](#arrays/meeting-rooms-ii)), finding regions covered **at least k** times,
+finding gaps, and — crucially — **the 2-D version below**. Merge-and-sum is a dead end; the sweep
+is a pattern.
+
+> **The mental model:** *stop caring about intervals, start caring about the transitions.* An
+> interval is not an object; it's a `+1` and a `-1`. Almost every interval problem gets simpler
+> under that reframe.
+
+### Sorting subtlety — ties
+
+When a close and an open land on the same coordinate, order matters and **which order depends on
+the question**:
+
+| Question | Tie order | Why |
+|----------|-----------|-----|
+| **Union measure** (`[1,3] ∪ [3,5]` = 4) | **open before close** | touching intervals form one covered run |
+| **Max concurrent** (rooms for `[1,3]`,`[3,5]` = 1) | **close before open** | one ends exactly as the other starts |
+
+**Same events, opposite tie-break, different answer.** Getting this backwards is the classic bug —
+and interviewers ask about it precisely because it reveals whether you've actually implemented one.
+
+---
+
+## Why O(n log n) Is Optimal
+
+The reason this problem has a name.
+
+**Klee (1977)** posed it as a question. **Fredman & Weide (1978)** answered it: **Ω(n log n)** in
+the algebraic decision-tree model. The argument is a reduction — **element distinctness** reduces
+to union measure:
+
+```
+given x₁ … xₙ, build the intervals [xᵢ, xᵢ + 1]
+   all xᵢ distinct   ⇒  no two intervals coincide  ⇒  measure is "large"
+   any duplicate     ⇒  two intervals coincide     ⇒  measure is strictly smaller
+```
+
+So a faster union-measure algorithm would give a faster element-distinctness algorithm — and
+element distinctness is **known** to require Ω(n log n) in that model. **The sort isn't laziness;
+it's the price of the problem.**
+
+> **Why this matters beyond the problem:** it's a clean, small example of proving you *can't* do
+> better. Most "can I beat O(n log n)?" questions have no such answer — here there is one, and the
+> technique (reduce a known-hard problem to yours) is the standard move.
+
+---
+
+## 2-D: Klee's Measure Problem
+
+Now the rectangles. **Given `n` axis-aligned rectangles, what is the area of their union?**
+([Rectangle Area II #850](https://leetcode.com/problems/rectangle-area-ii/))
+
+**The insight: sweep a vertical line, and at every moment the answer is a 1-D Klee measure.**
+
+```
+      │ sweep →
+  ┌───┼────┐
+  │   │    │      At each x-slab between consecutive x-coordinates,
+  ├───┼─┐  │      the set of active rectangles is FIXED.
+  │   │ │  │      Covered height = 1-D union measure of their y-intervals.
+  └───┼─┘  │      Area += covered_height × slab_width
+      │
+```
+
+```java
+// events: (x, y1, y2, +1 open / -1 close), sorted by x
+long area = 0;
+int prevX = events[0].x;
+for (Event e : events) {
+    area += coveredY() * (e.x - prevX);   // the 1-D measure, right now
+    apply(e);                             // activate / deactivate its y-interval
+    prevX = e.x;
+}
+```
+
+The only question is how to maintain `coveredY()` under insertions and deletions.
+
+| Approach | `coveredY()` | Total |
+|----------|--------------|-------|
+| Recompute the 1-D union each slab | O(n log n) | **O(n² log n)** |
+| **Segment tree over y, storing (count, covered length)** | **O(log n)** | **O(n log n)** |
+
+### The segment tree that makes it O(n log n)
+
+Compress the y-coordinates, then build a tree over the y-*intervals* where each node keeps:
+- `count` — how many active rectangles cover this node's whole range
+- `covered` — how much of this node's range is covered
+
+```java
+void pull(int node, int lo, int hi) {
+    if (count[node] > 0)      covered[node] = ys[hi] - ys[lo];       // fully covered
+    else if (hi - lo == 1)    covered[node] = 0;                     // a leaf, uncovered
+    else                      covered[node] = covered[left] + covered[right];
+}
+```
+
+**The trick worth remembering:** this tree **never needs lazy propagation**, because a `-1` always
+exactly cancels an earlier `+1` on the *same* range. Counts are only ever decremented by the
+interval that incremented them, so a node's `count` is always meaningful without pushing anything
+down. That's why the "count + covered" segment tree is simpler than a general lazy tree, and it's a
+neat special case to have seen.
+
+> **The historical punchline:** the segment tree was invented **for this problem**. Bentley's 1977
+> manuscript is literally titled *"Solutions to Klee's rectangle problems."* The structure in
+> [Segment Tree](#guides/SEGMENT_TREE) — and the one used in
+> [LIS II #2407](#dynamic-programming/longest-increasing-subsequence-ii) — traces back to Klee's
+> question.
+
+---
+
+## Higher Dimensions
+
+The problem keeps its name and gets much harder:
+
+| Dimensions | Best known | Source |
+|------------|-----------|--------|
+| 1 | **Θ(n log n)** — tight | Klee 1977 / Fredman–Weide 1978 |
+| 2 | **O(n log n)** — tight | Bentley 1977 |
+| d | O(n^(d−1) log n) | van Leeuwen & Wood 1981 |
+| d | **O(n^(d/2) log n)** | Overmars & Yap 1991 |
+
+Whether `n^(d/2)` is optimal is **still open**, and it's an active area — recent work gives
+conditional lower bounds under fine-grained complexity assumptions. A problem that looks like a
+warm-up in 1-D is a research topic in 4-D.
+
+---
+
+## The Problem Family
+
+| Problem | The twist | Tool |
+|---------|-----------|------|
+| [Merge Intervals #56](#arrays/merge-intervals) | output the union, not its measure | sort + merge |
+| [Meeting Rooms II #253](#arrays/meeting-rooms-ii) | **max** coverage, not total | sweep, track peak `cover` |
+| Non-Overlapping Intervals #435 | fewest removals to disjoin | greedy by **end** time |
+| Employee Free Time #759 | the **gaps** (complement of the union) | sweep, emit `cover == 0` runs |
+| The Skyline Problem #218 | the *shape* of the max, not the area | sweep + max-heap / multiset |
+| **Rectangle Area II #850** | **2-D union area** | **sweep + count/covered segment tree** |
+
+**They are all one algorithm with a different accumulator** — exactly the pattern that recurs across
+this repo: *sort into a canonical order, sweep, and change only what you accumulate.*
+
+| Accumulate | Get |
+|------------|-----|
+| length while `cover > 0` | **union measure** (Klee) |
+| `max(cover)` | maximum concurrency (rooms) |
+| length while `cover == 0` | free time / gaps |
+| length while `cover >= k` | regions covered ≥ k times |
+| the value of `cover` at each x | the skyline |
+
+---
+
+## Interview Notes
+
+- **Say "sweep line," then say what you accumulate.** That framing answers half the follow-ups
+  before they're asked.
+- **Volunteer the tie-break rule.** Stating *"opens before closes for union measure, closes before
+  opens for max-concurrency"* is a strong signal — it's the detail only implementers know.
+- **Coordinate-compress** whenever values are large or sparse; the tree should be sized by the
+  number of distinct coordinates, not by the coordinate range (see
+  [LIS II](#dynamic-programming/longest-increasing-subsequence-ii) for the same rule).
+- **Mention the lower bound if asked "can we do better?"** — "No: Fredman–Weide proved Ω(n log n)
+  by reduction from element distinctness." That's a genuinely rare thing to be able to say.
+- **Watch for overflow:** union measures over large coordinate ranges need `long`, and #850 wants
+  the answer modulo 10⁹+7 (compute exactly, then reduce).
+
+---
+
+## Research & Foundations
+
+*Citations verified against American Mathematical Monthly / Communications of the ACM / SIAM /
+J. Algorithms records — not from memory.*
+
+- **V. Klee (1977), "Can the measure of ⋃₁ⁿ[aᵢ,bᵢ] be computed in less than O(n log n) steps?"**
+  *The American Mathematical Monthly* 84(4):284–285.
+  DOI: [10.1080/00029890.1977.11994336](https://doi.org/10.1080/00029890.1977.11994336). The paper
+  that posed the question and gave the problem its name.
+
+- **M. L. Fredman & B. W. Weide (1978), "On the complexity of computing the measure of ⋃[aᵢ,bᵢ],"**
+  *Communications of the ACM* 21(7):540–544.
+  DOI: [10.1145/359545.359553](https://doi.org/10.1145/359545.359553). **Answers Klee's question:
+  Ω(n log n)**, via reduction from element distinctness — so the sort-based algorithm is optimal.
+
+- **J. L. Bentley (1977), "Solutions to Klee's rectangle problems."** Unpublished manuscript /
+  technical report, Department of Computer Science, Carnegie-Mellon University. The **2-D O(n log n)
+  algorithm**, and the origin of the **segment tree**.
+
+- **J. van Leeuwen & D. Wood (1981), "The measure problem for rectangular ranges in d-space,"**
+  *Journal of Algorithms* 2(3):282–300. Generalises to d dimensions in O(n^(d−1) log n).
+
+- **M. H. Overmars & C.-K. Yap (1991), "New upper bounds in Klee's measure problem,"** *SIAM Journal
+  on Computing* 20(6):1034–1045. DOI: [10.1137/0220065](https://doi.org/10.1137/0220065). The
+  long-standing **O(n^(d/2) log n)** bound.
+
+**Related in this repo:** [Intervals](#guides/INTERVALS) (the merge/insert/overlap patterns),
+[Segment Tree](#guides/SEGMENT_TREE) (the structure Bentley invented here),
+[Merge Intervals #56](#arrays/merge-intervals),
+[Meeting Rooms II #253](#arrays/meeting-rooms-ii).
