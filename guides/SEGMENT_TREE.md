@@ -206,3 +206,20 @@ need min/max/gcd or range updates.
 
 4. **Coordinate compression** is the bridge from "range sum" to counting
    problems (#315, #327): map values to ranks, then run the tree over ranks.
+
+---
+
+## Where Segment Trees Came From
+
+Bentley's 1977 manuscript that introduced the structure is titled **"Solutions to Klee's rectangle
+problems"** — the segment tree was invented to compute the **area of a union of rectangles** in
+O(n log n).
+
+That original application uses a variant worth knowing: each node stores a **count** (how many
+active rectangles cover this node's entire range) plus a **covered length**. It needs **no lazy
+propagation**, because every `-1` exactly cancels an earlier `+1` on the *same* range — so counts
+stay meaningful without pushing anything down.
+
+> See **[Klee's Algorithm](#guides/KLEES_ALGORITHM)** for the sweep + count/covered tree, and
+> [LIS II #2407](#dynamic-programming/longest-increasing-subsequence-ii) for the value-indexed
+> range-max variant.
