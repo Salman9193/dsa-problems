@@ -223,6 +223,100 @@ this repo: *sort into a canonical order, sweep, and change only what you accumul
 
 ---
 
+## Real-World Use Cases
+
+The unifying situation: **you have overlapping records of something, and the sum double-counts.**
+Whenever *total ≠ sum of parts*, this is the algorithm.
+
+### 1. Incident Duration & SLA Downtime
+
+Three alerts fire over overlapping windows — `10:00–10:30`, `10:15–10:45`, `10:40–11:00`. Summing
+gives **85 minutes**; the actual outage is **60**.
+
+Every uptime figure and SLA credit calculation is a union measure. Getting it wrong means either
+over-refunding customers or quietly breaching a contract you believed you'd met. The **gaps**
+variant (`cover == 0`) gives the complementary *uptime* directly.
+
+### 2. Genomic Coverage — the heavy industrial user
+
+Millions of sequencing reads align to a reference genome as intervals. Two standard questions map
+exactly onto two accumulators:
+
+| Genomics term | Question | Sweep variant |
+|---------------|----------|---------------|
+| **Breadth** of coverage | what fraction of the genome is covered *at all*? | length while `cover > 0` — **the union measure** |
+| **Depth** of coverage | which regions are covered **at least k** times? | length while `cover >= k` |
+
+This is what `bedtools merge`, `genomecov`, and `coverage` compute — and BEDTools explicitly uses a
+**sweep over genome-sorted intervals** as its fast path, for the same reason this guide prefers the
+event form: sorted input makes overlap detection streaming and memory-light.
+*(Quinlan & Hall, 2010, "BEDTools: a flexible suite of utilities for comparing genomic features,"*
+*Bioinformatics* 26(6):841–842.)
+
+### 3. VLSI Design-Rule Checking — the original motivation
+
+Bentley's rectangle problems came from **chip layout**: total area covered by metal on a layer,
+overlap between layers, spacing violations. That's *why* the 2-D case was solved early and well —
+and why the segment tree exists at all.
+
+### 4. Media Watch Time
+
+Watch `0–50%`, then rewatch `30–60%` → the viewer saw **60%**, not 80%. Any "percent of content
+consumed" metric that sums segments is inflated, and inflated engagement metrics drive bad
+decisions. (The HTML5 `TimeRanges` API for buffered video is itself a union-of-intervals structure.)
+
+### 5. Metered Billing & Capacity
+
+- **Bill the union, not the sum** — overlapping sessions, connections, or instance-hours.
+- The *inverse* question — **peak concurrency** for license seats, connection pools, or room
+  counts — is the same sweep tracking `max(cover)`.
+
+Both numbers come from one pass over the same events.
+
+### 6. Code Coverage
+
+Which lines are executed by *at least one* test is a union over per-test line ranges; the k-variant
+tells you which lines are covered redundantly (and therefore where tests may be duplicative).
+
+### 7. CIDR / Firewall Rule Analysis
+
+IP ranges are intervals over a 32-bit integer space. *"How many addresses do these rules actually
+cover?"* is a union measure; *"is this rule fully shadowed by others?"* is a containment check over
+the same sorted events — a standard audit for dead firewall rules.
+
+### 8. Calendar Free/Busy
+
+The **complement** of the union: sweep and emit stretches where `cover == 0`. Scheduling across
+several people intersects those free sets.
+
+---
+
+### The Point of the Sweep Form
+
+All of the above are one algorithm with the accumulator swapped:
+
+| Question | Accumulate | Used for |
+|----------|-----------|----------|
+| Total covered | length while `cover > 0` | downtime, watch time, billing, coverage breadth |
+| Peak concurrency | `max(cover)` | license seats, rooms, connection pools |
+| Gaps | length while `cover == 0` | free/busy, uptime, uncovered regions |
+| Redundancy | length while `cover >= 2` | duplicate monitors, over-provisioning |
+| Depth ≥ k | length while `cover >= k` | sequencing depth, quorum coverage |
+
+**Same events, same sort, one line different.** That's the whole argument for learning the event
+sweep rather than merge-and-sum.
+
+### A Caution About Higher Dimensions
+
+1-D and 2-D are `O(n log n)`. Beyond that it gets genuinely expensive — `O(n^(d/2) log n)` — and
+computing exact union **volume** in high dimensions is **#P-hard** even for axis-parallel boxes. The
+usual case where people hit this is the **hypervolume indicator** in multi-objective optimisation.
+
+**The practical answer there is Monte Carlo estimation, not exact computation.** Recognising when to
+stop reaching for the exact algorithm is part of knowing it.
+
+---
+
 ## Interview Notes
 
 - **Say "sweep line," then say what you accumulate.** That framing answers half the follow-ups
