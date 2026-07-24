@@ -128,3 +128,20 @@ public int eraseOverlapIntervals(int[][] intervals) {
 | #1288 Remove covered intervals | Sort by start desc, end asc |
 | #759 Employee free time | Merge all intervals, find gaps |
 | #352 Data stream as disjoint intervals | TreeMap of sorted intervals |
+
+---
+
+## Beyond Merging: the Measure of a Union
+
+The patterns above all *output intervals*. A different question — **how much total length do they
+cover?** — has its own name, its own optimal algorithm, and a matching lower bound:
+
+```
+[1,4] ∪ [2,6] ∪ [8,10]  =  [1,6] ∪ [8,10]  =  7
+```
+
+That's **Klee's measure problem**, and its event-sweep formulation generalises to maximum
+concurrency, gap-finding, "covered at least k times," and the 2-D rectangle-union area.
+
+> See **[Klee's Algorithm](#guides/KLEES_ALGORITHM)** — including why O(n log n) is provably
+> optimal, and why the segment tree was invented to solve the 2-D case.
