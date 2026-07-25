@@ -186,6 +186,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | [Complexity Theory](./guides/COMPLEXITY_THEORY.md) | P vs NP, NP-complete, reductions |
 | [k-Colouring](./guides/K_COLOURING.md) | Bipartite → k colours, complexity jump at k=3 |
 | [Knapsack Variants](./guides/KNAPSACK_VARIANTS.md) | All 6 knapsack scenarios, direction rule |
+| [DP Taxonomy](./guides/DP_TAXONOMY.md) | Map of all DP types + full LeetCode problem mapping (constant/grid/dual-seq/knapsack/interval/tree/bitmask) |
 | [Union-Find](./guides/UNION_FIND.md) | DSU with path compression + rank; Kruskal's MST |
 | [Trie](./guides/TRIE.md) | Prefix tree; insert/search/wildcard/Word Search II |
 | [Graph Algorithms](./guides/GRAPH_ALGORITHMS.md) | Topological sort + Dijkstra + Bellman-Ford |
@@ -199,6 +200,6 @@ Each problem lives in `topic/problem-name/` and contains:
 | [Floyd-Warshall, Max Flow & Bipartite Matching](./guides/FLOW_MATCHING.md) | Tier 3 advanced |
 
 ---
-> 122 problems · 17 guides · Complete Staff/Principal Engineer preparation resource
+> 122 problems · 18 guides · Complete Staff/Principal Engineer preparation resource
 
-> Last updated: 2026-07-05 — added Klee's Algorithm guide (union measure, sweep line, 2-D rectangle union, matching lower bound)
+> Last updated: 2026-07-05 — added DP Taxonomy guide: map of all DP types with a complete LeetCode problem mapping
