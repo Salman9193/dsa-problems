@@ -193,3 +193,9 @@ informally → greedy is likely safe.
 - Cormen et al. — *Introduction to Algorithms (CLRS)*, Chapter 16 (Greedy) and Chapter 15 (DP)
 - Kleinberg & Tardos — *Algorithm Design*, Chapters 4 (Greedy) and 6 (DP)
   — contains the clearest treatment of the interchange argument
+
+---
+
+> **Where this fits:** this is one branch of the full [DP Taxonomy](#guides/DP_TAXONOMY) — the map of
+> all DP types (constant-transition, grid, dual-sequence, non-constant, knapsack, interval,
+> topological, tree, bitmask) with a complete LeetCode problem mapping.
