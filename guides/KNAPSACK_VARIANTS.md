@@ -308,3 +308,9 @@ Can the same item be used more than once?
 - `GREEDY_VS_DP.md` — when does greedy suffice instead of DP?
 - `COMPLEXITY_THEORY.md` — why subset sum is NP-complete (pseudo-polynomial DP)
 - Problem #416 (Partition Equal Subset Sum) — the canonical knapsack entry point
+
+---
+
+> **Where this fits:** this is one branch of the full [DP Taxonomy](#guides/DP_TAXONOMY) — the map of
+> all DP types (constant-transition, grid, dual-sequence, non-constant, knapsack, interval,
+> topological, tree, bitmask) with a complete LeetCode problem mapping.
