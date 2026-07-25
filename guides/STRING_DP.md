@@ -192,3 +192,9 @@ for (int i = 1; i <= m; i++) {
 | #97 Interleaving String | 2D DP similar to LCS |
 | #44 Wildcard Matching | Edit distance variant |
 | #10 Regular Expression Matching | Edit distance with `.` and `*` |
+
+---
+
+> **Where this fits:** this is one branch of the full [DP Taxonomy](#guides/DP_TAXONOMY) — the map of
+> all DP types (constant-transition, grid, dual-sequence, non-constant, knapsack, interval,
+> topological, tree, bitmask) with a complete LeetCode problem mapping.
