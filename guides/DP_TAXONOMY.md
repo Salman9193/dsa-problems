@@ -120,6 +120,10 @@ dp[i] = 1 + max( dp[j] for all j < i with condition(j, i) )     // LIS
 (patience sorting) or a segment tree can sometimes cut the transition from O(n) to O(log n). That's
 the entire subject of the LIS cluster.
 
+> **Grid × non-constant hybrid:** [Minimum Path Cost in a Grid #2304](#dynamic-programming/minimum-path-cost-in-a-grid)
+> is a grid DP whose transition scans the whole previous row — the clearest example of a non-constant
+> transition sitting on grid-shaped state.
+>
 > Repo: [LIS [#300](https://leetcode.com/problems/longest-increasing-subsequence/)](#dynamic-programming/longest-increasing-subsequence),
 > [Largest Divisible Subset [#368](https://leetcode.com/problems/largest-divisible-subset/)](#dynamic-programming/largest-divisible-subset),
 > [Number of LIS [#673](https://leetcode.com/problems/number-of-longest-increasing-subsequence/)](#dynamic-programming/number-of-lis),
@@ -262,6 +266,7 @@ are listed so you can find them.)
 |---|---------|---------|
 | [62](https://leetcode.com/problems/unique-paths/) | [Unique Paths](#dynamic-programming/unique-paths) | ✅ |
 | [1463](https://leetcode.com/problems/cherry-pickup-ii/) | [Cherry Pickup II](#dynamic-programming/cherry-pickup-ii) | ✅ |
+| [2304](https://leetcode.com/problems/minimum-path-cost-in-a-grid/) | [Minimum Path Cost in a Grid](#dynamic-programming/minimum-path-cost-in-a-grid) | ✅ |
 | [1411](https://leetcode.com/problems/number-of-ways-to-paint-n-3-grid/) | [Number of Ways to Paint Grid](#dynamic-programming/number-of-ways-paint-grid) | ✅ |
 | [64](https://leetcode.com/problems/minimum-path-sum/) | Minimum Path Sum | — |
 | [221](https://leetcode.com/problems/maximal-square/) | Maximal Square | — |
