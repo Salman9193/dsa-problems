@@ -100,6 +100,7 @@ LC = {
     "house-robber":(198,"house-robber"),
     "jump-game":(55,"jump-game"),
     "unique-paths":(62,"unique-paths"),
+    "unique-paths-ii":(63,"unique-paths-ii"),
     "cherry-pickup-ii":(1463,"cherry-pickup-ii"),
     "number-of-ways-paint-grid":(1411,"number-of-ways-to-paint-n-3-grid"),
     "partition-equal-subset-sum":(416,"partition-equal-subset-sum"),
