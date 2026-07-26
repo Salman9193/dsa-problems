@@ -58,8 +58,8 @@ dp[i] = f(dp[i-1], dp[i-2], …)      // fixed arity, no inner loop
 **Signature move:** almost always **O(1)-space** optimisable, because you only look back a constant
 number of steps — keep two variables, not an array.
 
-> Repo: [House Robber #198](#dynamic-programming/house-robber),
-> [Jump Game #55](#dynamic-programming/jump-game).
+> Repo: [House Robber [#198](https://leetcode.com/problems/house-robber/)](#dynamic-programming/house-robber),
+> [Jump Game [#55](https://leetcode.com/problems/jump-game/)](#dynamic-programming/jump-game).
 
 ---
 
@@ -77,9 +77,9 @@ dp[r][c] = grid[r][c] + min(dp[r-1][c], dp[r][c-1])     // e.g. min path sum
 
 **Signature move:** rolling array — you only need the previous row, so O(n) space.
 
-> Repo: [Unique Paths #62](#dynamic-programming/unique-paths).
+> Repo: [Unique Paths [#62](https://leetcode.com/problems/unique-paths/)](#dynamic-programming/unique-paths).
 > Multi-agent grid DP (state = *both* agents' positions) appears in
-> [Cherry Pickup II #1463](#dynamic-programming/cherry-pickup-ii) — a grid DP whose state is a pair
+> [Cherry Pickup II [#1463](https://leetcode.com/problems/cherry-pickup-ii/)](#dynamic-programming/cherry-pickup-ii) — a grid DP whose state is a pair
 > of columns.
 
 ---
@@ -98,7 +98,7 @@ The whole **string-DP** family lives here: LCS, edit distance, distinct subseque
 common supersequence, regex/wildcard matching.
 
 > Deep dive: **[String DP](#guides/STRING_DP)**. Repo:
-> [Shortest Common Supersequence #1092](#dynamic-programming/shortest-common-supersequence)
+> [Shortest Common Supersequence [#1092](https://leetcode.com/problems/shortest-common-supersequence/)](#dynamic-programming/shortest-common-supersequence)
 > (built directly on LCS).
 
 ---
@@ -120,11 +120,11 @@ dp[i] = 1 + max( dp[j] for all j < i with condition(j, i) )     // LIS
 (patience sorting) or a segment tree can sometimes cut the transition from O(n) to O(log n). That's
 the entire subject of the LIS cluster.
 
-> Repo: [LIS #300](#dynamic-programming/longest-increasing-subsequence),
-> [Largest Divisible Subset #368](#dynamic-programming/largest-divisible-subset),
-> [Number of LIS #673](#dynamic-programming/number-of-lis),
-> [LIS II #2407](#dynamic-programming/longest-increasing-subsequence-ii) (segment-tree accelerated),
-> [Word Break #139](#dynamic-programming/word-break).
+> Repo: [LIS [#300](https://leetcode.com/problems/longest-increasing-subsequence/)](#dynamic-programming/longest-increasing-subsequence),
+> [Largest Divisible Subset [#368](https://leetcode.com/problems/largest-divisible-subset/)](#dynamic-programming/largest-divisible-subset),
+> [Number of LIS [#673](https://leetcode.com/problems/number-of-longest-increasing-subsequence/)](#dynamic-programming/number-of-lis),
+> [LIS II [#2407](https://leetcode.com/problems/longest-increasing-subsequence-ii/)](#dynamic-programming/longest-increasing-subsequence-ii) (segment-tree accelerated),
+> [Word Break [#139](https://leetcode.com/problems/word-break/)](#dynamic-programming/word-break).
 
 ---
 
@@ -149,10 +149,10 @@ knapsack bug.
 - **0/1:** classic 0/1 knapsack, Last Stone Weight II
 
 > Deep dive: **[Knapsack Variants](#guides/KNAPSACK_VARIANTS)**. Repo:
-> [Partition Equal Subset Sum #416](#dynamic-programming/partition-equal-subset-sum) (weight-only),
-> [Coin Change #322](#dynamic-programming/coin-change) &
-> [Coin Change II #518](#dynamic-programming/coin-change-ii) (unbounded),
-> [Combination Sum IV #377](#dynamic-programming/combination-sum-iv) (unbounded, order-sensitive).
+> [Partition Equal Subset Sum [#416](https://leetcode.com/problems/partition-equal-subset-sum/)](#dynamic-programming/partition-equal-subset-sum) (weight-only),
+> [Coin Change [#322](https://leetcode.com/problems/coin-change/)](#dynamic-programming/coin-change) &
+> [Coin Change II [#518](https://leetcode.com/problems/coin-change-ii/)](#dynamic-programming/coin-change-ii) (unbounded),
+> [Combination Sum IV [#377](https://leetcode.com/problems/combination-sum-iv/)](#dynamic-programming/combination-sum-iv) (unbounded, order-sensitive).
 
 ---
 
@@ -172,7 +172,7 @@ The tell is *"the answer for a range depends on choosing a point/partition insid
 
 **Signature move:** iterate by **increasing interval length**, so shorter ranges are solved first.
 
-> Repo: [Burst Balloons #312](#dynamic-programming/burst-balloons).
+> Repo: [Burst Balloons [#312](https://leetcode.com/problems/burst-balloons/)](#dynamic-programming/burst-balloons).
 
 ---
 
@@ -192,8 +192,8 @@ dp[v] = f( dp[u] for each edge u → v )      // processed in topological order
 what makes the DP legal. Note that **sequence DPs are secretly this**: string position *is* a
 topological order, which is why LIS/Word Break need no explicit sort.
 
-> Repo: [Parallel Courses III #2050](#graphs/parallel-courses-iii),
-> [Course Schedule II #210](#graphs/course-schedule-ii). Guide:
+> Repo: [Parallel Courses III [#2050](https://leetcode.com/problems/parallel-courses-iii/)](#graphs/parallel-courses-iii),
+> [Course Schedule II [#210](https://leetcode.com/problems/course-schedule-ii/)](#graphs/course-schedule-ii). Guide:
 > [Graph Algorithms](#guides/GRAPH_ALGORITHMS).
 
 ---
@@ -235,10 +235,10 @@ dp[mask][i] = best way to have visited exactly `mask`, currently at i
 - **Assignment problem**, **Shortest Superstring**, partition-into-k-subsets
 
 **Signature move:** the mask *is* a canonical ID for a subset — which is exactly why
-[Subsets #78](#dynamic-programming/subsets) (whose bitmask enumeration is the base case) is the
+[Subsets [#78](https://leetcode.com/problems/subsets/)](#dynamic-programming/subsets) (whose bitmask enumeration is the base case) is the
 gateway to this whole family.
 
-> Repo gateway: [Subsets #78](#dynamic-programming/subsets) (bitmask enumeration of subsets).
+> Repo gateway: [Subsets [#78](https://leetcode.com/problems/subsets/)](#dynamic-programming/subsets) (bitmask enumeration of subsets).
 > Bit mechanics live in the `bit-manipulation/` category; the mask is just an integer whose
 > bits you set and test.
 
@@ -252,87 +252,87 @@ are listed so you can find them.)
 ### Constant-Transition
 | # | Problem | In repo |
 |---|---------|---------|
-| 198 | [House Robber](#dynamic-programming/house-robber) | ✅ |
-| 55 | [Jump Game](#dynamic-programming/jump-game) | ✅ |
-| 70 | Climbing Stairs | — |
-| 213/337 | House Robber II / III | — (III is Tree DP) |
+| [198](https://leetcode.com/problems/house-robber/) | [House Robber](#dynamic-programming/house-robber) | ✅ |
+| [55](https://leetcode.com/problems/jump-game/) | [Jump Game](#dynamic-programming/jump-game) | ✅ |
+| [70](https://leetcode.com/problems/climbing-stairs/) | Climbing Stairs | — |
+| [213](https://leetcode.com/problems/house-robber-ii/)/[337](https://leetcode.com/problems/house-robber-iii/) | House Robber II / III | — (III is Tree DP) |
 
 ### Grid
 | # | Problem | In repo |
 |---|---------|---------|
-| 62 | [Unique Paths](#dynamic-programming/unique-paths) | ✅ |
-| 1463 | [Cherry Pickup II](#dynamic-programming/cherry-pickup-ii) | ✅ |
-| 1411 | [Number of Ways to Paint Grid](#dynamic-programming/number-of-ways-paint-grid) | ✅ |
-| 64 | Minimum Path Sum | — |
-| 221 | Maximal Square | — |
-| 63 | Unique Paths II | — |
+| [62](https://leetcode.com/problems/unique-paths/) | [Unique Paths](#dynamic-programming/unique-paths) | ✅ |
+| [1463](https://leetcode.com/problems/cherry-pickup-ii/) | [Cherry Pickup II](#dynamic-programming/cherry-pickup-ii) | ✅ |
+| [1411](https://leetcode.com/problems/number-of-ways-to-paint-n-3-grid/) | [Number of Ways to Paint Grid](#dynamic-programming/number-of-ways-paint-grid) | ✅ |
+| [64](https://leetcode.com/problems/minimum-path-sum/) | Minimum Path Sum | — |
+| [221](https://leetcode.com/problems/maximal-square/) | Maximal Square | — |
+| [63](https://leetcode.com/problems/unique-paths-ii/) | Unique Paths II | — |
 
 ### Dual-Sequence → see [String DP](#guides/STRING_DP)
 | # | Problem | In repo |
 |---|---------|---------|
-| 1092 | [Shortest Common Supersequence](#dynamic-programming/shortest-common-supersequence) | ✅ |
-| 1143 | Longest Common Subsequence | — |
-| 72 | Edit Distance | — |
-| 115 | Distinct Subsequences | — |
-| 10/44 | Regex / Wildcard Matching | — |
+| [1092](https://leetcode.com/problems/shortest-common-supersequence/) | [Shortest Common Supersequence](#dynamic-programming/shortest-common-supersequence) | ✅ |
+| [1143](https://leetcode.com/problems/longest-common-subsequence/) | Longest Common Subsequence | — |
+| [72](https://leetcode.com/problems/edit-distance/) | Edit Distance | — |
+| [115](https://leetcode.com/problems/distinct-subsequences/) | Distinct Subsequences | — |
+| [10](https://leetcode.com/problems/regular-expression-matching/)/[44](https://leetcode.com/problems/wildcard-matching/) | Regex / Wildcard Matching | — |
 
 ### Non-Constant-Transition (the LIS cluster)
 | # | Problem | In repo |
 |---|---------|---------|
-| 300 | [Longest Increasing Subsequence](#dynamic-programming/longest-increasing-subsequence) | ✅ |
-| 368 | [Largest Divisible Subset](#dynamic-programming/largest-divisible-subset) | ✅ |
-| 673 | [Number of LIS](#dynamic-programming/number-of-lis) | ✅ |
-| 354 | [Russian Doll Envelopes](#dynamic-programming/russian-doll-envelopes) | ✅ |
-| 2407 | [Longest Increasing Subsequence II](#dynamic-programming/longest-increasing-subsequence-ii) | ✅ |
-| 139 | [Word Break](#dynamic-programming/word-break) | ✅ |
-| 140 | [Word Break II](#dynamic-programming/word-break-ii) | ✅ |
+| [300](https://leetcode.com/problems/longest-increasing-subsequence/) | [Longest Increasing Subsequence](#dynamic-programming/longest-increasing-subsequence) | ✅ |
+| [368](https://leetcode.com/problems/largest-divisible-subset/) | [Largest Divisible Subset](#dynamic-programming/largest-divisible-subset) | ✅ |
+| [673](https://leetcode.com/problems/number-of-longest-increasing-subsequence/) | [Number of LIS](#dynamic-programming/number-of-lis) | ✅ |
+| [354](https://leetcode.com/problems/russian-doll-envelopes/) | [Russian Doll Envelopes](#dynamic-programming/russian-doll-envelopes) | ✅ |
+| [2407](https://leetcode.com/problems/longest-increasing-subsequence-ii/) | [Longest Increasing Subsequence II](#dynamic-programming/longest-increasing-subsequence-ii) | ✅ |
+| [139](https://leetcode.com/problems/word-break/) | [Word Break](#dynamic-programming/word-break) | ✅ |
+| [140](https://leetcode.com/problems/word-break-ii/) | [Word Break II](#dynamic-programming/word-break-ii) | ✅ |
 
 ### Knapsack → see [Knapsack Variants](#guides/KNAPSACK_VARIANTS)
 | # | Problem | Variant | In repo |
 |---|---------|---------|---------|
-| 416 | [Partition Equal Subset Sum](#dynamic-programming/partition-equal-subset-sum) | weight-only | ✅ |
-| 322 | [Coin Change](#dynamic-programming/coin-change) | unbounded (min) | ✅ |
-| 518 | [Coin Change II](#dynamic-programming/coin-change-ii) | unbounded (count, combos) | ✅ |
-| 377 | [Combination Sum IV](#dynamic-programming/combination-sum-iv) | unbounded (count, perms) | ✅ |
-| 3592 | [Inverse Coin Change](#dynamic-programming/inverse-coin-change) | inverts the count DP | ✅ |
-| 494 | Target Sum | weight-only (signed) | — |
-| 1049 | Last Stone Weight II | 0/1 | — |
-| 474 | Ones and Zeroes | 2-D knapsack | — |
+| [416](https://leetcode.com/problems/partition-equal-subset-sum/) | [Partition Equal Subset Sum](#dynamic-programming/partition-equal-subset-sum) | weight-only | ✅ |
+| [322](https://leetcode.com/problems/coin-change/) | [Coin Change](#dynamic-programming/coin-change) | unbounded (min) | ✅ |
+| [518](https://leetcode.com/problems/coin-change-ii/) | [Coin Change II](#dynamic-programming/coin-change-ii) | unbounded (count, combos) | ✅ |
+| [377](https://leetcode.com/problems/combination-sum-iv/) | [Combination Sum IV](#dynamic-programming/combination-sum-iv) | unbounded (count, perms) | ✅ |
+| [3592](https://leetcode.com/problems/inverse-coin-change/) | [Inverse Coin Change](#dynamic-programming/inverse-coin-change) | inverts the count DP | ✅ |
+| [494](https://leetcode.com/problems/target-sum/) | Target Sum | weight-only (signed) | — |
+| [1049](https://leetcode.com/problems/last-stone-weight-ii/) | Last Stone Weight II | 0/1 | — |
+| [474](https://leetcode.com/problems/ones-and-zeroes/) | Ones and Zeroes | 2-D knapsack | — |
 
 ### Interval
 | # | Problem | In repo |
 |---|---------|---------|
-| 312 | [Burst Balloons](#dynamic-programming/burst-balloons) | ✅ |
-| 1039 | Minimum Score Triangulation | — |
-| 132 | Palindrome Partitioning II | — |
-| 375 | Guess Number Higher or Lower II | — |
-| 1000 | Merge Stones | — |
+| [312](https://leetcode.com/problems/burst-balloons/) | [Burst Balloons](#dynamic-programming/burst-balloons) | ✅ |
+| [1039](https://leetcode.com/problems/minimum-score-triangulation-of-polygon/) | Minimum Score Triangulation | — |
+| [132](https://leetcode.com/problems/palindrome-partitioning-ii/) | Palindrome Partitioning II | — |
+| [375](https://leetcode.com/problems/guess-number-higher-or-lower-ii/) | Guess Number Higher or Lower II | — |
+| [1000](https://leetcode.com/problems/minimum-cost-to-merge-stones/) | Merge Stones | — |
 
 ### Topological-Order (DAG)
 | # | Problem | In repo |
 |---|---------|---------|
-| 2050 | [Parallel Courses III](#graphs/parallel-courses-iii) | ✅ |
-| 210 | [Course Schedule II](#graphs/course-schedule-ii) | ✅ |
-| 329 | Longest Increasing Path in a Matrix | — |
-| 1857 | Largest Color Value in a Directed Graph | — |
+| [2050](https://leetcode.com/problems/parallel-courses-iii/) | [Parallel Courses III](#graphs/parallel-courses-iii) | ✅ |
+| [210](https://leetcode.com/problems/course-schedule-ii/) | [Course Schedule II](#graphs/course-schedule-ii) | ✅ |
+| [329](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/) | Longest Increasing Path in a Matrix | — |
+| [1857](https://leetcode.com/problems/largest-color-value-in-a-directed-graph/) | Largest Color Value in a Directed Graph | — |
 
 ### Tree
 | # | Problem | In repo |
 |---|---------|---------|
-| 337 | House Robber III | — |
-| 124 | Binary Tree Maximum Path Sum | — |
-| 543 | Diameter of Binary Tree | — |
-| 968 | Binary Tree Cameras | — |
-| 834 | Sum of Distances in Tree (re-rooting) | — |
+| [337](https://leetcode.com/problems/house-robber-iii/) | House Robber III | — |
+| [124](https://leetcode.com/problems/binary-tree-maximum-path-sum/) | Binary Tree Maximum Path Sum | — |
+| [543](https://leetcode.com/problems/diameter-of-binary-tree/) | Diameter of Binary Tree | — |
+| [968](https://leetcode.com/problems/binary-tree-cameras/) | Binary Tree Cameras | — |
+| [834](https://leetcode.com/problems/sum-of-distances-in-tree/) | Sum of Distances in Tree (re-rooting) | — |
 
 ### Bitmask
 | # | Problem | In repo |
 |---|---------|---------|
-| 78 | [Subsets](#dynamic-programming/subsets) (enumeration base case) | ✅ |
-| 943 | Find the Shortest Superstring | — |
-| 847 | Shortest Path Visiting All Nodes | — |
-| 1349 | Maximum Students Taking Exam | — |
-| 698 | Partition to K Equal Sum Subsets | — |
+| [78](https://leetcode.com/problems/subsets/) | [Subsets](#dynamic-programming/subsets) (enumeration base case) | ✅ |
+| [943](https://leetcode.com/problems/find-the-shortest-superstring/) | Find the Shortest Superstring | — |
+| [847](https://leetcode.com/problems/shortest-path-visiting-all-nodes/) | Shortest Path Visiting All Nodes | — |
+| [1349](https://leetcode.com/problems/maximum-students-taking-exam/) | Maximum Students Taking Exam | — |
+| [698](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/) | Partition to K Equal Sum Subsets | — |
 
 ---
 
