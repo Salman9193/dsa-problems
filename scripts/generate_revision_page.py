@@ -149,6 +149,7 @@ LC = {
     "critical-connections":(1192,"critical-connections-in-a-network"),
     "minimum-height-trees":(310,"minimum-height-trees"),
     "lru-cache":(146,"lru-cache"),
+    "design-skiplist":(1206,"design-skiplist"),
     "exam-room":(855,"exam-room"),
     "find-median-data-stream":(295,"find-median-from-data-stream"),
     "hamming-weight":(191,"number-of-1-bits"),
