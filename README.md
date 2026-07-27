@@ -165,19 +165,20 @@ Each problem lives in `topic/problem-name/` and contains:
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
 | 115 | [LRU Cache](./design/lru-cache) | DLL + HashMap | Medium |
-| 116 | [Exam Room](./design/exam-room) | Sorted Set | Medium |
-| 117 | [Find Median from Data Stream](./design/find-median-data-stream) | Two Heaps | Hard |
+| 116 | [Design Skiplist](./design/design-skiplist) | Probabilistic O(log n); randomization replaces balancing | Hard |
+| 117 | [Exam Room](./design/exam-room) | Sorted Set | Medium |
+| 118 | [Find Median from Data Stream](./design/find-median-data-stream) | Two Heaps | Hard |
 
 ### Bit Manipulation
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 118 | [Number of 1 Bits](./bit-manipulation/hamming-weight) | Bit Manipulation | Easy |
-| 119 | [Reverse Bits](./bit-manipulation/reverse-bits) | Bit Manipulation | Easy |
+| 119 | [Number of 1 Bits](./bit-manipulation/hamming-weight) | Bit Manipulation | Easy |
+| 120 | [Reverse Bits](./bit-manipulation/reverse-bits) | Bit Manipulation | Easy |
 
 ### Binary Search (Advanced)
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 120 | [Lowest Common Ancestor (Binary Tree)](./trees/lowest-common-ancestor) | DFS | Medium |
+| 121 | [Lowest Common Ancestor (Binary Tree)](./trees/lowest-common-ancestor) | DFS | Medium |
 
 ## Guides
 
@@ -202,6 +203,6 @@ Each problem lives in `topic/problem-name/` and contains:
 | [Floyd-Warshall, Max Flow & Bipartite Matching](./guides/FLOW_MATCHING.md) | Tier 3 advanced |
 
 ---
-> 124 problems · 18 guides · Complete Staff/Principal Engineer preparation resource
+> 125 problems · 18 guides · Complete Staff/Principal Engineer preparation resource
 
-> Last updated: 2026-07-05 — added Minimum Path Cost in a Grid (#2304): grid DP with a non-constant (scan-the-previous-row) transition
+> Last updated: 2026-07-05 — added Design Skiplist (#1206): probabilistic balancing; bridges to Redis ZSET + LSM memtables in the system-design repo
