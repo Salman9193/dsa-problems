@@ -41,6 +41,6 @@ Cassandra), and Java's `ConcurrentSkipListMap` — reach for skip lists rather t
 > concurrency.** The same trade underlies hash tables, treaps, randomized quicksort, and the
 > streaming sketches in [Klee's Algorithm](#guides/KLEES_ALGORITHM).
 
-**Related in this repo:** [Merge K Sorted Lists](#linked-list/merge-k-sorted-lists) (LSM compaction),
+**Related in this repo:** [Balanced Search Trees](#guides/BALANCED_TREES) (the deterministic AVL / red-black / splay alternatives this structure is compared against), [Merge K Sorted Lists](#linked-list/merge-k-sorted-lists) (LSM compaction),
 [LRU Cache](#design/lru-cache), [Implement Trie #208](#strings/implement-trie), and the applied
 systems in [Database Scaling](https://salman9193.github.io/system-design/#fu-database-scaling).
