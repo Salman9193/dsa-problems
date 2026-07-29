@@ -191,6 +191,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | [Knapsack Variants](./guides/KNAPSACK_VARIANTS.md) | All 6 knapsack scenarios, direction rule |
 | [DP Taxonomy](./guides/DP_TAXONOMY.md) | Map of all DP types + full LeetCode problem mapping (constant/grid/dual-seq/knapsack/interval/tree/bitmask) |
 | [Union-Find](./guides/UNION_FIND.md) | DSU with path compression + rank; Kruskal's MST |
+| [Balanced Search Trees](./guides/BALANCED_TREES.md) | BST, AVL, red-black, splay: invariants, Java, when to use each |
 | [Trie](./guides/TRIE.md) | Prefix tree; insert/search/wildcard/Word Search II |
 | [Graph Algorithms](./guides/GRAPH_ALGORITHMS.md) | Topological sort + Dijkstra + Bellman-Ford |
 | [Intervals](./guides/INTERVALS.md) | Merge, insert, meeting rooms, non-overlapping |
@@ -203,6 +204,6 @@ Each problem lives in `topic/problem-name/` and contains:
 | [Floyd-Warshall, Max Flow & Bipartite Matching](./guides/FLOW_MATCHING.md) | Tier 3 advanced |
 
 ---
-> 125 problems · 18 guides · Complete Staff/Principal Engineer preparation resource
+> 125 problems · 19 guides · Complete Staff/Principal Engineer preparation resource
 
-> Last updated: 2026-07-05 — added Design Skiplist (#1206): probabilistic balancing; bridges to Redis ZSET + LSM memtables in the system-design repo
+> Last updated: 2026-07-05 — added Balanced Search Trees guide (BST · AVL · red-black · splay: invariants, Java implementations, real-world use)
