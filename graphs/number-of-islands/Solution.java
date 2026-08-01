@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.ArrayDeque;
 
 class Solution {
 
@@ -50,7 +51,7 @@ class Solution {
                 if (grid[r][c] != '1') continue;
 
                 islands++;
-                Queue<int[]> queue = new LinkedList<>();
+                Queue<int[]> queue = new ArrayDeque<>();
                 queue.offer(new int[]{r, c});
                 grid[r][c] = '0';  // mark on enqueue
 
