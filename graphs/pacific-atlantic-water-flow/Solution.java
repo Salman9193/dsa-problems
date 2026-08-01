@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.ArrayDeque;
 
 class Solution {
 
@@ -25,8 +26,8 @@ class Solution {
         boolean[][] pacific  = new boolean[rows][cols];
         boolean[][] atlantic = new boolean[rows][cols];
 
-        Queue<int[]> pacQueue = new LinkedList<>();
-        Queue<int[]> atlQueue = new LinkedList<>();
+        Queue<int[]> pacQueue = new ArrayDeque<>();
+        Queue<int[]> atlQueue = new ArrayDeque<>();
 
         // Seed Pacific border: top row + left column
         for (int r = 0; r < rows; r++) {
