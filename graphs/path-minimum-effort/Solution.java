@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.ArrayDeque;
 
 class Solution {
 
@@ -90,7 +91,7 @@ class Solution {
     private boolean canReach(int[][] heights, int maxEffort) {
         int rows = heights.length, cols = heights[0].length;
         boolean[][] visited = new boolean[rows][cols];
-        Queue<int[]> queue = new LinkedList<>();
+        Queue<int[]> queue = new ArrayDeque<>();
         queue.offer(new int[]{0, 0});
         visited[0][0] = true;
         int[][] dirs = {{0,1},{0,-1},{1,0},{-1,0}};
