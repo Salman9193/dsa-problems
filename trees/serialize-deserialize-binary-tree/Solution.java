@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.ArrayDeque;
 
 class TreeNode {
     int val;
@@ -40,7 +41,7 @@ public class Codec {
     public TreeNode deserialize(String data) {
         // A queue lets us consume tokens left-to-right in the SAME preorder
         // that serialize produced them — the structure is implicit in the order.
-        Queue<String> tokens = new LinkedList<>(Arrays.asList(data.split(SEP)));
+        Queue<String> tokens = new ArrayDeque<>(Arrays.asList(data.split(SEP)));
         return deserializeHelper(tokens);
     }
 
