@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.ArrayDeque;
 
 class Solution {
 
@@ -13,7 +14,7 @@ class Solution {
 
         List<List<Integer>> adj = buildAdj(n, edges);
         boolean[] visited = new boolean[n];
-        Queue<Integer> queue = new LinkedList<>();
+        Queue<Integer> queue = new ArrayDeque<>();
         queue.offer(source);
         visited[source] = true;
 
