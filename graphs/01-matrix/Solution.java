@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.ArrayDeque;
 
 class Solution {
 
@@ -20,7 +21,7 @@ class Solution {
     public int[][] updateMatrixBFS(int[][] mat) {
         int rows = mat.length, cols = mat[0].length;
         int[][] dist = new int[rows][cols];
-        Queue<int[]> queue = new LinkedList<>();
+        Queue<int[]> queue = new ArrayDeque<>();
         int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
 
         // Seed all zeros; mark all ones as unvisited
