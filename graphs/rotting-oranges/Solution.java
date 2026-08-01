@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.ArrayDeque;
 
 class Solution {
 
@@ -20,7 +21,7 @@ class Solution {
     //   Marking on enqueue ensures each cell enters the queue exactly once.
     public int orangesRotting(int[][] grid) {
         int rows = grid.length, cols = grid[0].length;
-        Queue<int[]> queue = new LinkedList<>();
+        Queue<int[]> queue = new ArrayDeque<>();
         int fresh = 0;
 
         // Seed queue with ALL rotten oranges simultaneously (multi-source BFS)
