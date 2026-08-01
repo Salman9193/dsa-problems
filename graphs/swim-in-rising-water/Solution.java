@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.ArrayDeque;
 
 class Solution {
 
@@ -88,7 +89,7 @@ class Solution {
     private boolean canSwim(int[][] grid, int t, int n) {
         if (grid[0][0] > t) return false;
         boolean[][] visited = new boolean[n][n];
-        Queue<int[]> queue = new LinkedList<>();
+        Queue<int[]> queue = new ArrayDeque<>();
         queue.offer(new int[]{0,0});
         visited[0][0] = true;
         int[][] dirs = {{0,1},{0,-1},{1,0},{-1,0}};
