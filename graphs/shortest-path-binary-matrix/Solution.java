@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.ArrayDeque;
 
 class Solution {
 
@@ -37,7 +38,7 @@ class Solution {
         int[][] dirs = {{-1,-1},{-1,0},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
 
         // Queue stores {row, col, pathLength}
-        Queue<int[]> queue = new LinkedList<>();
+        Queue<int[]> queue = new ArrayDeque<>();
         queue.offer(new int[]{0, 0, 1});
         grid[0][0] = 1; // mark visited on enqueue
 
