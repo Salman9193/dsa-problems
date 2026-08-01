@@ -1,4 +1,4 @@
-import java.util.LinkedList;
+import java.util.ArrayDeque;
 import java.util.Queue;
 
 class Solution {
@@ -19,7 +19,7 @@ class Solution {
         for (int start = 0; start < n; start++) {
             if (colour[start] != 0) continue;  // already processed
 
-            Queue<Integer> queue = new LinkedList<>();
+            Queue<Integer> queue = new ArrayDeque<>();
             queue.offer(start);
             colour[start] = 1;
 
