@@ -34,7 +34,7 @@ public int[] topoSort(int n, int[][] edges) {
         inDegree[e[1]]++;
     }
 
-    Queue<Integer> queue = new LinkedList<>();
+    Deque<Integer> queue = new ArrayDeque<>();
     for (int i = 0; i < n; i++)
         if (inDegree[i] == 0) queue.offer(i);
 
@@ -55,6 +55,17 @@ public int[] topoSort(int n, int[][] edges) {
 nodes never reached in-degree 0.
 
 ---
+
+
+> **Use `ArrayDeque`, not `LinkedList`, for the queue.** Both give O(1) enqueue/dequeue and the same
+> O(V+E) overall, but `ArrayDeque` is a **circular array** — contiguous memory, no per-element node
+> allocation, cache-friendly — while `LinkedList` heap-allocates a node object (with pointers + a
+> boxed `Integer`) for *every* element. The JDK docs say `ArrayDeque` is "likely to be faster than
+> `LinkedList` when used as a queue." One bonus: `ArrayDeque` **rejects `null`**, so a stray null
+> enqueue fails loudly instead of lurking — a free correctness guard here, since node indices are
+> never null. Declare it as `Deque<Integer> q = new ArrayDeque<>()` (optionally `new ArrayDeque<>(n)`
+> to pre-size). The *only* time to keep `LinkedList` is when you genuinely need list-index access
+> (`get(i)`) or must store `null` elements — neither applies to BFS/Kahn's.
 
 ### Algorithm 2: DFS-based Topological Sort
 
@@ -145,7 +156,7 @@ public String alienOrder(String[] words) {
     }
 
     // Kahn's algorithm
-    Queue<Character> queue = new LinkedList<>();
+    Deque<Character> queue = new ArrayDeque<>();
     for (char c : inDegree.keySet())
         if (inDegree.get(c) == 0) queue.offer(c);
 
