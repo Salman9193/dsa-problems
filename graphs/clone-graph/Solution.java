@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.ArrayDeque;
 
 class Node {
     public int val;
@@ -44,7 +45,7 @@ class Solution {
         if (node == null) return null;
 
         Map<Node, Node> map = new HashMap<>();
-        Queue<Node> queue = new LinkedList<>();
+        Queue<Node> queue = new ArrayDeque<>();
 
         map.put(node, new Node(node.val));
         queue.offer(node);
