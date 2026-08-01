@@ -1,4 +1,4 @@
-import java.util.LinkedList;
+import java.util.ArrayDeque;
 import java.util.Queue;
 
 class Node {
@@ -15,7 +15,7 @@ class Solution {
     // link consecutive nodes with next pointers.
     public Node connectBFS(Node root) {
         if (root == null) return null;
-        Queue<Node> queue = new LinkedList<>();
+        Queue<Node> queue = new ArrayDeque<>();
         queue.offer(root);
 
         while (!queue.isEmpty()) {
