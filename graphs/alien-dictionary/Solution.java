@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.ArrayDeque;
 
 class Solution {
 
@@ -49,7 +50,7 @@ class Solution {
         }
 
         // Step 3: Kahn's BFS topological sort
-        Queue<Character> queue = new LinkedList<>();
+        Queue<Character> queue = new ArrayDeque<>();
         for (char c : inDegree.keySet())
             if (inDegree.get(c) == 0) queue.offer(c);
 
