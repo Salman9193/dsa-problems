@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.ArrayDeque;
 
 class Solution {
 
@@ -139,7 +140,7 @@ class Solution {
             for (int v : graph[u]) reverseAdj.get(v).add(u);
         }
 
-        Queue<Integer> queue = new LinkedList<>();
+        Queue<Integer> queue = new ArrayDeque<>();
         for (int i = 0; i < n; i++)
             if (outDegree[i] == 0) queue.offer(i); // terminal nodes are safe
 
