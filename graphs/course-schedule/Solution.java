@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.ArrayDeque;
 
 class Solution {
 
@@ -30,7 +31,7 @@ class Solution {
             inDegree[pre[0]]++;
         }
 
-        Queue<Integer> queue = new LinkedList<>();
+        Queue<Integer> queue = new ArrayDeque<>();
         for (int i = 0; i < numCourses; i++)
             if (inDegree[i] == 0) queue.offer(i); // courses with no prerequisites
 
