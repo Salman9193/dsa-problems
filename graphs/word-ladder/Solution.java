@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.ArrayDeque;
 
 class Solution {
 
@@ -21,7 +22,7 @@ class Solution {
         Set<String> wordSet = new HashSet<>(wordList);
         if (!wordSet.contains(endWord)) return 0;
 
-        Queue<String> queue = new LinkedList<>();
+        Queue<String> queue = new ArrayDeque<>();
         queue.offer(beginWord);
         wordSet.remove(beginWord); // mark beginWord as visited
 
