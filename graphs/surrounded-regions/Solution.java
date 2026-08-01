@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.ArrayDeque;
 
 class Solution {
 
@@ -23,7 +24,7 @@ class Solution {
         int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
 
         // Step 1: BFS from all border 'O' cells — mark safe as 'S'
-        Queue<int[]> queue = new LinkedList<>();
+        Queue<int[]> queue = new ArrayDeque<>();
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
                 if ((r == 0 || r == rows-1 || c == 0 || c == cols-1)
