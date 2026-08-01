@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.ArrayDeque;
 
 class Solution {
 
@@ -40,7 +41,7 @@ class Solution {
         if (!graph.containsKey(src) || !graph.containsKey(dst)) return -1.0;
         if (src.equals(dst)) return 1.0;
 
-        Queue<String> queue = new LinkedList<>();
+        Queue<String> queue = new ArrayDeque<>();
         Map<String, Double> product = new HashMap<>();
         queue.offer(src);
         product.put(src, 1.0);
