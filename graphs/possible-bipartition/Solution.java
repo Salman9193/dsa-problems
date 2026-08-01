@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.ArrayDeque;
 
 class Solution {
 
@@ -28,7 +29,7 @@ class Solution {
 
         for (int i = 1; i <= n; i++) {
             if (colour[i] != 0) continue; // already processed in a previous component
-            Queue<Integer> queue = new LinkedList<>();
+            Queue<Integer> queue = new ArrayDeque<>();
             queue.offer(i);
             colour[i] = 1;
 
