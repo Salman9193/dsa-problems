@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.ArrayDeque;
 
 class Solution {
 
@@ -49,7 +50,7 @@ class Solution {
         for (int i = 0; i < n; i++) {
             if (visited[i]) continue;
             provinces++;
-            Queue<Integer> queue = new LinkedList<>();
+            Queue<Integer> queue = new ArrayDeque<>();
             queue.offer(i);
             visited[i] = true;
             while (!queue.isEmpty()) {
