@@ -144,42 +144,43 @@ Each problem lives in `topic/problem-name/` and contains:
 | 96 | [Course Schedule](./graphs/course-schedule) | Topological Sort | Medium |
 | 97 | [Course Schedule II](./graphs/course-schedule-ii) | Topological Sort | Medium |
 | 98 | [Reconstruct Itinerary](./graphs/reconstruct-itinerary) | Eulerian path, Hierholzer's algorithm | Hard |
-| 99 | [Parallel Courses III](./graphs/parallel-courses-iii) | Topological Sort + DP (critical path) | Hard |
-| 100 | [Find Eventual Safe States](./graphs/find-eventual-safe-states) | DFS/Cycle Detection | Medium |
-| 101 | [Alien Dictionary](./graphs/alien-dictionary) | Topological Sort | Hard |
-| 102 | [Is Graph Bipartite?](./graphs/is-graph-bipartite) | BFS/DFS | Medium |
-| 103 | [Possible Bipartition](./graphs/possible-bipartition) | BFS/DFS/DSU | Medium |
-| 104 | [Redundant Connection](./graphs/redundant-connection) | Union-Find | Medium |
-| 105 | [Accounts Merge](./graphs/accounts-merge) | Union-Find | Medium |
-| 106 | [Most Stones Removed](./graphs/most-stones-removed) | Union-Find | Medium |
-| 107 | [Evaluate Division](./graphs/evaluate-division) | BFS/Weighted | Medium |
-| 108 | [Network Delay Time](./graphs/network-delay-time) | Dijkstra's | Medium |
-| 109 | [Path with Minimum Effort](./graphs/path-minimum-effort) | Dijkstra's/BST/DSU | Medium |
-| 110 | [Cheapest Flights Within K Stops](./graphs/cheapest-flights-k-stops) | Bellman-Ford | Medium |
-| 111 | [Swim in Rising Water](./graphs/swim-in-rising-water) | Dijkstra's/BST/DSU | Hard |
-| 112 | [Min Cost to Connect All Points](./graphs/min-cost-connect-points) | MST/Prim's/Kruskal's | Medium |
-| 113 | [Connecting Cities With Min Cost](./graphs/connecting-cities-min-cost) | MST/Kruskal's | Medium |
-| 114 | [Critical Connections](./graphs/critical-connections) | Tarjan's Bridge | Hard |
-| 115 | [Minimum Height Trees](./graphs/minimum-height-trees) | BFS/Topological | Medium |
+| 99 | [Cracking the Safe](./graphs/cracking-the-safe) | de Bruijn sequence, Eulerian circuit (Hierholzer) | Hard |
+| 100 | [Parallel Courses III](./graphs/parallel-courses-iii) | Topological Sort + DP (critical path) | Hard |
+| 101 | [Find Eventual Safe States](./graphs/find-eventual-safe-states) | DFS/Cycle Detection | Medium |
+| 102 | [Alien Dictionary](./graphs/alien-dictionary) | Topological Sort | Hard |
+| 103 | [Is Graph Bipartite?](./graphs/is-graph-bipartite) | BFS/DFS | Medium |
+| 104 | [Possible Bipartition](./graphs/possible-bipartition) | BFS/DFS/DSU | Medium |
+| 105 | [Redundant Connection](./graphs/redundant-connection) | Union-Find | Medium |
+| 106 | [Accounts Merge](./graphs/accounts-merge) | Union-Find | Medium |
+| 107 | [Most Stones Removed](./graphs/most-stones-removed) | Union-Find | Medium |
+| 108 | [Evaluate Division](./graphs/evaluate-division) | BFS/Weighted | Medium |
+| 109 | [Network Delay Time](./graphs/network-delay-time) | Dijkstra's | Medium |
+| 110 | [Path with Minimum Effort](./graphs/path-minimum-effort) | Dijkstra's/BST/DSU | Medium |
+| 111 | [Cheapest Flights Within K Stops](./graphs/cheapest-flights-k-stops) | Bellman-Ford | Medium |
+| 112 | [Swim in Rising Water](./graphs/swim-in-rising-water) | Dijkstra's/BST/DSU | Hard |
+| 113 | [Min Cost to Connect All Points](./graphs/min-cost-connect-points) | MST/Prim's/Kruskal's | Medium |
+| 114 | [Connecting Cities With Min Cost](./graphs/connecting-cities-min-cost) | MST/Kruskal's | Medium |
+| 115 | [Critical Connections](./graphs/critical-connections) | Tarjan's Bridge | Hard |
+| 116 | [Minimum Height Trees](./graphs/minimum-height-trees) | BFS/Topological | Medium |
 
 ### Design
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 116 | [LRU Cache](./design/lru-cache) | DLL + HashMap | Medium |
-| 117 | [Design Skiplist](./design/design-skiplist) | Probabilistic O(log n); randomization replaces balancing | Hard |
-| 118 | [Exam Room](./design/exam-room) | Sorted Set | Medium |
-| 119 | [Find Median from Data Stream](./design/find-median-data-stream) | Two Heaps | Hard |
+| 117 | [LRU Cache](./design/lru-cache) | DLL + HashMap | Medium |
+| 118 | [Design Skiplist](./design/design-skiplist) | Probabilistic O(log n); randomization replaces balancing | Hard |
+| 119 | [Exam Room](./design/exam-room) | Sorted Set | Medium |
+| 120 | [Find Median from Data Stream](./design/find-median-data-stream) | Two Heaps | Hard |
 
 ### Bit Manipulation
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 120 | [Number of 1 Bits](./bit-manipulation/hamming-weight) | Bit Manipulation | Easy |
-| 121 | [Reverse Bits](./bit-manipulation/reverse-bits) | Bit Manipulation | Easy |
+| 121 | [Number of 1 Bits](./bit-manipulation/hamming-weight) | Bit Manipulation | Easy |
+| 122 | [Reverse Bits](./bit-manipulation/reverse-bits) | Bit Manipulation | Easy |
 
 ### Binary Search (Advanced)
 | # | Problem | Topic | Difficulty |
 |---|---------|-------|------------|
-| 122 | [Lowest Common Ancestor (Binary Tree)](./trees/lowest-common-ancestor) | DFS | Medium |
+| 123 | [Lowest Common Ancestor (Binary Tree)](./trees/lowest-common-ancestor) | DFS | Medium |
 
 ## Guides
 
@@ -206,6 +207,6 @@ Each problem lives in `topic/problem-name/` and contains:
 | [Floyd-Warshall, Max Flow & Bipartite Matching](./guides/FLOW_MATCHING.md) | Tier 3 advanced |
 
 ---
-> 126 problems · 20 guides · Complete Staff/Principal Engineer preparation resource
+> 127 problems · 20 guides · Complete Staff/Principal Engineer preparation resource
 
-> Last updated: 2026-07-05 — added Reconstruct Itinerary (#332, Eulerian path/Hierholzer) + Eulerian Path & de Bruijn guide (keypad cracking, genome assembly)
+> Last updated: 2026-07-05 — added Cracking the Safe (#753): de Bruijn sequence via Eulerian circuit — the constructive companion to #332
