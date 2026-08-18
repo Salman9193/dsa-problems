@@ -319,3 +319,11 @@ public int[] bellmanFord(int n, int[][] edges, int src) {
 | A* search | Add heuristic to Dijkstra; faster when heuristic is good |
 | Floyd-Warshall | DP: dist[i][j] = min(dist[i][k] + dist[k][j]) for all k |
 | Johnson's algorithm | Re-weight for negative edges, then Dijkstra from each node |
+
+
+---
+
+> **Scaling BFS to real graphs:** the top-down BFS above is optimal at interview scale, but on
+> billion-edge social networks it wastes most of its edge checks. **Direction-optimizing BFS**
+> switches to a bottom-up frontier scan on the huge middle levels for a 3–8× speedup — see the
+> [Direction-Optimizing BFS guide](#guides/DIRECTION_OPTIMIZING_BFS).
