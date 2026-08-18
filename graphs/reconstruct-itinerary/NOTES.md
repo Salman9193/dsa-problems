@@ -147,7 +147,7 @@ Watch KUL get prepended *first* and end up *last* — that's the post-order mech
 |---------|-----------------|
 | **#332 Reconstruct Itinerary** | Eulerian **path** in a directed multigraph, lexical-smallest |
 | #2097 Valid Arrangement of Pairs | Eulerian path, construct start from degree balance |
-| Cracking the Safe #753 | Eulerian **circuit** on a **de Bruijn graph** (all codes as one string) |
+| [Cracking the Safe #753](#graphs/cracking-the-safe) | Eulerian **circuit** on a **de Bruijn graph** (all codes as one string) |
 
 That last one is the deep connection: **de Bruijn sequences** — cyclic strings containing every
 length-`n` string over a `k`-symbol alphabet exactly once — are literally **Eulerian circuits on a de
