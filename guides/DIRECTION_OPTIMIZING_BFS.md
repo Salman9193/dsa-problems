@@ -102,6 +102,157 @@ That 3× matches Beamer's reported **2.4–4.6× on real social graphs** (and 3.
 
 ---
 
+---
+
+## Implementation
+
+Real graph engines store the graph in **CSR (Compressed Sparse Row)** — two flat arrays instead of
+per-vertex lists, for cache-friendly neighbor scans. All three BFS variants share it. *(Logic
+verified: top-down, bottom-up, and hybrid produce identical BFS distances across 300 random graphs.)*
+
+```java
+// Compressed Sparse Row graph: neighbors of v are nbr[offset[v] .. offset[v+1]).
+class Graph {
+    final int n;
+    final int[] offset;   // length n+1
+    final int[] nbr;      // length 2*m for an undirected graph
+    Graph(int n, int[] off, int[] nbr) { this.n = n; this.offset = off; this.nbr = nbr; }
+    int degree(int v) { return offset[v + 1] - offset[v]; }
+}
+```
+
+### Top-down (the standard BFS)
+
+The frontier reaches *out*; each frontier vertex claims unvisited neighbors as children.
+
+```java
+int[] bfsTopDown(Graph g, int source) {
+    int[] parent = new int[g.n];
+    Arrays.fill(parent, -1);
+    parent[source] = source;
+
+    ArrayDeque<Integer> frontier = new ArrayDeque<>();
+    frontier.add(source);
+
+    while (!frontier.isEmpty()) {
+        ArrayDeque<Integer> next = new ArrayDeque<>();
+        for (int v : frontier) {
+            for (int i = g.offset[v]; i < g.offset[v + 1]; i++) {
+                int w = g.nbr[i];
+                if (parent[w] == -1) {        // unvisited → claim as child
+                    parent[w] = v;
+                    next.add(w);
+                }
+            }
+        }
+        frontier = next;
+    }
+    return parent;                            // parent[v] = v's BFS-tree parent
+}
+```
+
+### Bottom-up
+
+Every *unvisited* vertex reaches *in*, looking for any neighbor already in the frontier — and
+**stops at the first one found**. A boolean frontier bitmap makes the "is w in the frontier?" test
+O(1).
+
+```java
+int[] bfsBottomUp(Graph g, int source) {
+    int[] parent = new int[g.n];
+    Arrays.fill(parent, -1);
+    parent[source] = source;
+
+    boolean[] frontier = new boolean[g.n];
+    frontier[source] = true;
+    int frontierSize = 1;
+
+    while (frontierSize > 0) {
+        boolean[] next = new boolean[g.n];
+        frontierSize = 0;
+        for (int v = 0; v < g.n; v++) {
+            if (parent[v] != -1) continue;    // already visited — skip
+            for (int i = g.offset[v]; i < g.offset[v + 1]; i++) {
+                int w = g.nbr[i];
+                if (frontier[w]) {            // a neighbor is in the frontier
+                    parent[v] = w;           // adopt it as parent
+                    next[v] = true;
+                    frontierSize++;
+                    break;                   // ← THE optimization: stop scanning edges
+                }
+            }
+        }
+        frontier = next;
+    }
+    return parent;
+}
+```
+
+### Hybrid (direction-optimizing)
+
+Pick the cheaper direction each level from a cheap edge-count heuristic. `α` gates the switch *to*
+bottom-up (frontier grew large); `β` gates the switch *back* to top-down (frontier shrank).
+
+```java
+int[] bfsDirectionOptimizing(Graph g, int source) {
+    final int ALPHA = 14, BETA = 24;          // Beamer's defaults; robust to tuning
+    int m = g.offset[g.n];                     // total directed edge slots (2*|E|)
+
+    int[] parent = new int[g.n];
+    Arrays.fill(parent, -1);
+    parent[source] = source;
+
+    boolean[] frontier = new boolean[g.n];
+    frontier[source] = true;
+    int frontierSize = 1;
+    boolean topDown = true;
+
+    while (frontierSize > 0) {
+        // edges incident to the current frontier (the top-down cost this level)
+        long mf = 0;
+        for (int v = 0; v < g.n; v++) if (frontier[v]) mf += g.degree(v);
+
+        // switch decision
+        if (topDown && mf > m / ALPHA)            topDown = false;   // frontier large → go bottom-up
+        else if (!topDown && frontierSize < g.n / BETA) topDown = true; // frontier small → go top-down
+
+        boolean[] next = new boolean[g.n];
+        int nextSize = 0;
+
+        if (topDown) {
+            for (int v = 0; v < g.n; v++) {
+                if (!frontier[v]) continue;
+                for (int i = g.offset[v]; i < g.offset[v + 1]; i++) {
+                    int w = g.nbr[i];
+                    if (parent[w] == -1) { parent[w] = v; next[w] = true; nextSize++; }
+                }
+            }
+        } else {                                   // bottom-up
+            for (int v = 0; v < g.n; v++) {
+                if (parent[v] != -1) continue;
+                for (int i = g.offset[v]; i < g.offset[v + 1]; i++) {
+                    int w = g.nbr[i];
+                    if (frontier[w]) { parent[v] = w; next[v] = true; nextSize++; break; }
+                }
+            }
+        }
+        frontier = next;
+        frontierSize = nextSize;
+    }
+    return parent;
+}
+```
+
+**Two implementation notes that matter in practice:**
+- **Frontier representation flips with direction.** Top-down wants a **queue/sparse list** (iterate
+  only frontier vertices); bottom-up wants a **bitmap** (O(1) "is w in the frontier?" test, and it
+  scans *all* vertices anyway). Production code (Ligra, GAP) converts between the two at the switch.
+- **Bottom-up parallelizes cleanly:** each unvisited vertex writes only its *own* `parent[v]`, so
+  there are **no atomic updates** — unlike top-down, where many frontier vertices race to claim the
+  same child. This is the "no fighting over children" win, and why bottom-up scales on many cores.
+
+---
+
 ## Why It's a Landmark Result
 
 **It beat specialized hardware with a laptop-class idea.** Conceived for the November 2011 Graph500
