@@ -133,6 +133,7 @@ LC = {
     "course-schedule":(207,"course-schedule"),
     "course-schedule-ii":(210,"course-schedule-ii"),
     "reconstruct-itinerary":(332,"reconstruct-itinerary"),
+    "cracking-the-safe":(753,"cracking-the-safe"),
     "find-eventual-safe-states":(802,"find-eventual-safe-states"),
     "alien-dictionary":(269,"alien-dictionary"),
     "is-graph-bipartite":(785,"is-graph-bipartite"),
