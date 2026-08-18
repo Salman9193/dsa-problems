@@ -186,7 +186,7 @@ before hardware `CTZ`/`BSF` was universal — still seen in chess engines and lo
 | Problem | Flavor |
 |---------|--------|
 | [Reconstruct Itinerary #332](#graphs/reconstruct-itinerary) | Eulerian **path**, lexical-smallest, Hierholzer |
-| Cracking the Safe #753 | Eulerian **circuit** on a de Bruijn graph |
+| [Cracking the Safe #753](#graphs/cracking-the-safe) | Eulerian **circuit** on a de Bruijn graph |
 | Valid Arrangement of Pairs #2097 | Eulerian path; find start from degree imbalance |
 | Chinese Postman (theory) | make a non-Eulerian graph Eulerian with fewest added edges |
 
