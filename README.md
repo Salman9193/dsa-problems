@@ -196,6 +196,7 @@ Each problem lives in `topic/problem-name/` and contains:
 | [Balanced Search Trees](./guides/BALANCED_TREES.md) | BST, AVL, red-black, splay: invariants, Java, when to use each |
 | [Trie](./guides/TRIE.md) | Prefix tree; insert/search/wildcard/Word Search II |
 | [Graph Algorithms](./guides/GRAPH_ALGORITHMS.md) | Topological sort + Dijkstra + Bellman-Ford |
+| [Direction-Optimizing BFS](./guides/DIRECTION_OPTIMIZING_BFS.md) | Top-down vs bottom-up BFS; small-world graphs; scaling BFS to billions of edges |
 | [Eulerian Path & de Bruijn](./guides/EULERIAN_DE_BRUIJN.md) | Euler/Hierholzer, de Bruijn sequences: keypad cracking, genome assembly |
 | [Intervals](./guides/INTERVALS.md) | Merge, insert, meeting rooms, non-overlapping |
 | [Klee's Algorithm](./guides/KLEES_ALGORITHM.md) | Union measure, sweep line, 2-D rectangle area, Ω(n log n) |
@@ -207,6 +208,6 @@ Each problem lives in `topic/problem-name/` and contains:
 | [Floyd-Warshall, Max Flow & Bipartite Matching](./guides/FLOW_MATCHING.md) | Tier 3 advanced |
 
 ---
-> 127 problems · 20 guides · Complete Staff/Principal Engineer preparation resource
+> 127 problems · 21 guides · Complete Staff/Principal Engineer preparation resource
 
-> Last updated: 2026-07-05 — added Cracking the Safe (#753): de Bruijn sequence via Eulerian circuit — the constructive companion to #332
+> Last updated: 2026-07-05 — added Direction-Optimizing BFS guide (top-down vs bottom-up, small-world graphs, scaling BFS; Beamer et al. 2012)
